@@ -2236,10 +2236,10 @@ local function checkFriends()
 
 		if not checkSirius() then return end
 
-		homeContainer.Interactions.Friends.All.Value.Text = tostring(friendsInTotal).." friends"
-		homeContainer.Interactions.Friends.Offline.Value.Text = tostring(friendsInTotal - onlineFriends).." friends"
-		homeContainer.Interactions.Friends.Online.Value.Text = tostring(onlineFriends).." friends"
-		homeContainer.Interactions.Friends.InGame.Value.Text = tostring(friendsInGame).." friends"
+		homeContainer.Interactions.Friends.All.Value.Text = tostring(friendsInTotal).." أصدقاء"
+		homeContainer.Interactions.Friends.Offline.Value.Text = tostring(friendsInTotal - onlineFriends).." أصدقاء"
+		homeContainer.Interactions.Friends.Online.Value.Text = tostring(onlineFriends).." أصدقاء"
+		homeContainer.Interactions.Friends.InGame.Value.Text = tostring(friendsInGame).." أصدقاء"
 
 	else
 		friendsCooldown -= 1
@@ -2364,7 +2364,7 @@ local function UpdateHome()
 	homeContainer.Interactions.Server.Time.Value.Text = convertToHMS(time())
 
 	-- Region
-	homeContainer.Interactions.Server.Region.Value.Text = "Unable to retrieve region"
+	homeContainer.Interactions.Server.Region.Value.Text = "غير قادر على استرداد المنطقة"
 
 	-- Player Information
 	homeContainer.Interactions.User.Avatar.Image = "https://www.roblox.com/headshot-thumbnail/image?userId="..localPlayer.UserId.."&width=420&height=420&format=png"
