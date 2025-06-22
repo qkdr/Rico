@@ -4553,7 +4553,7 @@ while task.wait(1) do
 			})
 		elseif disconnectType == "kick" then
 			disconnectedPrompt.Content.Text = "You've been kicked, would you like to serverhop?"
-			disconnectedPrompt.Action.Text = "Serverhop"
+			disconnectedPrompt.Action.Text = "سيرفر هوب"
 			disconnectedPrompt.Action.Size = UDim2.new(0, 114, 0, 36)
 
 			disconnectedPrompt.UIGradient.Color = ColorSequence.new({
