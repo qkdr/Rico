@@ -195,7 +195,7 @@ local siriusValues = {
 			callback = function() end,
 		},
 		{
-			name = "Flight",
+			name = "طيران",
 			images = {9134755504, 14385992605},
 			color = Color3.fromRGB(170, 37, 46),
 			enabled = false,
@@ -209,7 +209,7 @@ local siriusValues = {
 			end,
 		},
 		{
-			name = "Refresh",
+			name = "ينعش",
 			images = {9134761478, 9134761478},
 			color = Color3.fromRGB(61, 179, 98),
 			enabled = false,
