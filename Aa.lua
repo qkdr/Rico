@@ -231,7 +231,7 @@ local siriusValues = {
 			end,
 		},
 		{
-			name = "Respawn",
+			name = "إعادة الظهور",
 			images = {9134762943, 9134762943},
 			color = Color3.fromRGB(49, 88, 193),
 			enabled = false,
@@ -246,7 +246,7 @@ local siriusValues = {
 			end,
 		},
 		{
-			name = "Invulnerability",
+			name = "عدم القابلية للتأثر",
 			images = {9134765994, 14386216487},
 			color = Color3.fromRGB(193, 46, 90),
 			enabled = false,
@@ -254,7 +254,7 @@ local siriusValues = {
 			callback = function() end,
 		},
 		{
-			name = "Fling",
+			name = "فليق",
 			images = {9134785384, 14386226155},
 			color = Color3.fromRGB(184, 85, 61),
 			enabled = false,
