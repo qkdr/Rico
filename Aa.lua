@@ -478,13 +478,13 @@ local siriusSettings = {
 			{
 				name = 'تبديل الشريط الذكي',
 				settingType = 'Key',
-				current = "K",
+				current = nil,
 				id = 'smartbar'
 			},
 			{
 				name = 'افتح بحث البرنامج النصي',
 				settingType = 'Key',
-				current = "T",
+				current = nil,
 				id = 'scriptsearch'
 			},
 			{
