@@ -281,7 +281,7 @@ local siriusValues = {
 			end,
 		},
 		{
-			name = "Extrasensory Perception",
+			name = "الإدراك الحسي الإضافي",
 			images = {9134780101, 14386232387},
 			color = Color3.fromRGB(214, 182, 19),
 			enabled = false,
@@ -293,7 +293,7 @@ local siriusValues = {
 			end,
 		},
 		{
-			name = "Night and Day",
+			name = "الليل و الانهار",
 			images = {9134778004, 10137794784},
 			color = Color3.fromRGB(102, 75, 190),
 			enabled = false,
