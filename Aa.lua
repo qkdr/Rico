@@ -1752,7 +1752,7 @@ local function sortActions()
 
 	if localPlayer.Character then
 		if not localPlayer.Character:FindFirstChildOfClass('Humanoid').UseJumpPower then
-			siriusValues.sliders[2].name = "jump height"
+			siriusValues.sliders[2].name = "قوة القفز"
 			siriusValues.sliders[2].default = 7.2
 			siriusValues.sliders[2].values = {0, 120}
 		end
@@ -1878,7 +1878,7 @@ local function closePanel(panelName, openingOther)
 	local panelSize = UDim2.new(0, 581, 0, 246)
 
 	if not openingOther then
-		if panel.Name == "Character" then -- Character Panel Animation
+		if panel.Name == "شخصية" then -- Character Panel Animation
 
 			tweenService:Create(characterPanel.Interactions.PropertiesTitle, TweenInfo.new(0.8, Enum.EasingStyle.Quint), {TextTransparency = 1}):Play()
 
