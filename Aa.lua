@@ -362,7 +362,7 @@ local siriusValues = {
 			end,
 		},
 		{
-			name = "flight speed",
+			name = "سرعة الطيران",
 			color = Color3.fromRGB(177, 45, 45),
 			values = {1, 25},
 			default = 3,
@@ -371,7 +371,7 @@ local siriusValues = {
 			callback = function(value) end,
 		},
 		{
-			name = "field of view",
+			name = "مجال الرؤية",
 			color = Color3.fromRGB(198, 178, 75),
 			values = {45, 120},
 			default = 70,
