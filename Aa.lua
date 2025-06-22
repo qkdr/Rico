@@ -187,7 +187,7 @@ local siriusValues = {
 	},
 	actions = {
 		{
-			name = "نوكليب",
+			name = "Noclip",
 			images = {14385986465, 9134787693},
 			color = Color3.fromRGB(0, 170, 127),
 			enabled = false,
@@ -195,7 +195,7 @@ local siriusValues = {
 			callback = function() end,
 		},
 		{
-			name = "طيران",
+			name = "Flight",
 			images = {9134755504, 14385992605},
 			color = Color3.fromRGB(170, 37, 46),
 			enabled = false,
@@ -209,7 +209,7 @@ local siriusValues = {
 			end,
 		},
 		{
-			name = "ينعش",
+			name = "Refresh",
 			images = {9134761478, 9134761478},
 			color = Color3.fromRGB(61, 179, 98),
 			enabled = false,
@@ -231,7 +231,7 @@ local siriusValues = {
 			end,
 		},
 		{
-			name = "إعادة الظهور",
+			name = "Respawn",
 			images = {9134762943, 9134762943},
 			color = Color3.fromRGB(49, 88, 193),
 			enabled = false,
@@ -246,7 +246,7 @@ local siriusValues = {
 			end,
 		},
 		{
-			name = "عدم القابلية للتأثر",
+			name = "Invulnerability",
 			images = {9134765994, 14386216487},
 			color = Color3.fromRGB(193, 46, 90),
 			enabled = false,
@@ -254,7 +254,7 @@ local siriusValues = {
 			callback = function() end,
 		},
 		{
-			name = "قذف",
+			name = "Fling",
 			images = {9134785384, 14386226155},
 			color = Color3.fromRGB(184, 85, 61),
 			enabled = false,
@@ -281,7 +281,7 @@ local siriusValues = {
 			end,
 		},
 		{
-			name = "الإدراك الحسي الإضافي",
+			name = "Extrasensory Perception",
 			images = {9134780101, 14386232387},
 			color = Color3.fromRGB(214, 182, 19),
 			enabled = false,
@@ -293,7 +293,7 @@ local siriusValues = {
 			end,
 		},
 		{
-			name = "الليل والنهار",
+			name = "Night and Day",
 			images = {9134778004, 10137794784},
 			color = Color3.fromRGB(102, 75, 190),
 			enabled = false,
@@ -303,7 +303,7 @@ local siriusValues = {
 			end,
 		},
 		{
-			name = "الصوت العالمي",
+			name = "Global Audio",
 			images = {9134774810, 14386246782},
 			color = Color3.fromRGB(202, 103, 58),
 			enabled = false,
@@ -318,7 +318,7 @@ local siriusValues = {
 			end,
 		},
 		{
-			name = "الرؤية",
+			name = "Visibility",
 			images = {14386256326, 9134770786},
 			color = Color3.fromRGB(62, 94, 170),
 			enabled = false,
@@ -328,7 +328,7 @@ local siriusValues = {
 	},
 	sliders = {
 		{
-			name = "سرعه الاعب",
+			name = "player speed",
 			color = Color3.fromRGB(44, 153, 93),
 			values = {0, 300},
 			default = 16,
@@ -343,7 +343,7 @@ local siriusValues = {
 			end,
 		},
 		{
-			name = "قوة القفز",
+			name = "jump power",
 			color = Color3.fromRGB(59, 126, 184),
 			values = {0, 350},
 			default = 50,
@@ -362,7 +362,7 @@ local siriusValues = {
 			end,
 		},
 		{
-			name = "سرعة الطيران",
+			name = "flight speed",
 			color = Color3.fromRGB(177, 45, 45),
 			values = {1, 25},
 			default = 3,
@@ -371,7 +371,7 @@ local siriusValues = {
 			callback = function(value) end,
 		},
 		{
-			name = "مجال الرؤية",
+			name = "field of view",
 			color = Color3.fromRGB(198, 178, 75),
 			values = {45, 120},
 			default = 70,
@@ -386,82 +386,82 @@ local siriusValues = {
 
 local siriusSettings = {
 	{
-		name = 'عام',
-		description = 'الإعدادات العامة لـSirius، من الميزات البسيطة إلى الميزات الفريدة.',
+		name = 'General',
+		description = 'The general settings for Sirius, from simple to unique features.',
 		color = Color3.new(0.117647, 0.490196, 0.72549),
 		minimumLicense = 'Free',
 		categorySettings = {
 			{
-				name = 'عميل مجهول',
-				description = 'غيّر اسم المستخدم الخاص بك عشوائيًا في الوقت الفعلي في أي واجهة CoreGui رئيسية، بما في ذلك Sirius. سيظل اسمك الحقيقي يظهر للآخرين في اللعبة. قد يتطلب هذا الإعداد أداءً مكثفًا.',
+				name = 'Anonymous Client',
+				description = 'Randomise your username in real-time in any CoreGui parented interface, including Sirius. You will still appear as your actual name to others in-game. This setting can be performance intensive.',
 				settingType = 'Boolean',
 				current = false,
 
 				id = 'anonmode'
 			},
 			{
-				name = 'دردشة جاسوس',
-				description = 'سيعمل هذا فقط على نظام دردشة Roblox القديم. سيعرض Sirius همساتٍ عادةً ما تكون مخفية عنك في مربع الدردشة.',
+				name = 'Chat Spy',
+				description = 'This will only work on the legacy Roblox chat system. Sirius will display whispers usually hidden from you in the chat box.',
 				settingType = 'Boolean',
 				current = true,
 
 				id = 'chatspy'
 			},
 			{
-				name = 'إخفاء زر التبديل',
-				description = 'سيؤدي هذا إلى إزالة خيار فتح smartBar باستخدام زر التبديل.',
+				name = 'Hide Toggle Button',
+				description = 'This will remove the option to open the smartBar with the toggle button.',
 				settingType = 'Boolean',
 				current = false,
 
 				id = 'hidetoggle'
 			},
 			{
-				name = 'إشعارات التشغيل الآن',
-				description = 'عندما يكون هذا التطبيق نشطًا، فسوف يخطرك Sirius عند تشغيل الأغنية التالية في قائمة الموسيقى الخاصة بك.',
+				name = 'Now Playing Notifications',
+				description = 'When active, Sirius will notify you when the next song in your Music queue plays.',
 				settingType = 'Boolean',
 				current = true,
 
 				id = 'nowplaying'
 			},
 			{
-				name = 'إشعارات الأصدقاء',
+				name = 'Friend Notifications',
 				settingType = 'Boolean', 
 				current = true,
 
 				id = 'friendnotifs'
 			},
 			{
-				name = 'تحميل مخفي',
+				name = 'Load Hidden',
 				settingType = 'Boolean',
 				current = false,
 
 				id = 'loadhidden'
 			}, 
 			{
-				name = 'تأثير صوت بدء التشغيل',
+				name = 'Startup Sound Effect',
 				settingType = 'Boolean',
 				current = true,
 
 				id = 'startupsound'
 			}, 
 			{
-				name = 'مكافحة الخمول',
-				description = 'إزالة جميع عمليات الاستدعاء والأحداث المرتبطة بحالة LocalPlayer Idled. قد يؤدي هذا إلى اكتشافه من قِبل Adonis أو برامج مكافحة الغش المشابهة.',
+				name = 'Anti Idle',
+				description = 'Remove all callbacks and events linked to the LocalPlayer Idled state. This may prompt detection from Adonis or similar anti-cheats.',
 				settingType = 'Boolean',
 				current = true,
 
 				id = 'antiidle'
 			},
 			{
-				name = 'نظام مكافحة الركلات القائم على العميل',
-				description = 'ألغِ أي طلب طرد يتعلق بك أرسله العميل. قد يؤدي هذا إلى كشفه من قِبل Adonis أو برامج مكافحة الغش المشابهة. ستحتاج إلى إعادة الانضمام إلى Sirius وإعادة تشغيله لتفعيله.',
+				name = 'Client-Based Anti Kick',
+				description = 'Cancel any kick request involving you sent by the client. This may prompt detection from Adonis or similar anti-cheats. You will need to rejoin and re-run Sirius to toggle.',
 				settingType = 'Boolean',
 				current = false,
 
 				id = 'antikick'
 			},
 			{
-				name = 'كتم الصوت أثناء عدم التركيز',
+				name = 'Muffle audio while unfocused',
 				settingType = 'Boolean', 
 				current = true,
 
@@ -470,25 +470,25 @@ local siriusSettings = {
 		}
 	},
 	{
-		name = 'روابط المفاتيح',
-		description = 'تعيين اختصارات لوحة المفاتيح للإجراءات أو تغيير اختصارات لوحة المفاتيح مثل تلك الخاصة بفتح/إغلاق Sirius.',
+		name = 'Keybinds',
+		description = 'Assign keybinds to actions or change keybinds such as the one to open/close Sirius.',
 		color = Color3.new(0.0941176, 0.686275, 0.509804),
 		minimumLicense = 'Free',
 		categorySettings = {
 			{
-				name = 'تبديل الشريط الذكي',
+				name = 'Toggle smartBar',
 				settingType = 'Key',
-				current = nil,
+				current = "K",
 				id = 'smartbar'
 			},
 			{
-				name = 'افتح بحث البرنامج النصي',
+				name = 'Open ScriptSearch',
 				settingType = 'Key',
-				current = nil,
+				current = "T",
 				id = 'scriptsearch'
 			},
 			{
-				name = 'اختراق جدران',
+				name = 'NoClip',
 				settingType = 'Key',
 				current = nil,
 				id = 'noclip',
@@ -499,7 +499,7 @@ local siriusSettings = {
 				end
 			},
 			{
-				name = 'طيران',
+				name = 'Flight',
 				settingType = 'Key',
 				current = nil,
 				id = 'flight',
@@ -510,7 +510,7 @@ local siriusSettings = {
 				end
 			},
 			{
-				name = 'ينعش',
+				name = 'Refresh',
 				settingType = 'Key',
 				current = nil,
 				id = 'refresh',
@@ -523,7 +523,7 @@ local siriusSettings = {
 				end
 			},
 			{
-				name = 'إعادة الظهور',
+				name = 'Respawn',
 				settingType = 'Key',
 				current = nil,
 				id = 'respawn',
@@ -536,7 +536,7 @@ local siriusSettings = {
 				end
 			},
 			{
-				name = 'عدم القابلية للتأثر',
+				name = 'Invulnerability',
 				settingType = 'Key',
 				current = nil,
 				id = 'invulnerability',
@@ -547,7 +547,7 @@ local siriusSettings = {
 				end
 			},
 			{
-				name = 'قذف',
+				name = 'Fling',
 				settingType = 'Key',
 				current = nil,
 				id = 'fling',
@@ -558,7 +558,7 @@ local siriusSettings = {
 				end
 			},
 			{
-				name = 'كشف اماكن',
+				name = 'ESP',
 				settingType = 'Key',
 				current = nil,
 				id = 'esp',
@@ -569,7 +569,7 @@ local siriusSettings = {
 				end
 			},
 			{
-				name = 'الليل والنهار',
+				name = 'Night and Day',
 				settingType = 'Key',
 				current = nil,
 				id = 'nightandday',
@@ -580,7 +580,7 @@ local siriusSettings = {
 				end
 			},
 			{
-				name = 'الصوت العالمي',
+				name = 'Global Audio',
 				settingType = 'Key',
 				current = nil,
 				id = 'globalaudio',
@@ -591,7 +591,7 @@ local siriusSettings = {
 				end
 			},
 			{
-				name = 'الرؤية',
+				name = 'Visibility',
 				settingType = 'Key',
 				current = nil,
 				id = 'visibility',
@@ -604,14 +604,14 @@ local siriusSettings = {
 		}
 	},
 	{
-		name = 'أداء',
-		description = 'قم بتعديل واختبار إعدادات الأداء الخاصة بك لـ Roblox في Sirius.',
+		name = 'Performance',
+		description = 'Tweak and test your performance settings for Roblox in Sirius.',
 		color = Color3.new(1, 0.376471, 0.168627),
 		minimumLicense = 'Free',
 		categorySettings = {
 			{
-				name = 'تقييد الإطارات في الثانية بشكل اصطناعي',
-				description = 'سيقوم Sirius تلقائيًا بتعيين FPS الخاص بك إلى هذا الرقم عندما يتم تسجيل دخولك إلى Roblox.',
+				name = 'Artificial FPS Limit',
+				description = 'Sirius will automatically set your FPS to this number when you are tabbed-in to Roblox.',
 				settingType = 'Number',
 				values = {20, 5000},
 				current = 240,
@@ -619,24 +619,24 @@ local siriusSettings = {
 				id = 'fpscap'
 			},
 			{
-				name = 'تحديد معدل الإطارات في الثانية أثناء عدم التركيز',
-				description = 'سيقوم Sirius تلقائيًا بتعيين معدل FPS الخاص بك إلى 60 عند الخروج من Roblox أو إلغاء التركيز عليه.',
+				name = 'Limit FPS while unfocused',
+				description = 'Sirius will automatically set your FPS to 60 when you tab-out or unfocus from Roblox.',
 				settingType = 'Boolean', -- number for the cap below!! with min and max val
 				current = true,
 
 				id = 'fpsunfocused'
 			},
 			{
-				name = 'تحذير زمن الوصول التكيفي',
-				description = 'سيقوم Sirius بفحص زمن الوصول المتوسط ​​لديك في الخلفية وسيعلمك إذا كان زمن الوصول الحالي لديك يتجاوز زمن الوصول المتوسط ​​بشكل كبير.',
+				name = 'Adaptive Latency Warning',
+				description = 'Sirius will check your average latency in the background and notify you if your current latency significantly goes above your average latency.',
 				settingType = 'Boolean',
 				current = true,
 
 				id = 'latencynotif'
 			},
 			{
-				name = 'تحذير الأداء التكيفي',
-				description = 'سيقوم Sirius بالتحقق من متوسط ​​FPS الخاص بك في الخلفية وسيعلمك إذا انخفض معدل FPS الحالي لديك إلى أقل من رقم معين.',
+				name = 'Adaptive Performance Warning',
+				description = 'Sirius will check your average FPS in the background and notify you if your current FPS goes below a specific number.',
 				settingType = 'Boolean',
 				current = true,
 
@@ -645,14 +645,14 @@ local siriusSettings = {
 		}
 	},
 	{
-		name = 'الاكتشافات',
-		description = 'يكتشف سكربت Sirius ويمنع أي شيء ضار أو قد يكون ضارًا بصحتك.',
+		name = 'Detections',
+		description = 'Sirius detects and prevents anything malicious or possibly harmful to your wellbeing.',
 		color = Color3.new(0.705882, 0, 0),
 		minimumLicense = 'Free',
 		categorySettings = {
 			{
-				name = 'الدرع المكاني',
-				description = 'قم بقمع الأصوات العالية الصادرة من أي مصدر صوتي داخل اللعبة، في الوقت الفعلي باستخدام Spatial Shield.',
+				name = 'Spatial Shield',
+				description = 'Suppress loud sounds played from any audio source in-game, in real-time with Spatial Shield.',
 				settingType = 'Boolean',
 				minimumLicense = 'Pro',
 				current = true,
@@ -660,8 +660,8 @@ local siriusSettings = {
 				id = 'spatialshield'
 			},
 			{
-				name = 'عتبة الدرع المكاني',
-				description = 'ما مدى ارتفاع الصوت الذي يجب أن يتم قمعه؟',
+				name = 'Spatial Shield Threshold',
+				description = 'How loud a sound needs to be to be suppressed.',
 				settingType = 'Number',
 				minimumLicense = 'Pro',
 				values = {100, 1000},
@@ -670,8 +670,8 @@ local siriusSettings = {
 				id = 'spatialshieldthreshold'
 			},
 			{
-				name = 'كشف المشرف',
-				description = 'احصل على إشعار عندما يكتشف Sirius انضمام لاعب إلى جلستك والذي يمكن أن يكون مشرفًا للعبة.',
+				name = 'Moderator Detection',
+				description = 'Be notified whenever Sirius detects a player joins your session that could be a game moderator.',
 				settingType = 'Boolean', 
 				minimumLicense = 'Pro',
 				current = true,
@@ -679,8 +679,8 @@ local siriusSettings = {
 				id = 'moddetection'
 			},
 			{
-				name = 'اعتراض HTTP الذكي',
-				description = 'قم بحظر إرسال/استلام طلبات HTTP/HTTPS الخارجية واسألك قبل السماح لها بالتشغيل.',
+				name = 'Intelligent HTTP Interception',
+				description = 'Block external HTTP/HTTPS requests from being sent/recieved and ask you before allowing it to run.',
 				settingType = 'Boolean',
 				minimumLicense = 'Essential',
 				current = true,
@@ -688,8 +688,8 @@ local siriusSettings = {
 				id = 'intflowintercept'
 			},
 			{
-				name = 'اعتراض الحافظة الذكية',
-				description = 'منع الحافظة الخاصة بك من التعيين واسألك قبل السماح لها بتعيين الحافظة الخاصة بك.',
+				name = 'Intelligent Clipboard Interception',
+				description = 'Block your clipboard from being set and ask you before allowing it to set your clipboard.',
 				settingType = 'Boolean',
 				minimumLicense = 'Essential',
 				current = true,
@@ -699,38 +699,38 @@ local siriusSettings = {
 		},
 	},
 	{
-		name = 'التسجيل',
-		description = 'إرسال السجلات إلى عنوان URL الخاص بـ webhook المحدد الخاص بك لأشياء مثل انضمام اللاعبين ومغادرتهم والرسائل.',
+		name = 'Logging',
+		description = 'Send logs to your specified webhook URL of things like player joins and leaves and messages.',
 		color = Color3.new(0.905882, 0.780392, 0.0666667),
 		minimumLicense = 'Free',
 		categorySettings = {
 			{
-				name = 'سجل الرسائل',
-				description = 'سجل الرسائل التي أرسلها أي لاعب إلى خطاف الويب الخاص بك.',
+				name = 'Log Messages',
+				description = 'Log messages sent by any player to your webhook.',
 				settingType = 'Boolean',
 				current = false,
 
 				id = 'logmsg'
 			},
 			{
-				name = 'عنوان URL لخطاف الرسائل',
-				description = 'عنوان URL لـ Discord Webhook',
+				name = 'Message Webhook URL',
+				description = 'Discord Webhook URL',
 				settingType = 'Input',
 				current = 'No Webhook',
 
 				id = 'logmsgurl'
 			},
 			{
-				name = 'سجل اللاعب المضاف ولاعب الإزالة',
-				description = 'قم بتسجيل الدخول عندما يغادر أي لاعب جلستك أو ينضم إليها.',
+				name = 'Log PlayerAdded and PlayerRemoving',
+				description = 'Log whenever any player leaves or joins your session.',
 				settingType = 'Boolean',
 				current = false,
 
 				id = 'logplrjoinleave'
 			},
 			{
-				name = 'تمت إضافة المشغل وإزالة عنوان URL لـ Webhook',
-				description = 'عنوان URL لـ Discord Webhook',
+				name = 'Player Added and Removing Webhook URL',
+				description = 'Discord Webhook URL',
 				settingType = 'Input',
 				current = 'No Webhook',
 
@@ -2236,10 +2236,10 @@ local function checkFriends()
 
 		if not checkSirius() then return end
 
-		homeContainer.Interactions.Friends.All.Value.Text = tostring(friendsInTotal).." أصدقاء"
-		homeContainer.Interactions.Friends.Offline.Value.Text = tostring(friendsInTotal - onlineFriends).." أصدقاء"
-		homeContainer.Interactions.Friends.Online.Value.Text = tostring(onlineFriends).." أصدقاء"
-		homeContainer.Interactions.Friends.InGame.Value.Text = tostring(friendsInGame).." أصدقاء"
+		homeContainer.Interactions.Friends.All.Value.Text = tostring(friendsInTotal).." friends"
+		homeContainer.Interactions.Friends.Offline.Value.Text = tostring(friendsInTotal - onlineFriends).." friends"
+		homeContainer.Interactions.Friends.Online.Value.Text = tostring(onlineFriends).." friends"
+		homeContainer.Interactions.Friends.InGame.Value.Text = tostring(friendsInGame).." friends"
 
 	else
 		friendsCooldown -= 1
@@ -2351,11 +2351,11 @@ local function UpdateHome()
 	end
 
 	-- Home Title
-	homeContainer.Title.Text = "مرحباً بك, "..localPlayer.DisplayName
+	homeContainer.Title.Text = "Welcome home, "..localPlayer.DisplayName
 
 	-- Players
-	homeContainer.Interactions.Server.Players.Value.Text = #players:GetPlayers().." الاعبين"
-	homeContainer.Interactions.Server.MaxPlayers.Value.Text = players.MaxPlayers.." يمكن للاعبين الانضمام إلى هذا الخادم"
+	homeContainer.Interactions.Server.Players.Value.Text = #players:GetPlayers().." playing"
+	homeContainer.Interactions.Server.MaxPlayers.Value.Text = players.MaxPlayers.." players can join this server"
 
 	-- Ping
 	homeContainer.Interactions.Server.Latency.Value.Text = math.floor(getPing()).."ms"
@@ -2364,7 +2364,7 @@ local function UpdateHome()
 	homeContainer.Interactions.Server.Time.Value.Text = convertToHMS(time())
 
 	-- Region
-	homeContainer.Interactions.Server.Region.Value.Text = "غير قادر على استرداد المنطقة"
+	homeContainer.Interactions.Server.Region.Value.Text = "Unable to retrieve region"
 
 	-- Player Information
 	homeContainer.Interactions.User.Avatar.Image = "https://www.roblox.com/headshot-thumbnail/image?userId="..localPlayer.UserId.."&width=420&height=420&format=png"
@@ -2374,7 +2374,7 @@ local function UpdateHome()
 	-- Update Executor
 	homeContainer.Interactions.Client.Title.Text = identifyexecutor()
 	if not table.find(siriusValues.executors, string.lower(identifyexecutor())) then
-		homeContainer.Interactions.Client.Subtitle.Text = "لم يتم التحقق من هذا المنفذ على أنه مدعوم - ولكن قد لا يزال يعمل بشكل جيد."
+		homeContainer.Interactions.Client.Subtitle.Text = "This executor is not verified as supported - but may still work just fine."
 	end
 
 	-- Update Friends Statuses
@@ -3961,9 +3961,9 @@ homeContainer.Interactions.Server.JobId.Interact.MouseButton1Click:Connect(funct
 
 game:GetService("TeleportService"):TeleportToPlaceInstance(']]..placeId..[[', ']]..jobId..[[')]]
 		)
-		queueNotification("تم نسخ نص الانضمام","تم تعيين الحافظة بنجاح للانضمام إلى البرنامج النصي، ويمكن للاعبين استخدام هذا البرنامج النصي للانضمام إلى الخادم المحدد الخاص بك.", 4335479121)
+		queueNotification("Copied Join Script","Successfully set clipboard to join script, players can use this script to join your specific server.", 4335479121)
 	else
-		queueNotification("غير قادر على نسخ البرنامج النصي للانضمام","وظيفة setclipboard() مفقودة، لا يمكن تعيين البيانات إلى الحافظة الخاصة بك.", 4335479658)
+		queueNotification("Unable to copy join script","Missing setclipboard() function, can't set data to your clipboard.", 4335479658)
 	end
 end)
 
