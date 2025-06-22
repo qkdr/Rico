@@ -2351,7 +2351,7 @@ local function UpdateHome()
 	end
 
 	-- Home Title
-	homeContainer.Title.Text = "Welcome home, "..localPlayer.DisplayName
+	homeContainer.Title.Text = "مرحباً بك, "..localPlayer.DisplayName
 
 	-- Players
 	homeContainer.Interactions.Server.Players.Value.Text = #players:GetPlayers().." playing"
