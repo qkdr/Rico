@@ -4552,7 +4552,7 @@ while task.wait(1) do
 				ColorSequenceKeypoint.new(1, Color3.new(0.819608, 0.164706, 0.164706))
 			})
 		elseif disconnectType == "kick" then
-			disconnectedPrompt.Content.Text = "You've been kicked, would you like to serverhop?"
+			disconnectedPrompt.Content.Text = "لقد تم ركلك، هل ترغب في الانتقال إلى خادم آخر؟"
 			disconnectedPrompt.Action.Text = "سيرفر هوب"
 			disconnectedPrompt.Action.Size = UDim2.new(0, 114, 0, 36)
 
@@ -4561,8 +4561,8 @@ while task.wait(1) do
 				ColorSequenceKeypoint.new(1, Color3.new(0.0862745, 0.596078, 0.835294))
 			})
 		elseif disconnectType == "network" then
-			disconnectedPrompt.Content.Text = "You've lost connection, would you like to rejoin?"
-			disconnectedPrompt.Action.Text = "Rejoin"
+			disconnectedPrompt.Content.Text = "لقد فقدت الاتصال، هل ترغب في الانضمام مرة أخرى؟"
+			disconnectedPrompt.Action.Text = "إعادة الانضمام"
 			disconnectedPrompt.Action.Size = UDim2.new(0, 82, 0, 36)
 
 			disconnectedPrompt.UIGradient.Color = ColorSequence.new({
