@@ -2018,7 +2018,7 @@ local function openPanel(panelName)
 	task.wait(0.05)
 
 	-- Animate interactive elements
-	if panel.Name == "Character" then -- Character Panel Animation
+	if panel.Name == "شخصية" then -- Character Panel Animation
 
 		tweenService:Create(characterPanel.Interactions.PropertiesTitle, TweenInfo.new(0.8, Enum.EasingStyle.Quint), {TextTransparency = 0.65}):Play()
 
