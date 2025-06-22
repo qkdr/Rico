@@ -2354,8 +2354,8 @@ local function UpdateHome()
 	homeContainer.Title.Text = "مرحباً بك, "..localPlayer.DisplayName
 
 	-- Players
-	homeContainer.Interactions.Server.Players.Value.Text = #players:GetPlayers().." playing"
-	homeContainer.Interactions.Server.MaxPlayers.Value.Text = players.MaxPlayers.." players can join this server"
+	homeContainer.Interactions.Server.Players.Value.Text = #players:GetPlayers().." الاعبين"
+	homeContainer.Interactions.Server.MaxPlayers.Value.Text = players.MaxPlayers.." يمكن للاعبين الانضمام إلى هذا الخادم"
 
 	-- Ping
 	homeContainer.Interactions.Server.Latency.Value.Text = math.floor(getPing()).."ms"
