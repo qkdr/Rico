@@ -1699,7 +1699,7 @@ local function sortActions()
 		end)
 
 		characterPanel.Interactions.Grid.MouseLeave:Connect(function()
-			characterPanel.Interactions.ActionsTitle.Text = "PLAYER ACTIONS"
+			characterPanel.Interactions.ActionsTitle.Text = "تصرفات اللاعب"
 		end)
 
 		newAction.Interact.MouseButton1Click:Connect(function()
