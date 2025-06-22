@@ -328,7 +328,7 @@ local siriusValues = {
 	},
 	sliders = {
 		{
-			name = "player speed",
+			name = "سرعة الاعب",
 			color = Color3.fromRGB(44, 153, 93),
 			values = {0, 300},
 			default = 16,
@@ -343,7 +343,7 @@ local siriusValues = {
 			end,
 		},
 		{
-			name = "jump power",
+			name = "قوة القفز",
 			color = Color3.fromRGB(59, 126, 184),
 			values = {0, 350},
 			default = 50,
