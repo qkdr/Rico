@@ -1912,7 +1912,7 @@ local function closePanel(panelName, openingOther)
 			tweenService:Create(characterPanel.Interactions.Rejoin.Title, TweenInfo.new(.15,Enum.EasingStyle.Quint),  {TextTransparency = 1}):Play()
 			tweenService:Create(characterPanel.Interactions.Rejoin.UIStroke, TweenInfo.new(.15,Enum.EasingStyle.Quint),  {Transparency = 1}):Play()
 
-		elseif panel.Name == "Scripts" then -- Scripts Panel Animation
+		elseif panel.Name == "السكربتات" then -- Scripts Panel Animation
 
 			for _, scriptButton in ipairs(scriptsPanel.Interactions.Selection:GetChildren()) do
 				if scriptButton.ClassName == "Frame" then
