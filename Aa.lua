@@ -2374,7 +2374,7 @@ local function UpdateHome()
 	-- Update Executor
 	homeContainer.Interactions.Client.Title.Text = identifyexecutor()
 	if not table.find(siriusValues.executors, string.lower(identifyexecutor())) then
-		homeContainer.Interactions.Client.Subtitle.Text = "This executor is not verified as supported - but may still work just fine."
+		homeContainer.Interactions.Client.Subtitle.Text = "لم يتم التحقق من هذا المنفذ على أنه مدعوم - ولكن قد لا يزال يعمل بشكل جيد."
 	end
 
 	-- Update Friends Statuses
