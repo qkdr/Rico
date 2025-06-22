@@ -303,7 +303,7 @@ local siriusValues = {
 			end,
 		},
 		{
-			name = "Global Audio",
+			name = "الصوت العالمي",
 			images = {9134774810, 14386246782},
 			color = Color3.fromRGB(202, 103, 58),
 			enabled = false,
@@ -318,7 +318,7 @@ local siriusValues = {
 			end,
 		},
 		{
-			name = "Visibility",
+			name = "الرؤية",
 			images = {14386256326, 9134770786},
 			color = Color3.fromRGB(62, 94, 170),
 			enabled = false,
