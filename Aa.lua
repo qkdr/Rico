@@ -187,7 +187,7 @@ local siriusValues = {
 	},
 	actions = {
 		{
-			name = "Noclip",
+			name = "اختراق الجدران",
 			images = {14385986465, 9134787693},
 			color = Color3.fromRGB(0, 170, 127),
 			enabled = false,
