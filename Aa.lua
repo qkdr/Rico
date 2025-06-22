@@ -3961,9 +3961,9 @@ homeContainer.Interactions.Server.JobId.Interact.MouseButton1Click:Connect(funct
 
 game:GetService("TeleportService"):TeleportToPlaceInstance(']]..placeId..[[', ']]..jobId..[[')]]
 		)
-		queueNotification("Copied Join Script","Successfully set clipboard to join script, players can use this script to join your specific server.", 4335479121)
+		queueNotification("تم نسخ نص الانضمام","تم تعيين الحافظة بنجاح للانضمام إلى البرنامج النصي، ويمكن للاعبين استخدام هذا البرنامج النصي للانضمام إلى الخادم المحدد الخاص بك.", 4335479121)
 	else
-		queueNotification("Unable to copy join script","Missing setclipboard() function, can't set data to your clipboard.", 4335479658)
+		queueNotification("غير قادر على نسخ البرنامج النصي للانضمام","وظيفة setclipboard() مفقودة، لا يمكن تعيين البيانات إلى الحافظة الخاصة بك.", 4335479658)
 	end
 end)
 
