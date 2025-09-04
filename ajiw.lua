@@ -1,6135 +1,4626 @@
 --[[
-strings-override
-Domain V2, by Shlex
-]]
+
+Sirius
+
+© 2024 Sirius 
+All Rights Reserved.
+
+--]]
 
 
+--[[
 
+Sirius Pre-Hyperion Todo List
 
-AutoExecute = false
+High Priority
+ - Invisible, Godmode
+ - All Scripts buttons and Universal scripts
+ - Chat Spam Detection
+ - Custom Script Prompts
+ - Player Kill, Spectate and ESP via Playerlist
+ - http.request support for Sirius Intelligent HTTP Interception
+ - Performance Improvements to Roblox itself
+ 
+Moderate Priority
+ - Spectate Animation, like GTA serverhop, tween to high in the sky, then tween to other player's head
+ - Chat Spy Tracking: Follows who they're whispering to based on original message
+ - Starlight 
+ - Chatlogs
+ - GTA Serverhop
+ - Anti-Spam (chat) formula, based on text length, caps, emojis etc.
+ - Reduce any form of detection of Sirius
+ - Automated lowering of graphics on lower FPS, ensure no false positives
+ 
+Potential Future Setting Options
+ - Block entire domain or just the specific page in the Sirius Intelligent Flow Interception. Do this on case by case, e.g blocked = {"link.com", true} - true being whether its the domain or not
+ - Serverhop type (default/gta)
+ - Hook Specific Functions to reduce the need for external scripts
+ 
+--]]
+
+-- Ensure the game is loaded 
 if not game:IsLoaded() then
-	local loadtext = "Domain Hub is waiting on the game to load"
-	
-	local dmnwait = Instance.new("ScreenGui")
-	local main = Instance.new("Frame")
-	local UICorner = Instance.new("UICorner")
-	local text = Instance.new("TextLabel")
-	dmnwait.Name = "dmnwait"
-	if syn and syn.protect_gui then
-		syn.protect_gui(dmnwait)
-	end
-	dmnwait.Parent = game:GetService("CoreGui")
-	dmnwait.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-	main.Name = "main"
-	main.Parent = dmnwait
-	main.BackgroundColor3 = Color3.fromRGB(31, 31, 31)
-	main.BorderSizePixel = 0
-	main.Position = UDim2.new(0.0145833492, 0, 0.442075998, 0)
-	main.Size = UDim2.new(0.313540131, 0, 0.0416698456, 0)
-	UICorner.Parent = main
-	text.Name = "text"
-	text.Parent = main
-	text.BackgroundColor3 = Color3.fromRGB(31, 31, 31)
-	text.BackgroundTransparency = 1.000
-	text.BorderSizePixel = 0
-	text.Position = UDim2.new(0.0413247831, 0, 0.319999844, 0)
-	text.Size = UDim2.new(0.941625595, 0, 0.398774952, 0)
-	text.Font = Enum.Font.GothamBold
-	text.Text = loadtext
-	text.TextColor3 = Color3.fromRGB(225, 225, 225)
-	text.TextScaled = true
-	text.TextSize = 14.000
-	text.TextWrapped = true
-	text.TextXAlignment = Enum.TextXAlignment.Left
-	AutoExecute = true
-	wait(0.5)
-	text.Text = loadtext
 	game.Loaded:Wait()
-	wait(0.3)
-	dmnwait:Destroy()
-	repeat wait() until game:IsLoaded() 
 end
 
-
-
-
-
-
-local Domain = {
-	Domain = Instance.new("ScreenGui"),
-	Main = Instance.new("Frame"),
-	UICorner = Instance.new("UICorner"),
-	Buttons = Instance.new("Frame"),
-	ExploitsButtonFrame = Instance.new("Frame"),
-	UICorner_2 = Instance.new("UICorner"),
-	OpenExploits = Instance.new("ImageButton"),
-	PlayerConfigButtonFrame = Instance.new("Frame"),
-	UICorner_3 = Instance.new("UICorner"),
-	OpenPlrConfig = Instance.new("ImageButton"),
-	PlayersButtonFrame = Instance.new("Frame"),
-	UICorner_4 = Instance.new("UICorner"),
-	OpenPlayers = Instance.new("ImageButton"),
-	AboutButtonFrame = Instance.new("Frame"),
-	UICorner_5 = Instance.new("UICorner"),
-	OpenAbout = Instance.new("ImageButton"),
-	HomeButtonFrame = Instance.new("Frame"),
-	UICorner_6 = Instance.new("UICorner"),
-	OpenHome = Instance.new("ImageButton"),
-	ToggleButton = Instance.new("ImageButton"),
-	ButtonIcon = Instance.new("ImageLabel"),
-	Shadow = Instance.new("ImageLabel"),
-	Other = Instance.new("Frame"),
-	Watermark = Instance.new("Frame"),
-	Text = Instance.new("TextLabel"),
-	ExploitFound = Instance.new("Frame"),
-	Title = Instance.new("TextLabel"),
-	UICorner_7 = Instance.new("UICorner"),
-	Content = Instance.new("TextLabel"),
-	ExploitName = Instance.new("TextLabel"),
-	Description = Instance.new("TextLabel"),
-	ExecuteButton = Instance.new("TextButton"),
-	ExecuteText = Instance.new("TextLabel"),
-	UICorner_8 = Instance.new("UICorner"),
-	Option = Instance.new("TextLabel"),
-	exitpromptButton = Instance.new("TextButton"),
-	exitprompttext = Instance.new("TextLabel"),
-	UICorner_9 = Instance.new("UICorner"),
-	Shadow_2 = Instance.new("ImageLabel"),
-	Pages = Instance.new("Frame"),
-	ExploitsFrame = Instance.new("Frame"),
-	UICorner_10 = Instance.new("UICorner"),
-	Title_2 = Instance.new("TextLabel"),
-	UITextSizeConstraint = Instance.new("UITextSizeConstraint"),
-	Functionality = Instance.new("Frame"),
-	UICorner_11 = Instance.new("UICorner"),
-	ListExploits = Instance.new("ScrollingFrame"),
-	Template = Instance.new("Frame"),
-	UICorner_12 = Instance.new("UICorner"),
-	ExploitName_2 = Instance.new("TextLabel"),
-	Description_2 = Instance.new("TextLabel"),
-	LoadExploit = Instance.new("TextButton"),
-	LoadText = Instance.new("TextLabel"),
-	UICorner_13 = Instance.new("UICorner"),
-	Shadow_3 = Instance.new("ImageLabel"),
-	UIListLayout = Instance.new("UIListLayout"),
-	Credits = Instance.new("TextLabel"),
-	UITextSizeConstraint_2 = Instance.new("UITextSizeConstraint"),
-	Shadow_4 = Instance.new("ImageLabel"),
-	ExitFrame = Instance.new("Frame"),
-	Exit = Instance.new("TextButton"),
-	ExitText = Instance.new("TextLabel"),
-	UICorner_14 = Instance.new("UICorner"),
-	PlayerInfoFrame = Instance.new("Frame"),
-	UICorner_15 = Instance.new("UICorner"),
-	Title_3 = Instance.new("TextLabel"),
-	UITextSizeConstraint_3 = Instance.new("UITextSizeConstraint"),
-	Functionality_2 = Instance.new("Frame"),
-	UICorner_16 = Instance.new("UICorner"),
-	Avatar = Instance.new("ImageLabel"),
-	UICorner_17 = Instance.new("UICorner"),
-	Username = Instance.new("TextLabel"),
-	Teleport = Instance.new("TextButton"),
-	TeleportText = Instance.new("TextLabel"),
-	UICorner_18 = Instance.new("UICorner"),
-	Kill = Instance.new("TextButton"),
-	KillText = Instance.new("TextLabel"),
-	UICorner_19 = Instance.new("UICorner"),
-	Premium = Instance.new("ImageLabel"),
-	group = Instance.new("Frame"),
-	title = Instance.new("TextLabel"),
-	ranktitle = Instance.new("TextLabel"),
-	rankdata = Instance.new("TextLabel"),
-	grouptitle = Instance.new("TextLabel"),
-	groupname = Instance.new("TextLabel"),
-	Functionalitytext = Instance.new("TextLabel"),
-	areadata = Instance.new("TextLabel"),
-	areatitle = Instance.new("TextLabel"),
-	DomainRole = Instance.new("TextLabel"),
-	Credits_2 = Instance.new("TextLabel"),
-	UITextSizeConstraint_4 = Instance.new("UITextSizeConstraint"),
-	Shadow_5 = Instance.new("ImageLabel"),
-	ExitFrame_2 = Instance.new("Frame"),
-	Exit_2 = Instance.new("TextButton"),
-	ExitText_2 = Instance.new("TextLabel"),
-	UICorner_20 = Instance.new("UICorner"),
-	ValuesFrame = Instance.new("Frame"),
-	UICorner_21 = Instance.new("UICorner"),
-	Title_4 = Instance.new("TextLabel"),
-	UITextSizeConstraint_5 = Instance.new("UITextSizeConstraint"),
-	Functionality_3 = Instance.new("Frame"),
-	UICorner_22 = Instance.new("UICorner"),
-	WalkspeedBar = Instance.new("Frame"),
-	Knob = Instance.new("TextButton"),
-	UICorner_23 = Instance.new("UICorner"),
-	UICorner_24 = Instance.new("UICorner"),
-	Walkspeedtext = Instance.new("TextLabel"),
-	jumppowerBar = Instance.new("Frame"),
-	Knob_2 = Instance.new("TextButton"),
-	UICorner_25 = Instance.new("UICorner"),
-	UICorner_26 = Instance.new("UICorner"),
-	jumppowertext = Instance.new("TextLabel"),
-	flightBar = Instance.new("Frame"),
-	Knob_3 = Instance.new("TextButton"),
-	UICorner_27 = Instance.new("UICorner"),
-	UICorner_28 = Instance.new("UICorner"),
-	flighttext = Instance.new("TextLabel"),
-	Reset = Instance.new("TextButton"),
-	resetText = Instance.new("TextLabel"),
-	UICorner_29 = Instance.new("UICorner"),
-	respawn = Instance.new("TextButton"),
-	respawnText = Instance.new("TextLabel"),
-	UICorner_30 = Instance.new("UICorner"),
-	refresh = Instance.new("TextButton"),
-	refreshText = Instance.new("TextLabel"),
-	UICorner_31 = Instance.new("UICorner"),
-	Fly = Instance.new("TextButton"),
-	FlyText = Instance.new("TextLabel"),
-	UICorner_32 = Instance.new("UICorner"),
-	Rejoin = Instance.new("TextButton"),
-	RejoinText = Instance.new("TextLabel"),
-	UICorner_33 = Instance.new("UICorner"),
-	Serverhop = Instance.new("TextButton"),
-	ServerhopText = Instance.new("TextLabel"),
-	UICorner_34 = Instance.new("UICorner"),
-	Credits_3 = Instance.new("TextLabel"),
-	UITextSizeConstraint_6 = Instance.new("UITextSizeConstraint"),
-	Shadow_6 = Instance.new("ImageLabel"),
-	ExitFrame_3 = Instance.new("Frame"),
-	Exit_3 = Instance.new("TextButton"),
-	ExitText_3 = Instance.new("TextLabel"),
-	UICorner_35 = Instance.new("UICorner"),
-	PlayersFrame = Instance.new("Frame"),
-	UICorner_36 = Instance.new("UICorner"),
-	Title_5 = Instance.new("TextLabel"),
-	UITextSizeConstraint_7 = Instance.new("UITextSizeConstraint"),
-	Functionality_4 = Instance.new("Frame"),
-	UICorner_37 = Instance.new("UICorner"),
-	Playerlist = Instance.new("ScrollingFrame"),
-	Template_2 = Instance.new("Frame"),
-	UICorner_38 = Instance.new("UICorner"),
-	Username_2 = Instance.new("TextLabel"),
-	Shadow_7 = Instance.new("ImageLabel"),
-	AvatarPlayerlist = Instance.new("ImageLabel"),
-	UICorner_39 = Instance.new("UICorner"),
-	More = Instance.new("ImageButton"),
-	Star = Instance.new("ImageButton"),
-	UIListLayout2 = Instance.new("UIListLayout"),
-	Search = Instance.new("TextBox"),
-	UICorner_40 = Instance.new("UICorner"),
-	UITextSizeConstraint_8 = Instance.new("UITextSizeConstraint"),
-	Credits_4 = Instance.new("TextLabel"),
-	UITextSizeConstraint_9 = Instance.new("UITextSizeConstraint"),
-	Shadow_8 = Instance.new("ImageLabel"),
-	ExitFrame_4 = Instance.new("Frame"),
-	Exit_4 = Instance.new("TextButton"),
-	ExitText_4 = Instance.new("TextLabel"),
-	UICorner_41 = Instance.new("UICorner"),
-	AboutFrame = Instance.new("Frame"),
-	UICorner_42 = Instance.new("UICorner"),
-	Title_6 = Instance.new("TextLabel"),
-	UITextSizeConstraint_10 = Instance.new("UITextSizeConstraint"),
-	Functionality_5 = Instance.new("Frame"),
-	UICorner_43 = Instance.new("UICorner"),
-	About = Instance.new("TextLabel"),
-	About_2 = Instance.new("TextLabel"),
-	About_3 = Instance.new("TextLabel"),
-	Link = Instance.new("TextLabel"),
-	About_4 = Instance.new("TextLabel"),
-	About_5 = Instance.new("TextLabel"),
-	About_6 = Instance.new("TextLabel"),
-	CopyButtonFrame = Instance.new("Frame"),
-	UICorner_44 = Instance.new("UICorner"),
-	CopyButton = Instance.new("ImageButton"),
-	Credits_5 = Instance.new("TextLabel"),
-	UITextSizeConstraint_11 = Instance.new("UITextSizeConstraint"),
-	Shadow_9 = Instance.new("ImageLabel"),
-	ExitFrame_5 = Instance.new("Frame"),
-	Exit_5 = Instance.new("TextButton"),
-	ExitText_5 = Instance.new("TextLabel"),
-	UICorner_45 = Instance.new("UICorner"),
-	NotificationClip = Instance.new("Frame"),
-	Template_3 = Instance.new("Frame"),
-	Content_2 = Instance.new("TextLabel"),
-	UITextSizeConstraint_12 = Instance.new("UITextSizeConstraint"),
-	UICorner_46 = Instance.new("UICorner"),
-	FPS = Instance.new("Frame"),
-	TextLabel = Instance.new("TextLabel"),
-	UICorner_47 = Instance.new("UICorner"),
-	Fpsimage = Instance.new("ImageButton"),
-	Home = Instance.new("Frame"),
-	Date = Instance.new("TextLabel"),
-	Shadow_10 = Instance.new("ImageLabel"),
-	Time = Instance.new("TextLabel"),
-	Tabs = Instance.new("Frame"),
-	RunningVersion = Instance.new("Frame"),
-	VersionText = Instance.new("TextLabel"),
-	UICorner_48 = Instance.new("UICorner"),
-	VersionText2 = Instance.new("TextLabel"),
-	toolicon = Instance.new("ImageLabel"),
-	Friendstab = Instance.new("Frame"),
-	amount = Instance.new("TextLabel"),
-	UICorner_49 = Instance.new("UICorner"),
-	friendsicon = Instance.new("ImageLabel"),
-	discordtab = Instance.new("Frame"),
-	text = Instance.new("TextLabel"),
-	UICorner_50 = Instance.new("UICorner"),
-	link = Instance.new("TextLabel"),
-	Friend2tab = Instance.new("Frame"),
-	amount_2 = Instance.new("TextLabel"),
-	UICorner_51 = Instance.new("UICorner"),
-	MusicSystem = Instance.new("Frame"),
-	text_2 = Instance.new("TextLabel"),
-	UICorner_52 = Instance.new("UICorner"),
-	Pages_2 = Instance.new("Frame"),
-	ID = Instance.new("Frame"),
-	UICorner_53 = Instance.new("UICorner"),
-	SoundIdBox = Instance.new("TextBox"),
-	UICorner_54 = Instance.new("UICorner"),
-	ToggleSound = Instance.new("TextButton"),
-	UICorner_55 = Instance.new("UICorner"),
-	File = Instance.new("Frame"),
-	UICorner_56 = Instance.new("UICorner"),
-	SoundList = Instance.new("ScrollingFrame"),
-	supported = Instance.new("Frame"),
-	text_3 = Instance.new("TextLabel"),
-	UICorner_57 = Instance.new("UICorner"),
-	text_4 = Instance.new("TextLabel"),
-	text_5 = Instance.new("TextLabel"),
-	text_6 = Instance.new("TextLabel"),
-	text_7 = Instance.new("TextLabel"),
-	GameDetect = Instance.new("Frame"),
-	gametext = Instance.new("TextLabel"),
-	UICorner_58 = Instance.new("UICorner"),
-	Slideshow = Instance.new("ImageLabel"),
-	UICorner_59 = Instance.new("UICorner"),
-	Details = Instance.new("Frame"),
-	UICorner_60 = Instance.new("UICorner"),
-	Widgets = Instance.new("Frame"),
-	Executor = Instance.new("Frame"),
-	Outbounder = Instance.new("Frame"),
-	UICorner_61 = Instance.new("UICorner"),
-	Script = Instance.new("TextBox"),
-	Topbar = Instance.new("Frame"),
-	UICorner_62 = Instance.new("UICorner"),
-	ExecTitle = Instance.new("TextLabel"),
-	ExitExecutor = Instance.new("TextButton"),
-	ChatLogger = Instance.new("Frame"),
-	TopbarC = Instance.new("Frame"),
-	UICorner_63 = Instance.new("UICorner"),
-	CLogTitle = Instance.new("TextLabel"),
-	ExitLog = Instance.new("TextButton"),
-	Overseerer = Instance.new("Frame"),
-	UICorner_64 = Instance.new("UICorner"),
-	theLOGS = Instance.new("ScrollingFrame"),
-	Template_4 = Instance.new("Frame"),
-	UsernameLogs = Instance.new("TextLabel"),
-	ChatMsg = Instance.new("TextLabel"),
-	friendsicon_2 = Instance.new("ImageLabel"),
-	ServerhopAnim = Instance.new("Frame"),
-	NoticeMessage = Instance.new("TextLabel"),
-	Shadow_11 = Instance.new("ImageLabel"),
-	ShlexLogo = Instance.new("ImageLabel"),
-	SmallMessage = Instance.new("TextLabel"),
-	CancelShop = Instance.new("TextButton"),
-	UICorner_65 = Instance.new("UICorner"),
-	LargeMsg = Instance.new("TextLabel"),
-	FriendJoined = Instance.new("Frame"),
-	UICorner_66 = Instance.new("UICorner"),
-	Textjoin = Instance.new("TextLabel"),
-	UITextSizeConstraint_13 = Instance.new("UITextSizeConstraint"),
-	Avatarjoin = Instance.new("ImageLabel"),
-	UICorner_67 = Instance.new("UICorner"),
-	LoadingFrame = Instance.new("Frame"),
-	Text_2 = Instance.new("TextLabel"),
-	UICorner_68 = Instance.new("UICorner"),
-	Full = Instance.new("Frame"),
-	Progress = Instance.new("Frame"),
-	UICorner_69 = Instance.new("UICorner"),
-	UIGradient = Instance.new("UIGradient"),
-	KeyFrame = Instance.new("Frame"),
-	Text_3 = Instance.new("TextLabel"),
-	UICorner_70 = Instance.new("UICorner"),
-	UIGradient_2 = Instance.new("UIGradient"),
-	KeyBox = Instance.new("TextBox"),
-	UICorner_71 = Instance.new("UICorner"),
-	Exit_6 = Instance.new("TextButton"),
-	notice = Instance.new("TextLabel"),
-}
-
-if syn and syn.protect_gui then
-	syn.protect_gui(Domain.Domain)
-end
-
---Properties:
-
-Domain.Domain.Name = "Domain"
-Domain.Domain.Parent = game:GetService("CoreGui")
-Domain.Domain.ResetOnSpawn = false
-
-
-
-Domain.Main.Name = "Main"
-Domain.Main.Parent = Domain.Domain
-Domain.Main.BackgroundColor3 = Color3.fromRGB(31, 31, 31)
-Domain.Main.BorderSizePixel = 0
-Domain.Main.Position = UDim2.new(0.966215432, 0, 0.262220383, 0)
-Domain.Main.Size = UDim2.new(0.0426387787, 0, 0.474966884, 0)
-Domain.Main.ZIndex = 5
-
-Domain.UICorner.CornerRadius = UDim.new(0, 12)
-Domain.UICorner.Parent = Domain.Main
-
-Domain.Buttons.Name = "Buttons"
-Domain.Buttons.Parent = Domain.Main
-Domain.Buttons.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Buttons.BackgroundTransparency = 1.000
-Domain.Buttons.BorderColor3 = Color3.fromRGB(27, 42, 53)
-Domain.Buttons.BorderSizePixel = 0
-Domain.Buttons.Position = UDim2.new(0, 0, 0.141447499, 0)
-Domain.Buttons.Size = UDim2.new(0.805406749, 0, 0.858552516, 0)
-Domain.Buttons.ZIndex = 5
-
-Domain.ExploitsButtonFrame.Name = "ExploitsButtonFrame"
-Domain.ExploitsButtonFrame.Parent = Domain.Buttons
-Domain.ExploitsButtonFrame.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
-Domain.ExploitsButtonFrame.BorderSizePixel = 0
-Domain.ExploitsButtonFrame.Position = UDim2.new(0.178000003, 0, 0.234999999, 0)
-Domain.ExploitsButtonFrame.Size = UDim2.new(0.623229861, 0, 0.092323266, 0)
-Domain.ExploitsButtonFrame.ZIndex = 5
-
-Domain.UICorner_2.CornerRadius = UDim.new(0, 10)
-Domain.UICorner_2.Parent = Domain.ExploitsButtonFrame
-
-Domain.OpenExploits.Name = "OpenExploits"
-Domain.OpenExploits.Parent = Domain.ExploitsButtonFrame
-Domain.OpenExploits.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.OpenExploits.BackgroundTransparency = 1.000
-Domain.OpenExploits.BorderSizePixel = 0
-Domain.OpenExploits.Position = UDim2.new(0.126000002, 0, 0.123000003, 0)
-Domain.OpenExploits.Size = UDim2.new(0.717000008, 0, 0.713, 0)
-Domain.OpenExploits.ZIndex = 6
-Domain.OpenExploits.Image = "rbxassetid://3926305904"
-Domain.OpenExploits.ImageRectOffset = Vector2.new(404, 844)
-Domain.OpenExploits.ImageRectSize = Vector2.new(36, 36)
-
-Domain.PlayerConfigButtonFrame.Name = "PlayerConfigButtonFrame"
-Domain.PlayerConfigButtonFrame.Parent = Domain.Buttons
-Domain.PlayerConfigButtonFrame.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
-Domain.PlayerConfigButtonFrame.BorderSizePixel = 0
-Domain.PlayerConfigButtonFrame.Position = UDim2.new(0.178000003, 0, 0.129545704, 0)
-Domain.PlayerConfigButtonFrame.Size = UDim2.new(0.623229861, 0, 0.092323266, 0)
-Domain.PlayerConfigButtonFrame.ZIndex = 5
-
-Domain.UICorner_3.CornerRadius = UDim.new(0, 10)
-Domain.UICorner_3.Parent = Domain.PlayerConfigButtonFrame
-
-Domain.OpenPlrConfig.Name = "OpenPlrConfig"
-Domain.OpenPlrConfig.Parent = Domain.PlayerConfigButtonFrame
-Domain.OpenPlrConfig.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.OpenPlrConfig.BackgroundTransparency = 1.000
-Domain.OpenPlrConfig.BorderSizePixel = 0
-Domain.OpenPlrConfig.Position = UDim2.new(0.126000002, 0, 0.123000003, 0)
-Domain.OpenPlrConfig.Size = UDim2.new(0.717000008, 0, 0.713, 0)
-Domain.OpenPlrConfig.ZIndex = 6
-Domain.OpenPlrConfig.Image = "rbxassetid://3926307971"
-Domain.OpenPlrConfig.ImageRectOffset = Vector2.new(884, 4)
-Domain.OpenPlrConfig.ImageRectSize = Vector2.new(36, 36)
-
-Domain.PlayersButtonFrame.Name = "PlayersButtonFrame"
-Domain.PlayersButtonFrame.Parent = Domain.Buttons
-Domain.PlayersButtonFrame.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
-Domain.PlayersButtonFrame.BorderSizePixel = 0
-Domain.PlayersButtonFrame.Position = UDim2.new(0.178000003, 0, 0.340000004, 0)
-Domain.PlayersButtonFrame.Size = UDim2.new(0.623229861, 0, 0.092323266, 0)
-Domain.PlayersButtonFrame.ZIndex = 5
-
-Domain.UICorner_4.CornerRadius = UDim.new(0, 10)
-Domain.UICorner_4.Parent = Domain.PlayersButtonFrame
-
-Domain.OpenPlayers.Name = "OpenPlayers"
-Domain.OpenPlayers.Parent = Domain.PlayersButtonFrame
-Domain.OpenPlayers.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.OpenPlayers.BackgroundTransparency = 1.000
-Domain.OpenPlayers.BorderSizePixel = 0
-Domain.OpenPlayers.Position = UDim2.new(0.126000002, 0, 0.123000003, 0)
-Domain.OpenPlayers.Size = UDim2.new(0.717000008, 0, 0.713, 0)
-Domain.OpenPlayers.ZIndex = 6
-Domain.OpenPlayers.Image = "rbxassetid://3926305904"
-Domain.OpenPlayers.ImageRectOffset = Vector2.new(4, 844)
-Domain.OpenPlayers.ImageRectSize = Vector2.new(36, 36)
-
-Domain.AboutButtonFrame.Name = "AboutButtonFrame"
-Domain.AboutButtonFrame.Parent = Domain.Buttons
-Domain.AboutButtonFrame.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
-Domain.AboutButtonFrame.BorderSizePixel = 0
-Domain.AboutButtonFrame.Position = UDim2.new(0.178000003, 0, 0.87519145, 0)
-Domain.AboutButtonFrame.Size = UDim2.new(0.623229861, 0, 0.092323266, 0)
-Domain.AboutButtonFrame.ZIndex = 5
-
-Domain.UICorner_5.CornerRadius = UDim.new(0, 10)
-Domain.UICorner_5.Parent = Domain.AboutButtonFrame
-
-Domain.OpenAbout.Name = "OpenAbout"
-Domain.OpenAbout.Parent = Domain.AboutButtonFrame
-Domain.OpenAbout.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.OpenAbout.BackgroundTransparency = 1.000
-Domain.OpenAbout.BorderSizePixel = 0
-Domain.OpenAbout.Position = UDim2.new(0.126000002, 0, 0.123000003, 0)
-Domain.OpenAbout.Size = UDim2.new(0.717000008, 0, 0.713, 0)
-Domain.OpenAbout.ZIndex = 6
-Domain.OpenAbout.Image = "rbxassetid://3926305904"
-Domain.OpenAbout.ImageRectOffset = Vector2.new(524, 444)
-Domain.OpenAbout.ImageRectSize = Vector2.new(36, 36)
-
-Domain.HomeButtonFrame.Name = "HomeButtonFrame"
-Domain.HomeButtonFrame.Parent = Domain.Buttons
-Domain.HomeButtonFrame.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
-Domain.HomeButtonFrame.BorderSizePixel = 0
-Domain.HomeButtonFrame.Position = UDim2.new(0.178000003, 0, 0.0250000004, 0)
-Domain.HomeButtonFrame.Size = UDim2.new(0.623229861, 0, 0.092323266, 0)
-Domain.HomeButtonFrame.ZIndex = 5
-
-Domain.UICorner_6.CornerRadius = UDim.new(0, 10)
-Domain.UICorner_6.Parent = Domain.HomeButtonFrame
-
-Domain.OpenHome.Name = "OpenHome"
-Domain.OpenHome.Parent = Domain.HomeButtonFrame
-Domain.OpenHome.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.OpenHome.BackgroundTransparency = 1.000
-Domain.OpenHome.BorderSizePixel = 0
-Domain.OpenHome.Position = UDim2.new(0.126000002, 0, 0.123000003, 0)
-Domain.OpenHome.Size = UDim2.new(0.717000008, 0, 0.713, 0)
-Domain.OpenHome.ZIndex = 6
-Domain.OpenHome.Image = "rbxassetid://3926305904"
-Domain.OpenHome.ImageRectOffset = Vector2.new(964, 204)
-Domain.OpenHome.ImageRectSize = Vector2.new(36, 36)
-
-Domain.ToggleButton.Name = "ToggleButton"
-Domain.ToggleButton.Parent = Domain.Main
-Domain.ToggleButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.ToggleButton.BackgroundTransparency = 1.000
-Domain.ToggleButton.BorderSizePixel = 0
-Domain.ToggleButton.Position = UDim2.new(-0.429127365, 0, 0.4676148, 0)
-Domain.ToggleButton.Rotation = 270.000
-Domain.ToggleButton.Size = UDim2.new(0.429127395, 0, 0.0646622404, 0)
-Domain.ToggleButton.ZIndex = 5
-Domain.ToggleButton.Image = "rbxassetid://3926305904"
-Domain.ToggleButton.ImageRectOffset = Vector2.new(564, 284)
-Domain.ToggleButton.ImageRectSize = Vector2.new(36, 36)
-
-Domain.ButtonIcon.Name = "ButtonIcon"
-Domain.ButtonIcon.Parent = Domain.Main
-Domain.ButtonIcon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.ButtonIcon.BackgroundTransparency = 1.000
-Domain.ButtonIcon.BorderSizePixel = 0
-Domain.ButtonIcon.Position = UDim2.new(0.049806118, 0, 0.0255983472, 0)
-Domain.ButtonIcon.Size = UDim2.new(0.685350418, 0, 0.109479688, 0)
-Domain.ButtonIcon.ZIndex = 5
-Domain.ButtonIcon.Image = "rbxassetid://6404488837"
-
-Domain.Shadow.Name = "Shadow"
-Domain.Shadow.Parent = Domain.Main
-Domain.Shadow.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Shadow.BackgroundTransparency = 1.000
-Domain.Shadow.BorderSizePixel = 0
-Domain.Shadow.Position = UDim2.new(-0.123659134, 0, -0.236623734, 0)
-Domain.Shadow.Size = UDim2.new(1.80975306, 0, 1.42539299, 0)
-Domain.Shadow.ZIndex = 3
-Domain.Shadow.Image = "rbxassetid://3523728077"
-Domain.Shadow.ImageColor3 = Color3.fromRGB(33, 33, 33)
-Domain.Shadow.ImageTransparency = 0.700
-
-Domain.Other.Name = "Other"
-Domain.Other.Parent = Domain.Domain
-Domain.Other.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Other.BackgroundTransparency = 1.000
-Domain.Other.BorderSizePixel = 0
-Domain.Other.Position = UDim2.new(0.966000021, 0, 0.261999995, 0)
-Domain.Other.Size = UDim2.new(0.0430000015, 0, 0.474999994, 0)
-
-Domain.Watermark.Name = "Watermark"
-Domain.Watermark.Parent = Domain.Other
-Domain.Watermark.BackgroundColor3 = Color3.fromRGB(31, 31, 31)
-Domain.Watermark.BackgroundTransparency = 0.800
-Domain.Watermark.BorderSizePixel = 0
-Domain.Watermark.Position = UDim2.new(-22.1222916, 0, 1.47872794, 0)
-Domain.Watermark.Size = UDim2.new(1.85834718, 0, 0.044188574, 0)
-Domain.Watermark.ZIndex = 100
-
-Domain.Text.Name = "Text"
-Domain.Text.Parent = Domain.Watermark
-Domain.Text.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Text.BackgroundTransparency = 1.000
-Domain.Text.BorderSizePixel = 0
-Domain.Text.Position = UDim2.new(0.16016829, 0, 0.146470279, 0)
-Domain.Text.Size = UDim2.new(0.670576036, 0, 0.670576274, 0)
-Domain.Text.ZIndex = 100
-Domain.Text.Font = Enum.Font.GothamBold
-Domain.Text.Text = "Domain BETA  v0.05"
-Domain.Text.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Text.TextScaled = true
-Domain.Text.TextSize = 14.000
-Domain.Text.TextTransparency = 0.400
-Domain.Text.TextWrapped = true
-
-Domain.ExploitFound.Name = "ExploitFound"
-Domain.ExploitFound.Parent = Domain.Other
-Domain.ExploitFound.BackgroundColor3 = Color3.fromRGB(31, 31, 31)
-Domain.ExploitFound.BorderSizePixel = 0
-Domain.ExploitFound.Position = UDim2.new(-22.2755814, 0, 0.298788249, 0)
-Domain.ExploitFound.Size = UDim2.new(3.11941719, 0, 0.602401555, 0)
-Domain.ExploitFound.Visible = false
-Domain.ExploitFound.ZIndex = 100
-
-Domain.Title.Name = "Title"
-Domain.Title.Parent = Domain.ExploitFound
-Domain.Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Title.BackgroundTransparency = 1.000
-Domain.Title.BorderSizePixel = 0
-Domain.Title.Position = UDim2.new(0.0535893887, 0, 0.0414540097, 0)
-Domain.Title.Size = UDim2.new(0.474605739, 0, 0.0529777221, 0)
-Domain.Title.ZIndex = 100
-Domain.Title.Font = Enum.Font.GothamBold
-Domain.Title.Text = "Exploit Detected"
-Domain.Title.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Title.TextScaled = true
-Domain.Title.TextSize = 14.000
-Domain.Title.TextWrapped = true
-Domain.Title.TextXAlignment = Enum.TextXAlignment.Left
-
-Domain.UICorner_7.CornerRadius = UDim.new(0, 12)
-Domain.UICorner_7.Parent = Domain.ExploitFound
-
-Domain.Content.Name = "Content"
-Domain.Content.Parent = Domain.ExploitFound
-Domain.Content.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Content.BackgroundTransparency = 1.000
-Domain.Content.BorderSizePixel = 0
-Domain.Content.Position = UDim2.new(0.0535893962, 0, 0.0945718586, 0)
-Domain.Content.Size = UDim2.new(0.51844418, 0, 0.139617905, 0)
-Domain.Content.ZIndex = 100
-Domain.Content.Font = Enum.Font.GothamSemibold
-Domain.Content.Text = "Domain has found an exploit for this specific game."
-Domain.Content.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Content.TextScaled = true
-Domain.Content.TextSize = 14.000
-Domain.Content.TextWrapped = true
-Domain.Content.TextXAlignment = Enum.TextXAlignment.Left
-
-Domain.ExploitName.Name = "ExploitName"
-Domain.ExploitName.Parent = Domain.ExploitFound
-Domain.ExploitName.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.ExploitName.BackgroundTransparency = 1.000
-Domain.ExploitName.BorderSizePixel = 0
-Domain.ExploitName.Position = UDim2.new(0.0500167944, 0, 0.307043254, 0)
-Domain.ExploitName.Size = UDim2.new(0.522016823, 0, 0.0493071787, 0)
-Domain.ExploitName.ZIndex = 100
-Domain.ExploitName.Font = Enum.Font.GothamBold
-Domain.ExploitName.Text = "Infinite Cash"
-Domain.ExploitName.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.ExploitName.TextScaled = true
-Domain.ExploitName.TextSize = 14.000
-Domain.ExploitName.TextWrapped = true
-Domain.ExploitName.TextXAlignment = Enum.TextXAlignment.Left
-
-Domain.Description.Name = "Description"
-Domain.Description.Parent = Domain.ExploitFound
-Domain.Description.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Description.BackgroundTransparency = 1.000
-Domain.Description.BorderSizePixel = 0
-Domain.Description.Position = UDim2.new(0.0500167683, 0, 0.3572101, 0)
-Domain.Description.Size = UDim2.new(0.737336934, 0, 0.0967480093, 0)
-Domain.Description.ZIndex = 100
-Domain.Description.Font = Enum.Font.GothamSemibold
-Domain.Description.Text = "It can make you have infinite cash"
-Domain.Description.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Description.TextScaled = true
-Domain.Description.TextSize = 14.000
-Domain.Description.TextWrapped = true
-Domain.Description.TextXAlignment = Enum.TextXAlignment.Left
-
-Domain.ExecuteButton.Name = "ExecuteButton"
-Domain.ExecuteButton.Parent = Domain.ExploitFound
-Domain.ExecuteButton.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
-Domain.ExecuteButton.BorderSizePixel = 0
-Domain.ExecuteButton.Position = UDim2.new(0.0500167944, 0, 0.858273864, 0)
-Domain.ExecuteButton.Size = UDim2.new(0.397247195, 0, 0.106700577, 0)
-Domain.ExecuteButton.ZIndex = 100
-Domain.ExecuteButton.Font = Enum.Font.GothamBold
-Domain.ExecuteButton.Text = ""
-Domain.ExecuteButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.ExecuteButton.TextScaled = true
-Domain.ExecuteButton.TextSize = 14.000
-Domain.ExecuteButton.TextWrapped = true
-
-Domain.ExecuteText.Name = "ExecuteText"
-Domain.ExecuteText.Parent = Domain.ExecuteButton
-Domain.ExecuteText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.ExecuteText.BackgroundTransparency = 1.000
-Domain.ExecuteText.BorderSizePixel = 0
-Domain.ExecuteText.Position = UDim2.new(0.0680037364, 0, 0.257072449, 0)
-Domain.ExecuteText.Size = UDim2.new(0.851055086, 0, 0.473123908, 0)
-Domain.ExecuteText.ZIndex = 100
-Domain.ExecuteText.Font = Enum.Font.GothamBold
-Domain.ExecuteText.Text = "Execute"
-Domain.ExecuteText.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.ExecuteText.TextScaled = true
-Domain.ExecuteText.TextSize = 14.000
-Domain.ExecuteText.TextWrapped = true
-
-Domain.UICorner_8.CornerRadius = UDim.new(0, 12)
-Domain.UICorner_8.Parent = Domain.ExecuteButton
-
-Domain.Option.Name = "Option"
-Domain.Option.Parent = Domain.ExploitFound
-Domain.Option.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Option.BackgroundTransparency = 1.000
-Domain.Option.BorderSizePixel = 0
-Domain.Option.Position = UDim2.new(0.528195143, 0, 0.885437608, 0)
-Domain.Option.Size = UDim2.new(0.468981385, 0, 0.0493071787, 0)
-Domain.Option.ZIndex = 100
-Domain.Option.Font = Enum.Font.GothamSemibold
-Domain.Option.Text = "or Tap Y"
-Domain.Option.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Option.TextScaled = true
-Domain.Option.TextSize = 14.000
-Domain.Option.TextWrapped = true
-Domain.Option.TextXAlignment = Enum.TextXAlignment.Left
-
-Domain.exitpromptButton.Name = "exitpromptButton"
-Domain.exitpromptButton.Parent = Domain.ExploitFound
-Domain.exitpromptButton.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
-Domain.exitpromptButton.BorderSizePixel = 0
-Domain.exitpromptButton.Position = UDim2.new(0.831376076, 0, 0.0408491828, 0)
-Domain.exitpromptButton.Size = UDim2.new(0.121340051, 0, 0.0983940661, 0)
-Domain.exitpromptButton.ZIndex = 100
-Domain.exitpromptButton.Font = Enum.Font.GothamBold
-Domain.exitpromptButton.Text = ""
-Domain.exitpromptButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.exitpromptButton.TextScaled = true
-Domain.exitpromptButton.TextSize = 14.000
-Domain.exitpromptButton.TextWrapped = true
-
-Domain.exitprompttext.Name = "exitprompttext"
-Domain.exitprompttext.Parent = Domain.exitpromptButton
-Domain.exitprompttext.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.exitprompttext.BackgroundTransparency = 1.000
-Domain.exitprompttext.BorderSizePixel = 0
-Domain.exitprompttext.Position = UDim2.new(0.339725167, 0, 0.113160722, 0)
-Domain.exitprompttext.Size = UDim2.new(0.368411511, 0, 0.736881912, 0)
-Domain.exitprompttext.ZIndex = 100
-Domain.exitprompttext.Font = Enum.Font.GothamSemibold
-Domain.exitprompttext.Text = "X"
-Domain.exitprompttext.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.exitprompttext.TextScaled = true
-Domain.exitprompttext.TextSize = 14.000
-Domain.exitprompttext.TextWrapped = true
-
-Domain.UICorner_9.CornerRadius = UDim.new(0, 10)
-Domain.UICorner_9.Parent = Domain.exitpromptButton
-
-Domain.Shadow_2.Name = "Shadow"
-Domain.Shadow_2.Parent = Domain.ExploitFound
-Domain.Shadow_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Shadow_2.BackgroundTransparency = 1.000
-Domain.Shadow_2.BorderSizePixel = 0
-Domain.Shadow_2.Position = UDim2.new(-0.0506853797, 0, -0.231648907, 0)
-Domain.Shadow_2.Size = UDim2.new(1.10606587, 0, 1.51781273, 0)
-Domain.Shadow_2.ZIndex = 0
-Domain.Shadow_2.Image = "rbxassetid://3523728077"
-Domain.Shadow_2.ImageColor3 = Color3.fromRGB(33, 33, 33)
-Domain.Shadow_2.ImageTransparency = 0.600
-
-Domain.Pages.Name = "Pages"
-Domain.Pages.Parent = Domain.Other
-Domain.Pages.BackgroundColor3 = Color3.fromRGB(31, 31, 31)
-Domain.Pages.BackgroundTransparency = 1.000
-Domain.Pages.BorderSizePixel = 0
-Domain.Pages.ClipsDescendants = true
-Domain.Pages.Position = UDim2.new(-5.30181551, 0, -0.00177938351, 0)
-Domain.Pages.Size = UDim2.new(3.90793133, 0, 1.00000012, 0)
-
-Domain.ExploitsFrame.Name = "ExploitsFrame"
-Domain.ExploitsFrame.Parent = Domain.Pages
-Domain.ExploitsFrame.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
-Domain.ExploitsFrame.BorderSizePixel = 0
-Domain.ExploitsFrame.Size = UDim2.new(1, 0, 1, 0)
-Domain.ExploitsFrame.Visible = false
-Domain.ExploitsFrame.ZIndex = 1000
-
-Domain.UICorner_10.CornerRadius = UDim.new(0, 12)
-Domain.UICorner_10.Parent = Domain.ExploitsFrame
-
-Domain.Title_2.Name = "Title"
-Domain.Title_2.Parent = Domain.ExploitsFrame
-Domain.Title_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Title_2.BackgroundTransparency = 1.000
-Domain.Title_2.BorderSizePixel = 0
-Domain.Title_2.Position = UDim2.new(0.042754259, 0, 0.0188631248, 0)
-Domain.Title_2.Size = UDim2.new(0.540157259, 0, 0.0415861197, 0)
-Domain.Title_2.ZIndex = 1002
-Domain.Title_2.Font = Enum.Font.GothamBold
-Domain.Title_2.Text = "Universal Exploit Tools"
-Domain.Title_2.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Title_2.TextScaled = true
-Domain.Title_2.TextSize = 14.000
-Domain.Title_2.TextWrapped = true
-Domain.Title_2.TextXAlignment = Enum.TextXAlignment.Left
-
-Domain.UITextSizeConstraint.Parent = Domain.Title_2
-Domain.UITextSizeConstraint.MaxTextSize = 20
-
-Domain.Functionality.Name = "Functionality"
-Domain.Functionality.Parent = Domain.ExploitsFrame
-Domain.Functionality.BackgroundColor3 = Color3.fromRGB(31, 31, 31)
-Domain.Functionality.BorderSizePixel = 0
-Domain.Functionality.Position = UDim2.new(0, 0, 0.079135783, 0)
-Domain.Functionality.Size = UDim2.new(1, 0, 0.920864165, 0)
-Domain.Functionality.ZIndex = 1001
-
-Domain.UICorner_11.CornerRadius = UDim.new(0, 12)
-Domain.UICorner_11.Parent = Domain.Functionality
-
-Domain.ListExploits.Name = "ListExploits"
-Domain.ListExploits.Parent = Domain.Functionality
-Domain.ListExploits.Active = true
-Domain.ListExploits.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.ListExploits.BackgroundTransparency = 1.000
-Domain.ListExploits.BorderSizePixel = 0
-Domain.ListExploits.Position = UDim2.new(-3.48116345e-07, 0, 0.0193044934, 0)
-Domain.ListExploits.Size = UDim2.new(1.00000012, 0, 0.883157432, 0)
-Domain.ListExploits.ZIndex = 1002
-Domain.ListExploits.CanvasSize = UDim2.new(0, 0, 4, 0)
-Domain.ListExploits.ScrollBarThickness = 0
-
-Domain.Template.Name = "Template"
-Domain.Template.Parent = Domain.ListExploits
-Domain.Template.BackgroundColor3 = Color3.fromRGB(149, 74, 112)
-Domain.Template.BorderSizePixel = 0
-Domain.Template.Position = UDim2.new(0.0260000005, 0, 0, 0)
-Domain.Template.Size = UDim2.new(0.94581604, 0, 0.0384368151, 0)
-Domain.Template.ZIndex = 1002
-
-Domain.UICorner_12.Parent = Domain.Template
-
-Domain.ExploitName_2.Name = "ExploitName"
-Domain.ExploitName_2.Parent = Domain.Template
-Domain.ExploitName_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.ExploitName_2.BackgroundTransparency = 1.000
-Domain.ExploitName_2.BorderSizePixel = 0
-Domain.ExploitName_2.Position = UDim2.new(0.0512574017, 0, 0.226007849, 0)
-Domain.ExploitName_2.Size = UDim2.new(0.451896131, 0, 0.208032161, 0)
-Domain.ExploitName_2.ZIndex = 1003
-Domain.ExploitName_2.Font = Enum.Font.GothamBold
-Domain.ExploitName_2.Text = "Exploit Name"
-Domain.ExploitName_2.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.ExploitName_2.TextScaled = true
-Domain.ExploitName_2.TextSize = 14.000
-Domain.ExploitName_2.TextWrapped = true
-Domain.ExploitName_2.TextXAlignment = Enum.TextXAlignment.Left
-Domain.ExploitName_2.TextYAlignment = Enum.TextYAlignment.Top
-
-Domain.Description_2.Name = "Description"
-Domain.Description_2.Parent = Domain.Template
-Domain.Description_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Description_2.BackgroundTransparency = 1.000
-Domain.Description_2.BorderSizePixel = 0
-Domain.Description_2.Position = UDim2.new(0.0512574017, 0, 0.464571714, 0)
-Domain.Description_2.Size = UDim2.new(0.565016568, 0, 0.183530971, 0)
-Domain.Description_2.ZIndex = 1003
-Domain.Description_2.Font = Enum.Font.GothamBold
-Domain.Description_2.Text = "Really Brief Description"
-Domain.Description_2.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Description_2.TextScaled = true
-Domain.Description_2.TextSize = 14.000
-Domain.Description_2.TextTransparency = 0.100
-Domain.Description_2.TextWrapped = true
-Domain.Description_2.TextXAlignment = Enum.TextXAlignment.Left
-Domain.Description_2.TextYAlignment = Enum.TextYAlignment.Top
-
-Domain.LoadExploit.Name = "LoadExploit"
-Domain.LoadExploit.Parent = Domain.Template
-Domain.LoadExploit.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-Domain.LoadExploit.BackgroundTransparency = 0.700
-Domain.LoadExploit.BorderSizePixel = 0
-Domain.LoadExploit.Position = UDim2.new(0.636194825, 0, 0.464571714, 0)
-Domain.LoadExploit.Size = UDim2.new(0.328485876, 0, 0.43403998, 0)
-Domain.LoadExploit.ZIndex = 1003
-Domain.LoadExploit.Font = Enum.Font.SourceSans
-Domain.LoadExploit.Text = ""
-Domain.LoadExploit.TextColor3 = Color3.fromRGB(0, 0, 0)
-Domain.LoadExploit.TextSize = 14.000
-Domain.LoadExploit.TextTransparency = 1.000
-
-Domain.LoadText.Name = "LoadText"
-Domain.LoadText.Parent = Domain.LoadExploit
-Domain.LoadText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.LoadText.BackgroundTransparency = 1.000
-Domain.LoadText.BorderSizePixel = 0
-Domain.LoadText.Position = UDim2.new(0.322250009, 0, 0.162156954, 0)
-Domain.LoadText.Size = UDim2.new(0.344117135, 0, 0.676972866, 0)
-Domain.LoadText.ZIndex = 1004
-Domain.LoadText.Font = Enum.Font.GothamBold
-Domain.LoadText.Text = "Load"
-Domain.LoadText.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.LoadText.TextScaled = true
-Domain.LoadText.TextSize = 14.000
-Domain.LoadText.TextWrapped = true
-
-Domain.UICorner_13.Parent = Domain.LoadExploit
-
-Domain.Shadow_3.Name = "Shadow"
-Domain.Shadow_3.Parent = Domain.Template
-Domain.Shadow_3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Shadow_3.BackgroundTransparency = 1.000
-Domain.Shadow_3.BorderSizePixel = 0
-Domain.Shadow_3.Position = UDim2.new(-0.0620923266, 0, -0.394876897, 0)
-Domain.Shadow_3.Size = UDim2.new(1.11987317, 0, 1.8920356, 0)
-Domain.Shadow_3.ZIndex = 1001
-Domain.Shadow_3.Image = "rbxassetid://3523728077"
-Domain.Shadow_3.ImageColor3 = Color3.fromRGB(33, 33, 33)
-Domain.Shadow_3.ImageTransparency = 0.700
-
-Domain.UIListLayout.Parent = Domain.ListExploits
-Domain.UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
-Domain.UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-Domain.UIListLayout.Padding = UDim.new(0, 8)
-
-Domain.Credits.Name = "Credits"
-Domain.Credits.Parent = Domain.ExploitsFrame
-Domain.Credits.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Credits.BackgroundTransparency = 1.000
-Domain.Credits.BorderSizePixel = 0
-Domain.Credits.Position = UDim2.new(0.042754259, 0, 0.945035338, 0)
-Domain.Credits.Size = UDim2.new(0.194060624, 0, 0.0415861197, 0)
-Domain.Credits.ZIndex = 1002
-Domain.Credits.Font = Enum.Font.GothamBold
-Domain.Credits.Text = "Domain V2"
-Domain.Credits.TextColor3 = Color3.fromRGB(122, 122, 122)
-Domain.Credits.TextScaled = true
-Domain.Credits.TextSize = 14.000
-Domain.Credits.TextWrapped = true
-Domain.Credits.TextXAlignment = Enum.TextXAlignment.Left
-
-Domain.UITextSizeConstraint_2.Parent = Domain.Credits
-Domain.UITextSizeConstraint_2.MaxTextSize = 20
-
-Domain.Shadow_4.Name = "Shadow"
-Domain.Shadow_4.Parent = Domain.ExploitsFrame
-Domain.Shadow_4.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Shadow_4.BackgroundTransparency = 1.000
-Domain.Shadow_4.BorderSizePixel = 0
-Domain.Shadow_4.Position = UDim2.new(-0.0620924681, 0, -0.231648937, 0)
-Domain.Shadow_4.Size = UDim2.new(1.11987317, 0, 1.54196727, 0)
-Domain.Shadow_4.ZIndex = 999
-Domain.Shadow_4.Image = "rbxassetid://3523728077"
-Domain.Shadow_4.ImageColor3 = Color3.fromRGB(33, 33, 33)
-Domain.Shadow_4.ImageTransparency = 0.600
-
-Domain.ExitFrame.Name = "ExitFrame"
-Domain.ExitFrame.Parent = Domain.ExploitsFrame
-Domain.ExitFrame.BackgroundColor3 = Color3.fromRGB(31, 31, 31)
-Domain.ExitFrame.BackgroundTransparency = 1.000
-Domain.ExitFrame.BorderSizePixel = 0
-Domain.ExitFrame.Position = UDim2.new(0.867858231, 0, 0.00711072702, 0)
-Domain.ExitFrame.Size = UDim2.new(0.103256203, 0, 0.0643658787, 0)
-Domain.ExitFrame.ZIndex = 1010
-
-Domain.Exit.Name = "Exit"
-Domain.Exit.Parent = Domain.ExitFrame
-Domain.Exit.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Exit.BackgroundTransparency = 1.000
-Domain.Exit.BorderSizePixel = 0
-Domain.Exit.Position = UDim2.new(0.039441824, 0, 0, 0)
-Domain.Exit.Size = UDim2.new(0.960559964, 0, 0.960559964, 0)
-Domain.Exit.ZIndex = 1009
-Domain.Exit.Text = ""
-Domain.Exit.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Exit.TextScaled = true
-Domain.Exit.TextSize = 14.000
-Domain.Exit.TextTransparency = 1.000
-Domain.Exit.TextWrapped = true
-
-Domain.ExitText.Name = "ExitText"
-Domain.ExitText.Parent = Domain.ExitFrame
-Domain.ExitText.AnchorPoint = Vector2.new(0.5, 0.5)
-Domain.ExitText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.ExitText.BackgroundTransparency = 1.000
-Domain.ExitText.BorderSizePixel = 0
-Domain.ExitText.Position = UDim2.new(0.5, 0, 0.5, 0)
-Domain.ExitText.Size = UDim2.new(0.590867102, 0, 0.590868056, 0)
-Domain.ExitText.ZIndex = 1011
-Domain.ExitText.Font = Enum.Font.GothamSemibold
-Domain.ExitText.Text = "X"
-Domain.ExitText.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.ExitText.TextScaled = true
-Domain.ExitText.TextSize = 14.000
-Domain.ExitText.TextTransparency = 0.100
-Domain.ExitText.TextWrapped = true
-Domain.ExitText.TextYAlignment = Enum.TextYAlignment.Bottom
-
-Domain.UICorner_14.Parent = Domain.ExitFrame
-
-Domain.PlayerInfoFrame.Name = "PlayerInfoFrame"
-Domain.PlayerInfoFrame.Parent = Domain.Pages
-Domain.PlayerInfoFrame.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
-Domain.PlayerInfoFrame.BorderSizePixel = 0
-Domain.PlayerInfoFrame.Size = UDim2.new(1, 0, 1, 0)
-Domain.PlayerInfoFrame.Visible = false
-Domain.PlayerInfoFrame.ZIndex = 1000
-
-Domain.UICorner_15.CornerRadius = UDim.new(0, 12)
-Domain.UICorner_15.Parent = Domain.PlayerInfoFrame
-
-Domain.Title_3.Name = "Title"
-Domain.Title_3.Parent = Domain.PlayerInfoFrame
-Domain.Title_3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Title_3.BackgroundTransparency = 1.000
-Domain.Title_3.BorderSizePixel = 0
-Domain.Title_3.Position = UDim2.new(0.0399028361, 0, 0.0195726734, 0)
-Domain.Title_3.Size = UDim2.new(0.327975392, 0, 0.0398667008, 0)
-Domain.Title_3.ZIndex = 1002
-Domain.Title_3.Font = Enum.Font.GothamBold
-Domain.Title_3.Text = "About Player"
-Domain.Title_3.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Title_3.TextScaled = true
-Domain.Title_3.TextSize = 14.000
-Domain.Title_3.TextWrapped = true
-Domain.Title_3.TextXAlignment = Enum.TextXAlignment.Left
-
-Domain.UITextSizeConstraint_3.Parent = Domain.Title_3
-Domain.UITextSizeConstraint_3.MaxTextSize = 20
-
-Domain.Functionality_2.Name = "Functionality"
-Domain.Functionality_2.Parent = Domain.PlayerInfoFrame
-Domain.Functionality_2.BackgroundColor3 = Color3.fromRGB(31, 31, 31)
-Domain.Functionality_2.BorderSizePixel = 0
-Domain.Functionality_2.Position = UDim2.new(0, 0, 0.079135783, 0)
-Domain.Functionality_2.Size = UDim2.new(1, 0, 0.920864165, 0)
-Domain.Functionality_2.ZIndex = 1001
-
-Domain.UICorner_16.CornerRadius = UDim.new(0, 12)
-Domain.UICorner_16.Parent = Domain.Functionality_2
-
-Domain.Avatar.Name = "Avatar"
-Domain.Avatar.Parent = Domain.Functionality_2
-Domain.Avatar.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Avatar.BackgroundTransparency = 1.000
-Domain.Avatar.BorderSizePixel = 0
-Domain.Avatar.Position = UDim2.new(0.0399244241, 0, 0.0579132438, 0)
-Domain.Avatar.Size = UDim2.new(0.222438365, 0, 0.150575295, 0)
-Domain.Avatar.ZIndex = 1002
-Domain.Avatar.Image = "rbxasset://textures/ui/GuiImagePlaceholder.png"
-
-Domain.UICorner_17.CornerRadius = UDim.new(1, 0)
-Domain.UICorner_17.Parent = Domain.Avatar
-
-Domain.Username.Name = "Username"
-Domain.Username.Parent = Domain.Functionality_2
-Domain.Username.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Username.BackgroundTransparency = 1.000
-Domain.Username.BorderSizePixel = 0
-Domain.Username.Position = UDim2.new(0.299553424, 0, 0.115652815, 0)
-Domain.Username.Size = UDim2.new(0.619387209, 0, 0.036586754, 0)
-Domain.Username.ZIndex = 1002
-Domain.Username.Font = Enum.Font.GothamBold
-Domain.Username.Text = "Username"
-Domain.Username.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Username.TextScaled = true
-Domain.Username.TextSize = 14.000
-Domain.Username.TextStrokeColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Username.TextWrapped = true
-Domain.Username.TextXAlignment = Enum.TextXAlignment.Left
-
-Domain.Teleport.Name = "Teleport"
-Domain.Teleport.Parent = Domain.Functionality_2
-Domain.Teleport.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
-Domain.Teleport.BorderSizePixel = 0
-Domain.Teleport.Position = UDim2.new(0.0399247669, 0, 0.309303164, 0)
-Domain.Teleport.Size = UDim2.new(0.327953488, 0, 0.0632737055, 0)
-Domain.Teleport.ZIndex = 1002
-Domain.Teleport.Font = Enum.Font.SourceSans
-Domain.Teleport.Text = ""
-Domain.Teleport.TextColor3 = Color3.fromRGB(0, 0, 0)
-Domain.Teleport.TextSize = 14.000
-Domain.Teleport.TextTransparency = 1.000
-
-Domain.TeleportText.Name = "TeleportText"
-Domain.TeleportText.Parent = Domain.Teleport
-Domain.TeleportText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.TeleportText.BackgroundTransparency = 1.000
-Domain.TeleportText.BorderSizePixel = 0
-Domain.TeleportText.Position = UDim2.new(0.191304341, 0, 0.139130428, 0)
-Domain.TeleportText.Size = UDim2.new(0.600359797, 0, 0.699999332, 0)
-Domain.TeleportText.ZIndex = 1004
-Domain.TeleportText.Font = Enum.Font.GothamSemibold
-Domain.TeleportText.Text = "Teleport"
-Domain.TeleportText.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.TeleportText.TextScaled = true
-Domain.TeleportText.TextSize = 14.000
-Domain.TeleportText.TextWrapped = true
-
-Domain.UICorner_18.CornerRadius = UDim.new(0, 10)
-Domain.UICorner_18.Parent = Domain.Teleport
-
-Domain.Kill.Name = "Kill"
-Domain.Kill.Parent = Domain.Functionality_2
-Domain.Kill.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
-Domain.Kill.BorderSizePixel = 0
-Domain.Kill.Position = UDim2.new(0.0399247631, 0, 0.382660389, 0)
-Domain.Kill.Size = UDim2.new(0.219586253, 0, 0.0632737055, 0)
-Domain.Kill.ZIndex = 1002
-Domain.Kill.Font = Enum.Font.SourceSans
-Domain.Kill.Text = ""
-Domain.Kill.TextColor3 = Color3.fromRGB(0, 0, 0)
-Domain.Kill.TextSize = 14.000
-Domain.Kill.TextTransparency = 1.000
-
-Domain.KillText.Name = "KillText"
-Domain.KillText.Parent = Domain.Kill
-Domain.KillText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.KillText.BackgroundTransparency = 1.000
-Domain.KillText.BorderSizePixel = 0
-Domain.KillText.Position = UDim2.new(0.287294835, 0, 0.19704923, 0)
-Domain.KillText.Size = UDim2.new(0.417071223, 0, 0.550552428, 0)
-Domain.KillText.ZIndex = 1004
-Domain.KillText.Font = Enum.Font.GothamSemibold
-Domain.KillText.Text = "Kill"
-Domain.KillText.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.KillText.TextScaled = true
-Domain.KillText.TextSize = 14.000
-Domain.KillText.TextWrapped = true
-
-Domain.UICorner_19.CornerRadius = UDim.new(0, 10)
-Domain.UICorner_19.Parent = Domain.Kill
-
-Domain.Premium.Name = "Premium"
-Domain.Premium.Parent = Domain.Functionality_2
-Domain.Premium.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Premium.BackgroundTransparency = 1.000
-Domain.Premium.BorderSizePixel = 0
-Domain.Premium.Position = UDim2.new(0.888980985, 0, 0.0212346911, 0)
-Domain.Premium.Size = UDim2.new(0.0826243535, 0, 0.0553908497, 0)
-Domain.Premium.ZIndex = 1002
-Domain.Premium.Image = "http://www.roblox.com/asset/?id=5217928125"
-
-Domain.group.Name = "group"
-Domain.group.Parent = Domain.Functionality_2
-Domain.group.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.group.BackgroundTransparency = 1.000
-Domain.group.BorderSizePixel = 0
-Domain.group.Position = UDim2.new(0.0402927324, 0, 0.472054273, 0)
-Domain.group.Size = UDim2.new(0.909699202, 0, 0.454424679, 0)
-Domain.group.ZIndex = 1004
-
-Domain.title.Name = "title"
-Domain.title.Parent = Domain.group
-Domain.title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.title.BackgroundTransparency = 1.000
-Domain.title.BorderSizePixel = 0
-Domain.title.Position = UDim2.new(-0.000592667609, 0, -0.00140992925, 0)
-Domain.title.Size = UDim2.new(0.619888186, 0, 0.0549206287, 0)
-Domain.title.ZIndex = 1004
-Domain.title.Font = Enum.Font.GothamSemibold
-Domain.title.Text = "GROUP INFORMATION"
-Domain.title.TextColor3 = Color3.fromRGB(122, 122, 122)
-Domain.title.TextScaled = true
-Domain.title.TextSize = 14.000
-Domain.title.TextWrapped = true
-Domain.title.TextXAlignment = Enum.TextXAlignment.Left
-
-Domain.ranktitle.Name = "ranktitle"
-Domain.ranktitle.Parent = Domain.group
-Domain.ranktitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.ranktitle.BackgroundTransparency = 1.000
-Domain.ranktitle.BorderSizePixel = 0
-Domain.ranktitle.Position = UDim2.new(0, 0, 0.256205112, 0)
-Domain.ranktitle.Size = UDim2.new(0.244113773, 0, 0.0751010329, 0)
-Domain.ranktitle.ZIndex = 1005
-Domain.ranktitle.Font = Enum.Font.GothamBold
-Domain.ranktitle.Text = "Rank"
-Domain.ranktitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.ranktitle.TextScaled = true
-Domain.ranktitle.TextSize = 14.000
-Domain.ranktitle.TextWrapped = true
-Domain.ranktitle.TextXAlignment = Enum.TextXAlignment.Left
-
-Domain.rankdata.Name = "rankdata"
-Domain.rankdata.Parent = Domain.group
-Domain.rankdata.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.rankdata.BackgroundTransparency = 1.000
-Domain.rankdata.BorderSizePixel = 0
-Domain.rankdata.Position = UDim2.new(0, 0, 0.330737501, 0)
-Domain.rankdata.Size = UDim2.new(0.692030847, 0, 0.0718293861, 0)
-Domain.rankdata.ZIndex = 1005
-Domain.rankdata.Font = Enum.Font.GothamSemibold
-Domain.rankdata.Text = "sus"
-Domain.rankdata.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.rankdata.TextScaled = true
-Domain.rankdata.TextSize = 14.000
-Domain.rankdata.TextWrapped = true
-Domain.rankdata.TextXAlignment = Enum.TextXAlignment.Left
-
-Domain.grouptitle.Name = "grouptitle"
-Domain.grouptitle.Parent = Domain.group
-Domain.grouptitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.grouptitle.BackgroundTransparency = 1.000
-Domain.grouptitle.BorderSizePixel = 0
-Domain.grouptitle.Position = UDim2.new(0, 0, 0.0838489309, 0)
-Domain.grouptitle.Size = UDim2.new(0.244113773, 0, 0.0751010329, 0)
-Domain.grouptitle.ZIndex = 1005
-Domain.grouptitle.Font = Enum.Font.GothamBold
-Domain.grouptitle.Text = "Group"
-Domain.grouptitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.grouptitle.TextScaled = true
-Domain.grouptitle.TextSize = 14.000
-Domain.grouptitle.TextWrapped = true
-Domain.grouptitle.TextXAlignment = Enum.TextXAlignment.Left
-
-Domain.groupname.Name = "groupname"
-Domain.groupname.Parent = Domain.group
-Domain.groupname.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.groupname.BackgroundTransparency = 1.000
-Domain.groupname.BorderSizePixel = 0
-Domain.groupname.Position = UDim2.new(0, 0, 0.158381328, 0)
-Domain.groupname.Size = UDim2.new(0.692030847, 0, 0.0718293861, 0)
-Domain.groupname.ZIndex = 1005
-Domain.groupname.Font = Enum.Font.GothamSemibold
-Domain.groupname.Text = "sus"
-Domain.groupname.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.groupname.TextScaled = true
-Domain.groupname.TextSize = 14.000
-Domain.groupname.TextWrapped = true
-Domain.groupname.TextXAlignment = Enum.TextXAlignment.Left
-
-Domain.Functionalitytext.Name = "Functionalitytext"
-Domain.Functionalitytext.Parent = Domain.Functionality_2
-Domain.Functionalitytext.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Functionalitytext.BackgroundTransparency = 1.000
-Domain.Functionalitytext.BorderSizePixel = 0
-Domain.Functionalitytext.Position = UDim2.new(0.0399247706, 0, 0.261915267, 0)
-Domain.Functionalitytext.Size = UDim2.new(0.2865071, 0, 0.0484862812, 0)
-Domain.Functionalitytext.ZIndex = 1002
-Domain.Functionalitytext.Font = Enum.Font.GothamSemibold
-Domain.Functionalitytext.Text = "FUNCTIONALITY"
-Domain.Functionalitytext.TextColor3 = Color3.fromRGB(122, 122, 122)
-Domain.Functionalitytext.TextScaled = true
-Domain.Functionalitytext.TextSize = 14.000
-Domain.Functionalitytext.TextWrapped = true
-Domain.Functionalitytext.TextXAlignment = Enum.TextXAlignment.Left
-
-Domain.areadata.Name = "areadata"
-Domain.areadata.Parent = Domain.Functionality_2
-Domain.areadata.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.areadata.BackgroundTransparency = 1.000
-Domain.areadata.BorderSizePixel = 0
-Domain.areadata.Position = UDim2.new(0.0382106751, 0, 0.916256785, 0)
-Domain.areadata.Size = UDim2.new(0.641611636, 0, 0.0282887891, 0)
-Domain.areadata.ZIndex = 1005
-Domain.areadata.Font = Enum.Font.GothamSemibold
-Domain.areadata.Text = "United States"
-Domain.areadata.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.areadata.TextScaled = true
-Domain.areadata.TextSize = 14.000
-Domain.areadata.TextWrapped = true
-Domain.areadata.TextXAlignment = Enum.TextXAlignment.Left
-
-Domain.areatitle.Name = "areatitle"
-Domain.areatitle.Parent = Domain.Functionality_2
-Domain.areatitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.areatitle.BackgroundTransparency = 1.000
-Domain.areatitle.BorderSizePixel = 0
-Domain.areatitle.Position = UDim2.new(0.0382106751, 0, 0.885008931, 0)
-Domain.areatitle.Size = UDim2.new(0.399789095, 0, 0.0316002294, 0)
-Domain.areatitle.ZIndex = 1005
-Domain.areatitle.Font = Enum.Font.GothamBold
-Domain.areatitle.Text = "Region"
-Domain.areatitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.areatitle.TextScaled = true
-Domain.areatitle.TextSize = 14.000
-Domain.areatitle.TextWrapped = true
-Domain.areatitle.TextXAlignment = Enum.TextXAlignment.Left
-
-Domain.DomainRole.Name = "DomainRole"
-Domain.DomainRole.Parent = Domain.Functionality_2
-Domain.DomainRole.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.DomainRole.BackgroundTransparency = 1.000
-Domain.DomainRole.BorderSizePixel = 0
-Domain.DomainRole.Position = UDim2.new(0.299553484, 0, 0.153755873, 0)
-Domain.DomainRole.Size = UDim2.new(0.619387209, 0, 0.0257129651, 0)
-Domain.DomainRole.ZIndex = 1002
-Domain.DomainRole.Font = Enum.Font.GothamSemibold
-Domain.DomainRole.Text = "Beta Tester"
-Domain.DomainRole.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.DomainRole.TextScaled = true
-Domain.DomainRole.TextSize = 14.000
-Domain.DomainRole.TextStrokeColor3 = Color3.fromRGB(255, 255, 255)
-Domain.DomainRole.TextWrapped = true
-Domain.DomainRole.TextXAlignment = Enum.TextXAlignment.Left
-
-Domain.Credits_2.Name = "Credits"
-Domain.Credits_2.Parent = Domain.PlayerInfoFrame
-Domain.Credits_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Credits_2.BackgroundTransparency = 1.000
-Domain.Credits_2.BorderSizePixel = 0
-Domain.Credits_2.Position = UDim2.new(0.042754259, 0, 0.945035338, 0)
-Domain.Credits_2.Size = UDim2.new(0.194060624, 0, 0.0415861197, 0)
-Domain.Credits_2.ZIndex = 1002
-Domain.Credits_2.Font = Enum.Font.GothamBold
-Domain.Credits_2.Text = "Domain V2"
-Domain.Credits_2.TextColor3 = Color3.fromRGB(122, 122, 122)
-Domain.Credits_2.TextScaled = true
-Domain.Credits_2.TextSize = 14.000
-Domain.Credits_2.TextWrapped = true
-Domain.Credits_2.TextXAlignment = Enum.TextXAlignment.Left
-
-Domain.UITextSizeConstraint_4.Parent = Domain.Credits_2
-Domain.UITextSizeConstraint_4.MaxTextSize = 20
-
-Domain.Shadow_5.Name = "Shadow"
-Domain.Shadow_5.Parent = Domain.PlayerInfoFrame
-Domain.Shadow_5.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Shadow_5.BackgroundTransparency = 1.000
-Domain.Shadow_5.BorderSizePixel = 0
-Domain.Shadow_5.Position = UDim2.new(-0.0620924681, 0, -0.231648937, 0)
-Domain.Shadow_5.Size = UDim2.new(1.11987317, 0, 1.54196727, 0)
-Domain.Shadow_5.ZIndex = 999
-Domain.Shadow_5.Image = "rbxassetid://3523728077"
-Domain.Shadow_5.ImageColor3 = Color3.fromRGB(33, 33, 33)
-Domain.Shadow_5.ImageTransparency = 0.600
-
-Domain.ExitFrame_2.Name = "ExitFrame"
-Domain.ExitFrame_2.Parent = Domain.PlayerInfoFrame
-Domain.ExitFrame_2.BackgroundColor3 = Color3.fromRGB(31, 31, 31)
-Domain.ExitFrame_2.BackgroundTransparency = 1.000
-Domain.ExitFrame_2.BorderSizePixel = 0
-Domain.ExitFrame_2.Position = UDim2.new(0.867858231, 0, 0.00711072702, 0)
-Domain.ExitFrame_2.Size = UDim2.new(0.103256203, 0, 0.0643658787, 0)
-Domain.ExitFrame_2.ZIndex = 1010
-
-Domain.Exit_2.Name = "Exit"
-Domain.Exit_2.Parent = Domain.ExitFrame_2
-Domain.Exit_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Exit_2.BackgroundTransparency = 1.000
-Domain.Exit_2.BorderSizePixel = 0
-Domain.Exit_2.Position = UDim2.new(0.039441824, 0, 0, 0)
-Domain.Exit_2.Size = UDim2.new(0.960559964, 0, 0.960559964, 0)
-Domain.Exit_2.ZIndex = 1009
-Domain.Exit_2.Text = ""
-Domain.Exit_2.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Exit_2.TextScaled = true
-Domain.Exit_2.TextSize = 14.000
-Domain.Exit_2.TextTransparency = 1.000
-Domain.Exit_2.TextWrapped = true
-
-Domain.ExitText_2.Name = "ExitText"
-Domain.ExitText_2.Parent = Domain.ExitFrame_2
-Domain.ExitText_2.AnchorPoint = Vector2.new(0.5, 0.5)
-Domain.ExitText_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.ExitText_2.BackgroundTransparency = 1.000
-Domain.ExitText_2.BorderSizePixel = 0
-Domain.ExitText_2.Position = UDim2.new(0.5, 0, 0.5, 0)
-Domain.ExitText_2.Size = UDim2.new(0.590867102, 0, 0.590868056, 0)
-Domain.ExitText_2.ZIndex = 1011
-Domain.ExitText_2.Font = Enum.Font.GothamSemibold
-Domain.ExitText_2.Text = "X"
-Domain.ExitText_2.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.ExitText_2.TextScaled = true
-Domain.ExitText_2.TextSize = 14.000
-Domain.ExitText_2.TextTransparency = 0.100
-Domain.ExitText_2.TextWrapped = true
-Domain.ExitText_2.TextYAlignment = Enum.TextYAlignment.Bottom
-
-Domain.UICorner_20.Parent = Domain.ExitFrame_2
-
-Domain.ValuesFrame.Name = "ValuesFrame"
-Domain.ValuesFrame.Parent = Domain.Pages
-Domain.ValuesFrame.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
-Domain.ValuesFrame.BorderSizePixel = 0
-Domain.ValuesFrame.Size = UDim2.new(1, 0, 1, 0)
-Domain.ValuesFrame.Visible = false
-Domain.ValuesFrame.ZIndex = 1000
-
-Domain.UICorner_21.CornerRadius = UDim.new(0, 12)
-Domain.UICorner_21.Parent = Domain.ValuesFrame
-
-Domain.Title_4.Name = "Title"
-Domain.Title_4.Parent = Domain.ValuesFrame
-Domain.Title_4.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Title_4.BackgroundTransparency = 1.000
-Domain.Title_4.BorderSizePixel = 0
-Domain.Title_4.Position = UDim2.new(0.042754259, 0, 0.0188631248, 0)
-Domain.Title_4.Size = UDim2.new(0.540157259, 0, 0.0415861197, 0)
-Domain.Title_4.ZIndex = 1002
-Domain.Title_4.Font = Enum.Font.GothamBold
-Domain.Title_4.Text = "Player Configurations"
-Domain.Title_4.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Title_4.TextScaled = true
-Domain.Title_4.TextSize = 14.000
-Domain.Title_4.TextWrapped = true
-Domain.Title_4.TextXAlignment = Enum.TextXAlignment.Left
-
-Domain.UITextSizeConstraint_5.Parent = Domain.Title_4
-Domain.UITextSizeConstraint_5.MaxTextSize = 20
-
-Domain.Functionality_3.Name = "Functionality"
-Domain.Functionality_3.Parent = Domain.ValuesFrame
-Domain.Functionality_3.BackgroundColor3 = Color3.fromRGB(31, 31, 31)
-Domain.Functionality_3.BorderSizePixel = 0
-Domain.Functionality_3.Position = UDim2.new(0, 0, 0.079135783, 0)
-Domain.Functionality_3.Size = UDim2.new(1, 0, 0.920864165, 0)
-Domain.Functionality_3.ZIndex = 1001
-
-Domain.UICorner_22.CornerRadius = UDim.new(0, 12)
-Domain.UICorner_22.Parent = Domain.Functionality_3
-
-Domain.WalkspeedBar.Name = "WalkspeedBar"
-Domain.WalkspeedBar.Parent = Domain.Functionality_3
-Domain.WalkspeedBar.BackgroundColor3 = Color3.fromRGB(217, 217, 217)
-Domain.WalkspeedBar.BorderSizePixel = 0
-Domain.WalkspeedBar.Position = UDim2.new(0.0685827434, 0, 0.123044468, 0)
-Domain.WalkspeedBar.Size = UDim2.new(0.512723505, 0, 0.0160802547, 0)
-Domain.WalkspeedBar.ZIndex = 1002
-
-Domain.Knob.Name = "Knob"
-Domain.Knob.Parent = Domain.WalkspeedBar
-Domain.Knob.Text = "16"
-Domain.Knob.BackgroundColor3 = Color3.fromRGB(0, 113, 165)
-Domain.Knob.BorderSizePixel = 0
-Domain.Knob.Position = UDim2.new(-0.00299311173, 0, -0.307692319, 0)
-Domain.Knob.Size = UDim2.new(0.0821155235, 0, 1.74036598, 0)
-Domain.Knob.ZIndex = 1004
-Domain.Knob.Font = Enum.Font.SourceSans
-Domain.Knob.TextColor3 = Color3.fromRGB(0, 0, 0)
-Domain.Knob.TextSize = 14.000
-Domain.Knob.TextTransparency = 1.000
-
-Domain.UICorner_23.CornerRadius = UDim.new(1, 0)
-Domain.UICorner_23.Parent = Domain.Knob
-
-Domain.UICorner_24.Parent = Domain.WalkspeedBar
-
-Domain.Walkspeedtext.Name = "Walkspeedtext"
-Domain.Walkspeedtext.Parent = Domain.Functionality_3
-Domain.Walkspeedtext.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Walkspeedtext.BackgroundTransparency = 1.000
-Domain.Walkspeedtext.BorderSizePixel = 0
-Domain.Walkspeedtext.Position = UDim2.new(0.0655534416, 0, 0.054206226, 0)
-Domain.Walkspeedtext.Size = UDim2.new(0.243185714, 0, 0.063640669, 0)
-Domain.Walkspeedtext.ZIndex = 1002
-Domain.Walkspeedtext.Font = Enum.Font.GothamSemibold
-Domain.Walkspeedtext.Text = "Walkspeed"
-Domain.Walkspeedtext.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Walkspeedtext.TextScaled = true
-Domain.Walkspeedtext.TextSize = 14.000
-Domain.Walkspeedtext.TextWrapped = true
-Domain.Walkspeedtext.TextXAlignment = Enum.TextXAlignment.Left
-
-Domain.jumppowerBar.Name = "jumppowerBar"
-Domain.jumppowerBar.Parent = Domain.Functionality_3
-Domain.jumppowerBar.BackgroundColor3 = Color3.fromRGB(217, 217, 217)
-Domain.jumppowerBar.BorderSizePixel = 0
-Domain.jumppowerBar.Position = UDim2.new(0.0714345127, 0, 0.231149644, 0)
-Domain.jumppowerBar.Size = UDim2.new(0.512723505, 0, 0.0160802547, 0)
-Domain.jumppowerBar.ZIndex = 1002
-
-Domain.Knob_2.Name = "Knob"
-Domain.Knob_2.Parent = Domain.jumppowerBar
-Domain.Knob_2.Text = "50"
-Domain.Knob_2.BackgroundColor3 = Color3.fromRGB(0, 113, 165)
-Domain.Knob_2.BorderSizePixel = 0
-Domain.Knob_2.Position = UDim2.new(-0.00299311173, 0, -0.307692319, 0)
-Domain.Knob_2.Size = UDim2.new(0.0821155235, 0, 1.74036598, 0)
-Domain.Knob_2.ZIndex = 1004
-Domain.Knob_2.Font = Enum.Font.SourceSans
-Domain.Knob_2.TextColor3 = Color3.fromRGB(0, 0, 0)
-Domain.Knob_2.TextSize = 14.000
-Domain.Knob_2.TextTransparency = 1.000
-
-Domain.UICorner_25.CornerRadius = UDim.new(1, 0)
-Domain.UICorner_25.Parent = Domain.Knob_2
-
-Domain.UICorner_26.Parent = Domain.jumppowerBar
-
-Domain.jumppowertext.Name = "jumppowertext"
-Domain.jumppowertext.Parent = Domain.Functionality_3
-Domain.jumppowertext.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.jumppowertext.BackgroundTransparency = 1.000
-Domain.jumppowertext.BorderSizePixel = 0
-Domain.jumppowertext.Position = UDim2.new(0.068405211, 0, 0.16231139, 0)
-Domain.jumppowertext.Size = UDim2.new(0.278646201, 0, 0.063640669, 0)
-Domain.jumppowertext.ZIndex = 1002
-Domain.jumppowertext.Font = Enum.Font.GothamSemibold
-Domain.jumppowertext.Text = "Jump Power"
-Domain.jumppowertext.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.jumppowertext.TextScaled = true
-Domain.jumppowertext.TextSize = 14.000
-Domain.jumppowertext.TextWrapped = true
-Domain.jumppowertext.TextXAlignment = Enum.TextXAlignment.Left
-
-Domain.flightBar.Name = "flightBar"
-Domain.flightBar.Parent = Domain.Functionality_3
-Domain.flightBar.BackgroundColor3 = Color3.fromRGB(217, 217, 217)
-Domain.flightBar.BorderSizePixel = 0
-Domain.flightBar.Position = UDim2.new(0.0714330226, 0, 0.407083541, 0)
-Domain.flightBar.Size = UDim2.new(0.512723505, 0, 0.0160802547, 0)
-Domain.flightBar.ZIndex = 1002
-
-Domain.Knob_3.Name = "Knob"
-Domain.Knob_3.Parent = Domain.flightBar
-Domain.Knob_3.Text = "1"
-Domain.Knob_3.BackgroundColor3 = Color3.fromRGB(173, 21, 21)
-Domain.Knob_3.BorderSizePixel = 0
-Domain.Knob_3.Position = UDim2.new(-0.00300000003, 0, -0.307999998, 0)
-Domain.Knob_3.Size = UDim2.new(0.0821155235, 0, 1.74036598, 0)
-Domain.Knob_3.ZIndex = 1004
-Domain.Knob_3.Font = Enum.Font.SourceSans
-Domain.Knob_3.TextColor3 = Color3.fromRGB(0, 0, 0)
-Domain.Knob_3.TextSize = 14.000
-Domain.Knob_3.TextTransparency = 1.000
-
-Domain.UICorner_27.CornerRadius = UDim.new(1, 0)
-Domain.UICorner_27.Parent = Domain.Knob_3
-
-Domain.UICorner_28.Parent = Domain.flightBar
-
-Domain.flighttext.Name = "flighttext"
-Domain.flighttext.Parent = Domain.Functionality_3
-Domain.flighttext.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.flighttext.BackgroundTransparency = 1.000
-Domain.flighttext.BorderSizePixel = 0
-Domain.flighttext.Position = UDim2.new(0.0712536126, 0, 0.35507074, 0)
-Domain.flighttext.Size = UDim2.new(0.215564907, 0, 0.0332895927, 0)
-Domain.flighttext.ZIndex = 1002
-Domain.flighttext.Font = Enum.Font.GothamSemibold
-Domain.flighttext.Text = "Fly Speed"
-Domain.flighttext.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.flighttext.TextScaled = true
-Domain.flighttext.TextSize = 14.000
-Domain.flighttext.TextWrapped = true
-Domain.flighttext.TextXAlignment = Enum.TextXAlignment.Left
-
-Domain.Reset.Name = "Reset"
-Domain.Reset.Parent = Domain.Functionality_3
-Domain.Reset.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
-Domain.Reset.BorderSizePixel = 0
-Domain.Reset.Position = UDim2.new(0.373408079, 0, 0.908229232, 0)
-Domain.Reset.Size = UDim2.new(0.575297475, 0, 0.0632737055, 0)
-Domain.Reset.ZIndex = 1002
-Domain.Reset.Font = Enum.Font.SourceSans
-Domain.Reset.Text = ""
-Domain.Reset.TextColor3 = Color3.fromRGB(0, 0, 0)
-Domain.Reset.TextSize = 14.000
-Domain.Reset.TextTransparency = 1.000
-
-Domain.resetText.Name = "resetText"
-Domain.resetText.Parent = Domain.Reset
-Domain.resetText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.resetText.BackgroundTransparency = 1.000
-Domain.resetText.BorderSizePixel = 0
-Domain.resetText.Position = UDim2.new(0.153664216, 0, 0.227586955, 0)
-Domain.resetText.Size = UDim2.new(0.684972942, 0, 0.550552428, 0)
-Domain.resetText.ZIndex = 1004
-Domain.resetText.Font = Enum.Font.GothamSemibold
-Domain.resetText.Text = "Reset to defaults"
-Domain.resetText.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.resetText.TextScaled = true
-Domain.resetText.TextSize = 14.000
-Domain.resetText.TextWrapped = true
-
-Domain.UICorner_29.CornerRadius = UDim.new(0, 10)
-Domain.UICorner_29.Parent = Domain.Reset
-
-Domain.respawn.Name = "respawn"
-Domain.respawn.Parent = Domain.Functionality_3
-Domain.respawn.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
-Domain.respawn.BorderSizePixel = 0
-Domain.respawn.Position = UDim2.new(0.0655774698, 0, 0.467678875, 0)
-Domain.respawn.Size = UDim2.new(0.348553777, 0, 0.0632737055, 0)
-Domain.respawn.ZIndex = 1002
-Domain.respawn.Font = Enum.Font.SourceSans
-Domain.respawn.Text = ""
-Domain.respawn.TextColor3 = Color3.fromRGB(0, 0, 0)
-Domain.respawn.TextSize = 14.000
-Domain.respawn.TextTransparency = 1.000
-
-Domain.respawnText.Name = "respawnText"
-Domain.respawnText.Parent = Domain.respawn
-Domain.respawnText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.respawnText.BackgroundTransparency = 1.000
-Domain.respawnText.BorderSizePixel = 0
-Domain.respawnText.Position = UDim2.new(0.153664216, 0, 0.227586955, 0)
-Domain.respawnText.Size = UDim2.new(0.684972942, 0, 0.550552428, 0)
-Domain.respawnText.ZIndex = 1004
-Domain.respawnText.Font = Enum.Font.GothamSemibold
-Domain.respawnText.Text = "Respawn"
-Domain.respawnText.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.respawnText.TextScaled = true
-Domain.respawnText.TextSize = 14.000
-Domain.respawnText.TextWrapped = true
-
-Domain.UICorner_30.CornerRadius = UDim.new(0, 10)
-Domain.UICorner_30.Parent = Domain.respawn
-
-Domain.refresh.Name = "refresh"
-Domain.refresh.Parent = Domain.Functionality_3
-Domain.refresh.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
-Domain.refresh.BorderSizePixel = 0
-Domain.refresh.Position = UDim2.new(0.432894886, 0, 0.467678875, 0)
-Domain.refresh.Size = UDim2.new(0.295562148, 0, 0.0632737055, 0)
-Domain.refresh.ZIndex = 1002
-Domain.refresh.Font = Enum.Font.SourceSans
-Domain.refresh.Text = ""
-Domain.refresh.TextColor3 = Color3.fromRGB(0, 0, 0)
-Domain.refresh.TextSize = 14.000
-Domain.refresh.TextTransparency = 1.000
-
-Domain.refreshText.Name = "refreshText"
-Domain.refreshText.Parent = Domain.refresh
-Domain.refreshText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.refreshText.BackgroundTransparency = 1.000
-Domain.refreshText.BorderSizePixel = 0
-Domain.refreshText.Position = UDim2.new(0.153664216, 0, 0.227586955, 0)
-Domain.refreshText.Size = UDim2.new(0.684972942, 0, 0.550552428, 0)
-Domain.refreshText.ZIndex = 1004
-Domain.refreshText.Font = Enum.Font.GothamSemibold
-Domain.refreshText.Text = "Refresh"
-Domain.refreshText.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.refreshText.TextScaled = true
-Domain.refreshText.TextSize = 14.000
-Domain.refreshText.TextWrapped = true
-
-Domain.UICorner_31.CornerRadius = UDim.new(0, 10)
-Domain.UICorner_31.Parent = Domain.refresh
-
-Domain.Fly.Name = "Fly"
-Domain.Fly.Parent = Domain.Functionality_3
-Domain.Fly.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
-Domain.Fly.BorderSizePixel = 0
-Domain.Fly.Position = UDim2.new(0.0655536279, 0, 0.543739557, 0)
-Domain.Fly.Size = UDim2.new(0.221264496, 0, 0.0600741915, 0)
-Domain.Fly.ZIndex = 1002
-Domain.Fly.Font = Enum.Font.SourceSans
-Domain.Fly.Text = ""
-Domain.Fly.TextColor3 = Color3.fromRGB(0, 0, 0)
-Domain.Fly.TextSize = 14.000
-Domain.Fly.TextTransparency = 1.000
-
-Domain.FlyText.Name = "FlyText"
-Domain.FlyText.Parent = Domain.Fly
-Domain.FlyText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.FlyText.BackgroundTransparency = 1.000
-Domain.FlyText.BorderSizePixel = 0
-Domain.FlyText.Position = UDim2.new(0.153664216, 0, 0.194131747, 0)
-Domain.FlyText.Size = UDim2.new(0.684972942, 0, 0.550552428, 0)
-Domain.FlyText.ZIndex = 1004
-Domain.FlyText.Font = Enum.Font.GothamSemibold
-Domain.FlyText.Text = "Fly"
-Domain.FlyText.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.FlyText.TextScaled = true
-Domain.FlyText.TextSize = 14.000
-Domain.FlyText.TextWrapped = true
-
-Domain.UICorner_32.CornerRadius = UDim.new(0, 10)
-Domain.UICorner_32.Parent = Domain.Fly
-
-Domain.Rejoin.Name = "Rejoin"
-Domain.Rejoin.Parent = Domain.Functionality_3
-Domain.Rejoin.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
-Domain.Rejoin.BorderSizePixel = 0
-Domain.Rejoin.Position = UDim2.new(0.307310015, 0, 0.543739557, 0)
-Domain.Rejoin.Size = UDim2.new(0.273996204, 0, 0.0600741915, 0)
-Domain.Rejoin.ZIndex = 1002
-Domain.Rejoin.Font = Enum.Font.SourceSans
-Domain.Rejoin.Text = ""
-Domain.Rejoin.TextColor3 = Color3.fromRGB(0, 0, 0)
-Domain.Rejoin.TextSize = 14.000
-Domain.Rejoin.TextTransparency = 1.000
-
-Domain.RejoinText.Name = "RejoinText"
-Domain.RejoinText.Parent = Domain.Rejoin
-Domain.RejoinText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.RejoinText.BackgroundTransparency = 1.000
-Domain.RejoinText.BorderSizePixel = 0
-Domain.RejoinText.Position = UDim2.new(0.153664216, 0, 0.194131747, 0)
-Domain.RejoinText.Size = UDim2.new(0.684972942, 0, 0.550552428, 0)
-Domain.RejoinText.ZIndex = 1004
-Domain.RejoinText.Font = Enum.Font.GothamSemibold
-Domain.RejoinText.Text = "Rejoin"
-Domain.RejoinText.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.RejoinText.TextScaled = true
-Domain.RejoinText.TextSize = 14.000
-Domain.RejoinText.TextWrapped = true
-
-Domain.UICorner_33.CornerRadius = UDim.new(0, 10)
-Domain.UICorner_33.Parent = Domain.Rejoin
-
-Domain.Serverhop.Name = "Serverhop"
-Domain.Serverhop.Parent = Domain.Functionality_3
-Domain.Serverhop.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
-Domain.Serverhop.BorderSizePixel = 0
-Domain.Serverhop.Position = UDim2.new(0.0655536279, 0, 0.615711987, 0)
-Domain.Serverhop.Size = UDim2.new(0.380759597, 0, 0.0600741915, 0)
-Domain.Serverhop.ZIndex = 1002
-Domain.Serverhop.Font = Enum.Font.SourceSans
-Domain.Serverhop.Text = ""
-Domain.Serverhop.TextColor3 = Color3.fromRGB(0, 0, 0)
-Domain.Serverhop.TextSize = 14.000
-Domain.Serverhop.TextTransparency = 1.000
-
-Domain.ServerhopText.Name = "ServerhopText"
-Domain.ServerhopText.Parent = Domain.Serverhop
-Domain.ServerhopText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.ServerhopText.BackgroundTransparency = 1.000
-Domain.ServerhopText.BorderSizePixel = 0
-Domain.ServerhopText.Position = UDim2.new(0.153664216, 0, 0.194131747, 0)
-Domain.ServerhopText.Size = UDim2.new(0.684972942, 0, 0.550552428, 0)
-Domain.ServerhopText.ZIndex = 1004
-Domain.ServerhopText.Font = Enum.Font.GothamSemibold
-Domain.ServerhopText.Text = "Serverhop"
-Domain.ServerhopText.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.ServerhopText.TextScaled = true
-Domain.ServerhopText.TextSize = 14.000
-Domain.ServerhopText.TextWrapped = true
-
-Domain.UICorner_34.CornerRadius = UDim.new(0, 10)
-Domain.UICorner_34.Parent = Domain.Serverhop
-
-Domain.Credits_3.Name = "Credits"
-Domain.Credits_3.Parent = Domain.ValuesFrame
-Domain.Credits_3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Credits_3.BackgroundTransparency = 1.000
-Domain.Credits_3.BorderSizePixel = 0
-Domain.Credits_3.Position = UDim2.new(0.042754259, 0, 0.945035338, 0)
-Domain.Credits_3.Size = UDim2.new(0.194060624, 0, 0.0415861197, 0)
-Domain.Credits_3.ZIndex = 1002
-Domain.Credits_3.Font = Enum.Font.GothamBold
-Domain.Credits_3.Text = "Domain V2"
-Domain.Credits_3.TextColor3 = Color3.fromRGB(122, 122, 122)
-Domain.Credits_3.TextScaled = true
-Domain.Credits_3.TextSize = 14.000
-Domain.Credits_3.TextWrapped = true
-Domain.Credits_3.TextXAlignment = Enum.TextXAlignment.Left
-
-Domain.UITextSizeConstraint_6.Parent = Domain.Credits_3
-Domain.UITextSizeConstraint_6.MaxTextSize = 20
-
-Domain.Shadow_6.Name = "Shadow"
-Domain.Shadow_6.Parent = Domain.ValuesFrame
-Domain.Shadow_6.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Shadow_6.BackgroundTransparency = 1.000
-Domain.Shadow_6.BorderSizePixel = 0
-Domain.Shadow_6.Position = UDim2.new(-0.0620924681, 0, -0.231648937, 0)
-Domain.Shadow_6.Size = UDim2.new(1.11987317, 0, 1.54196727, 0)
-Domain.Shadow_6.ZIndex = 999
-Domain.Shadow_6.Image = "rbxassetid://3523728077"
-Domain.Shadow_6.ImageColor3 = Color3.fromRGB(33, 33, 33)
-Domain.Shadow_6.ImageTransparency = 0.600
-
-Domain.ExitFrame_3.Name = "ExitFrame"
-Domain.ExitFrame_3.Parent = Domain.ValuesFrame
-Domain.ExitFrame_3.BackgroundColor3 = Color3.fromRGB(31, 31, 31)
-Domain.ExitFrame_3.BackgroundTransparency = 1.000
-Domain.ExitFrame_3.BorderSizePixel = 0
-Domain.ExitFrame_3.Position = UDim2.new(0.867858231, 0, 0.00711072702, 0)
-Domain.ExitFrame_3.Size = UDim2.new(0.103256203, 0, 0.0643658787, 0)
-Domain.ExitFrame_3.ZIndex = 1010
-
-Domain.Exit_3.Name = "Exit"
-Domain.Exit_3.Parent = Domain.ExitFrame_3
-Domain.Exit_3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Exit_3.BackgroundTransparency = 1.000
-Domain.Exit_3.BorderSizePixel = 0
-Domain.Exit_3.Position = UDim2.new(0.039441824, 0, 0, 0)
-Domain.Exit_3.Size = UDim2.new(0.960559964, 0, 0.960559964, 0)
-Domain.Exit_3.ZIndex = 1009
-Domain.Exit_3.Text = ""
-Domain.Exit_3.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Exit_3.TextScaled = true
-Domain.Exit_3.TextSize = 14.000
-Domain.Exit_3.TextTransparency = 1.000
-Domain.Exit_3.TextWrapped = true
-
-Domain.ExitText_3.Name = "ExitText"
-Domain.ExitText_3.Parent = Domain.ExitFrame_3
-Domain.ExitText_3.AnchorPoint = Vector2.new(0.5, 0.5)
-Domain.ExitText_3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.ExitText_3.BackgroundTransparency = 1.000
-Domain.ExitText_3.BorderSizePixel = 0
-Domain.ExitText_3.Position = UDim2.new(0.5, 0, 0.5, 0)
-Domain.ExitText_3.Size = UDim2.new(0.590867102, 0, 0.590868056, 0)
-Domain.ExitText_3.ZIndex = 1011
-Domain.ExitText_3.Font = Enum.Font.GothamSemibold
-Domain.ExitText_3.Text = "X"
-Domain.ExitText_3.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.ExitText_3.TextScaled = true
-Domain.ExitText_3.TextSize = 14.000
-Domain.ExitText_3.TextTransparency = 0.100
-Domain.ExitText_3.TextWrapped = true
-Domain.ExitText_3.TextYAlignment = Enum.TextYAlignment.Bottom
-
-Domain.UICorner_35.Parent = Domain.ExitFrame_3
-
-Domain.PlayersFrame.Name = "PlayersFrame"
-Domain.PlayersFrame.Parent = Domain.Pages
-Domain.PlayersFrame.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
-Domain.PlayersFrame.BorderSizePixel = 0
-Domain.PlayersFrame.Size = UDim2.new(1, 0, 1, 0)
-Domain.PlayersFrame.Visible = false
-Domain.PlayersFrame.ZIndex = 1000
-
-Domain.UICorner_36.CornerRadius = UDim.new(0, 12)
-Domain.UICorner_36.Parent = Domain.PlayersFrame
-
-Domain.Title_5.Name = "Title"
-Domain.Title_5.Parent = Domain.PlayersFrame
-Domain.Title_5.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Title_5.BackgroundTransparency = 1.000
-Domain.Title_5.BorderSizePixel = 0
-Domain.Title_5.Position = UDim2.new(0.0583828762, 0, 0.0188631155, 0)
-Domain.Title_5.Size = UDim2.new(0.194060922, 0, 0.0415861234, 0)
-Domain.Title_5.ZIndex = 1002
-Domain.Title_5.Font = Enum.Font.GothamBold
-Domain.Title_5.Text = "Players"
-Domain.Title_5.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Title_5.TextScaled = true
-Domain.Title_5.TextSize = 14.000
-Domain.Title_5.TextWrapped = true
-Domain.Title_5.TextXAlignment = Enum.TextXAlignment.Left
-
-Domain.UITextSizeConstraint_7.Parent = Domain.Title_5
-Domain.UITextSizeConstraint_7.MaxTextSize = 20
-
-Domain.Functionality_4.Name = "Functionality"
-Domain.Functionality_4.Parent = Domain.PlayersFrame
-Domain.Functionality_4.BackgroundColor3 = Color3.fromRGB(31, 31, 31)
-Domain.Functionality_4.BorderSizePixel = 0
-Domain.Functionality_4.Position = UDim2.new(0, 0, 0.079135783, 0)
-Domain.Functionality_4.Size = UDim2.new(1, 0, 0.920864165, 0)
-Domain.Functionality_4.ZIndex = 1001
-
-Domain.UICorner_37.CornerRadius = UDim.new(0, 12)
-Domain.UICorner_37.Parent = Domain.Functionality_4
-
-Domain.Playerlist.Name = "Playerlist"
-Domain.Playerlist.Parent = Domain.Functionality_4
-Domain.Playerlist.Active = true
-Domain.Playerlist.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Playerlist.BackgroundTransparency = 1.000
-Domain.Playerlist.BorderSizePixel = 0
-Domain.Playerlist.Position = UDim2.new(-3.48116345e-07, 0, 0.0193044934, 0)
-Domain.Playerlist.Size = UDim2.new(1.00000012, 0, 0.883157432, 0)
-Domain.Playerlist.ZIndex = 1002
-Domain.Playerlist.CanvasSize = UDim2.new(0, 0, 4, 0)
-Domain.Playerlist.ScrollBarThickness = 0
-
-Domain.Template_2.Name = "Template"
-Domain.Template_2.Parent = Domain.Playerlist
-Domain.Template_2.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
-Domain.Template_2.BorderSizePixel = 0
-Domain.Template_2.Position = UDim2.new(0.0260001123, 0, 0, 0)
-Domain.Template_2.Size = UDim2.new(0.94581604, 0, 0.0219818428, 0)
-Domain.Template_2.ZIndex = 1002
-
-Domain.UICorner_38.Parent = Domain.Template_2
-
-Domain.Username_2.Name = "Username"
-Domain.Username_2.Parent = Domain.Template_2
-Domain.Username_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Username_2.BackgroundTransparency = 1.000
-Domain.Username_2.BorderSizePixel = 0
-Domain.Username_2.Position = UDim2.new(0.158810571, 0, 0.280436695, 0)
-Domain.Username_2.Size = UDim2.new(0.706474185, 0, 0.398253202, 0)
-Domain.Username_2.ZIndex = 1003
-Domain.Username_2.Font = Enum.Font.GothamBold
-Domain.Username_2.Text = "Username"
-Domain.Username_2.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Username_2.TextScaled = true
-Domain.Username_2.TextSize = 14.000
-Domain.Username_2.TextWrapped = true
-Domain.Username_2.TextXAlignment = Enum.TextXAlignment.Left
-Domain.Username_2.TextYAlignment = Enum.TextYAlignment.Bottom
-
-Domain.Shadow_7.Name = "Shadow"
-Domain.Shadow_7.Parent = Domain.Template_2
-Domain.Shadow_7.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Shadow_7.BackgroundTransparency = 1.000
-Domain.Shadow_7.BorderSizePixel = 0
-Domain.Shadow_7.Position = UDim2.new(-0.0620923266, 0, -0.394876897, 0)
-Domain.Shadow_7.Size = UDim2.new(1.11987317, 0, 1.8920356, 0)
-Domain.Shadow_7.ZIndex = 1001
-Domain.Shadow_7.Image = "rbxassetid://3523728077"
-Domain.Shadow_7.ImageColor3 = Color3.fromRGB(33, 33, 33)
-Domain.Shadow_7.ImageTransparency = 0.700
-
-Domain.AvatarPlayerlist.Name = "AvatarPlayerlist"
-Domain.AvatarPlayerlist.Parent = Domain.Template_2
-Domain.AvatarPlayerlist.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.AvatarPlayerlist.BackgroundTransparency = 1.000
-Domain.AvatarPlayerlist.BorderSizePixel = 0
-Domain.AvatarPlayerlist.Position = UDim2.new(0.0361816995, 0, 0.143683195, 0)
-Domain.AvatarPlayerlist.Size = UDim2.new(0.0964893028, 0, 0.70264101, 0)
-Domain.AvatarPlayerlist.ZIndex = 1004
-Domain.AvatarPlayerlist.Image = "rbxasset://textures/ui/GuiImagePlaceholder.png"
-
-Domain.UICorner_39.CornerRadius = UDim.new(1, 0)
-Domain.UICorner_39.Parent = Domain.AvatarPlayerlist
-
-Domain.More.Name = "More"
-Domain.More.Parent = Domain.Template_2
-Domain.More.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.More.BackgroundTransparency = 1.000
-Domain.More.BorderSizePixel = 0
-Domain.More.Position = UDim2.new(0.862330377, 0, 0.153685316, 0)
-Domain.More.Size = UDim2.new(0.0932062119, 0, 0.678690135, 0)
-Domain.More.ZIndex = 1004
-Domain.More.Image = "rbxassetid://3926305904"
-Domain.More.ImageRectOffset = Vector2.new(4, 804)
-Domain.More.ImageRectSize = Vector2.new(36, 36)
-Domain.More.ImageTransparency = 0.700
-
-Domain.Star.Name = "Star"
-Domain.Star.Parent = Domain.Template_2
-Domain.Star.BackgroundTransparency = 1.000
-Domain.Star.BorderSizePixel = 0
-Domain.Star.LayoutOrder = 5
-Domain.Star.Position = UDim2.new(0.0360470153, 0, 0.168523699, 0)
-Domain.Star.Size = UDim2.new(0.081925042, 0, 0.601870358, 0)
-Domain.Star.ZIndex = 1016
-Domain.Star.Image = "rbxassetid://3926305904"
-Domain.Star.ImageRectOffset = Vector2.new(564, 764)
-Domain.Star.ImageRectSize = Vector2.new(36, 36)
-
-Domain.UIListLayout2.Name = "UIListLayout2"
-Domain.UIListLayout2.Parent = Domain.Playerlist
-Domain.UIListLayout2.HorizontalAlignment = Enum.HorizontalAlignment.Center
-Domain.UIListLayout2.SortOrder = Enum.SortOrder.LayoutOrder
-Domain.UIListLayout2.Padding = UDim.new(0, 5)
-
-Domain.Search.Name = "Search"
-Domain.Search.Parent = Domain.Functionality_4
-Domain.Search.BackgroundColor3 = Color3.fromRGB(31, 31, 31)
-Domain.Search.BorderSizePixel = 0
-Domain.Search.Position = UDim2.new(0.409999996, 0, -0.0780000016, 0)
-Domain.Search.Size = UDim2.new(0.45038411, 0, 0.0705203265, 0)
-Domain.Search.Visible = false
-Domain.Search.ZIndex = 1004
-Domain.Search.Font = Enum.Font.GothamSemibold
-Domain.Search.PlaceholderText = "Search"
-Domain.Search.Text = ""
-Domain.Search.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Search.TextSize = 25.000
-Domain.Search.TextWrapped = true
-
-Domain.UICorner_40.Parent = Domain.Search
-
-Domain.UITextSizeConstraint_8.Parent = Domain.Search
-Domain.UITextSizeConstraint_8.MaxTextSize = 17
-
-Domain.Credits_4.Name = "Credits"
-Domain.Credits_4.Parent = Domain.PlayersFrame
-Domain.Credits_4.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Credits_4.BackgroundTransparency = 1.000
-Domain.Credits_4.BorderSizePixel = 0
-Domain.Credits_4.Position = UDim2.new(0.042754259, 0, 0.945035338, 0)
-Domain.Credits_4.Size = UDim2.new(0.194060624, 0, 0.0415861197, 0)
-Domain.Credits_4.ZIndex = 1002
-Domain.Credits_4.Font = Enum.Font.GothamBold
-Domain.Credits_4.Text = "Domain V2"
-Domain.Credits_4.TextColor3 = Color3.fromRGB(122, 122, 122)
-Domain.Credits_4.TextScaled = true
-Domain.Credits_4.TextSize = 14.000
-Domain.Credits_4.TextWrapped = true
-Domain.Credits_4.TextXAlignment = Enum.TextXAlignment.Left
-
-Domain.UITextSizeConstraint_9.Parent = Domain.Credits_4
-Domain.UITextSizeConstraint_9.MaxTextSize = 20
-
-Domain.Shadow_8.Name = "Shadow"
-Domain.Shadow_8.Parent = Domain.PlayersFrame
-Domain.Shadow_8.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Shadow_8.BackgroundTransparency = 1.000
-Domain.Shadow_8.BorderSizePixel = 0
-Domain.Shadow_8.Position = UDim2.new(-0.0506853908, 0, -0.231648937, 0)
-Domain.Shadow_8.Size = UDim2.new(1.11987317, 0, 1.54196727, 0)
-Domain.Shadow_8.ZIndex = 999
-Domain.Shadow_8.Image = "rbxassetid://3523728077"
-Domain.Shadow_8.ImageColor3 = Color3.fromRGB(33, 33, 33)
-Domain.Shadow_8.ImageTransparency = 0.600
-
-Domain.ExitFrame_4.Name = "ExitFrame"
-Domain.ExitFrame_4.Parent = Domain.PlayersFrame
-Domain.ExitFrame_4.BackgroundColor3 = Color3.fromRGB(31, 31, 31)
-Domain.ExitFrame_4.BackgroundTransparency = 1.000
-Domain.ExitFrame_4.BorderSizePixel = 0
-Domain.ExitFrame_4.Position = UDim2.new(0.867858231, 0, 0.00711072702, 0)
-Domain.ExitFrame_4.Size = UDim2.new(0.103256203, 0, 0.0643658787, 0)
-Domain.ExitFrame_4.ZIndex = 1010
-
-Domain.Exit_4.Name = "Exit"
-Domain.Exit_4.Parent = Domain.ExitFrame_4
-Domain.Exit_4.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Exit_4.BackgroundTransparency = 1.000
-Domain.Exit_4.BorderSizePixel = 0
-Domain.Exit_4.Position = UDim2.new(0.039441824, 0, 0, 0)
-Domain.Exit_4.Size = UDim2.new(0.960559964, 0, 0.960559964, 0)
-Domain.Exit_4.ZIndex = 1009
-Domain.Exit_4.Text = ""
-Domain.Exit_4.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Exit_4.TextScaled = true
-Domain.Exit_4.TextSize = 14.000
-Domain.Exit_4.TextTransparency = 1.000
-Domain.Exit_4.TextWrapped = true
-
-Domain.ExitText_4.Name = "ExitText"
-Domain.ExitText_4.Parent = Domain.ExitFrame_4
-Domain.ExitText_4.AnchorPoint = Vector2.new(0.5, 0.5)
-Domain.ExitText_4.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.ExitText_4.BackgroundTransparency = 1.000
-Domain.ExitText_4.BorderSizePixel = 0
-Domain.ExitText_4.Position = UDim2.new(0.5, 0, 0.5, 0)
-Domain.ExitText_4.Size = UDim2.new(0.590867102, 0, 0.590868056, 0)
-Domain.ExitText_4.ZIndex = 1011
-Domain.ExitText_4.Font = Enum.Font.GothamSemibold
-Domain.ExitText_4.Text = "X"
-Domain.ExitText_4.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.ExitText_4.TextScaled = true
-Domain.ExitText_4.TextSize = 14.000
-Domain.ExitText_4.TextTransparency = 0.100
-Domain.ExitText_4.TextWrapped = true
-Domain.ExitText_4.TextYAlignment = Enum.TextYAlignment.Bottom
-
-Domain.UICorner_41.Parent = Domain.ExitFrame_4
-
-Domain.AboutFrame.Name = "AboutFrame"
-Domain.AboutFrame.Parent = Domain.Pages
-Domain.AboutFrame.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
-Domain.AboutFrame.BorderSizePixel = 0
-Domain.AboutFrame.Size = UDim2.new(1, 0, 1, 0)
-Domain.AboutFrame.Visible = false
-Domain.AboutFrame.ZIndex = 1000
-
-Domain.UICorner_42.CornerRadius = UDim.new(0, 12)
-Domain.UICorner_42.Parent = Domain.AboutFrame
-
-Domain.Title_6.Name = "Title"
-Domain.Title_6.Parent = Domain.AboutFrame
-Domain.Title_6.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Title_6.BackgroundTransparency = 1.000
-Domain.Title_6.BorderSizePixel = 0
-Domain.Title_6.Position = UDim2.new(0.0399028361, 0, 0.0195726734, 0)
-Domain.Title_6.Size = UDim2.new(0.327975392, 0, 0.0398667008, 0)
-Domain.Title_6.ZIndex = 1002
-Domain.Title_6.Font = Enum.Font.GothamBold
-Domain.Title_6.Text = "About"
-Domain.Title_6.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Title_6.TextScaled = true
-Domain.Title_6.TextSize = 14.000
-Domain.Title_6.TextWrapped = true
-Domain.Title_6.TextXAlignment = Enum.TextXAlignment.Left
-
-Domain.UITextSizeConstraint_10.Parent = Domain.Title_6
-Domain.UITextSizeConstraint_10.MaxTextSize = 20
-
-Domain.Functionality_5.Name = "Functionality"
-Domain.Functionality_5.Parent = Domain.AboutFrame
-Domain.Functionality_5.BackgroundColor3 = Color3.fromRGB(31, 31, 31)
-Domain.Functionality_5.BorderSizePixel = 0
-Domain.Functionality_5.Position = UDim2.new(0, 0, 0.079135783, 0)
-Domain.Functionality_5.Size = UDim2.new(1, 0, 0.920864165, 0)
-Domain.Functionality_5.ZIndex = 1001
-
-Domain.UICorner_43.CornerRadius = UDim.new(0, 12)
-Domain.UICorner_43.Parent = Domain.Functionality_5
-
-Domain.About.Name = "About"
-Domain.About.Parent = Domain.Functionality_5
-Domain.About.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.About.BackgroundTransparency = 1.000
-Domain.About.BorderSizePixel = 0
-Domain.About.Position = UDim2.new(0.0428942032, 0, 0.0210607424, 0)
-Domain.About.Size = UDim2.new(0.909608364, 0, 0.0326033197, 0)
-Domain.About.ZIndex = 1002
-Domain.About.Font = Enum.Font.GothamBold
-Domain.About.Text = "Domain: Version 2,"
-Domain.About.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.About.TextScaled = true
-Domain.About.TextSize = 14.000
-Domain.About.TextStrokeColor3 = Color3.fromRGB(255, 255, 255)
-Domain.About.TextWrapped = true
-Domain.About.TextXAlignment = Enum.TextXAlignment.Left
-Domain.About.TextYAlignment = Enum.TextYAlignment.Top
-
-Domain.About_2.Name = "About"
-Domain.About_2.Parent = Domain.Functionality_5
-Domain.About_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.About_2.BackgroundTransparency = 1.000
-Domain.About_2.BorderSizePixel = 0
-Domain.About_2.Position = UDim2.new(0.0428941995, 0, 0.0579257347, 0)
-Domain.About_2.Size = UDim2.new(0.909608364, 0, 0.0324168615, 0)
-Domain.About_2.ZIndex = 1002
-Domain.About_2.Font = Enum.Font.GothamSemibold
-Domain.About_2.Text = "brought to you by Shlex Softworks"
-Domain.About_2.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.About_2.TextScaled = true
-Domain.About_2.TextSize = 14.000
-Domain.About_2.TextStrokeColor3 = Color3.fromRGB(255, 255, 255)
-Domain.About_2.TextWrapped = true
-Domain.About_2.TextXAlignment = Enum.TextXAlignment.Left
-Domain.About_2.TextYAlignment = Enum.TextYAlignment.Top
-
-Domain.About_3.Name = "About"
-Domain.About_3.Parent = Domain.Functionality_5
-Domain.About_3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.About_3.BackgroundTransparency = 1.000
-Domain.About_3.BorderSizePixel = 0
-Domain.About_3.Position = UDim2.new(0.0371906646, 0, 0.25850603, 0)
-Domain.About_3.Size = UDim2.new(0.909608364, 0, 0.0326033197, 0)
-Domain.About_3.ZIndex = 1002
-Domain.About_3.Font = Enum.Font.GothamBlack
-Domain.About_3.Text = "Discord Server"
-Domain.About_3.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.About_3.TextScaled = true
-Domain.About_3.TextSize = 14.000
-Domain.About_3.TextStrokeColor3 = Color3.fromRGB(255, 255, 255)
-Domain.About_3.TextWrapped = true
-Domain.About_3.TextXAlignment = Enum.TextXAlignment.Left
-Domain.About_3.TextYAlignment = Enum.TextYAlignment.Top
-
-Domain.Link.Name = "Link"
-Domain.Link.Parent = Domain.Functionality_5
-Domain.Link.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Link.BackgroundTransparency = 1.000
-Domain.Link.BorderSizePixel = 0
-Domain.Link.Position = UDim2.new(0.0371906608, 0, 0.295184523, 0)
-Domain.Link.Size = UDim2.new(0.620413125, 0, 0.0326033197, 0)
-Domain.Link.ZIndex = 1002
-Domain.Link.Font = Enum.Font.GothamBold
-Domain.Link.Text = "discord.gg/jyySpgkFSp"
-Domain.Link.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Link.TextScaled = true
-Domain.Link.TextSize = 14.000
-Domain.Link.TextStrokeColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Link.TextWrapped = true
-Domain.Link.TextXAlignment = Enum.TextXAlignment.Left
-Domain.Link.TextYAlignment = Enum.TextYAlignment.Top
-
-Domain.About_4.Name = "About"
-Domain.About_4.Parent = Domain.Functionality_5
-Domain.About_4.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.About_4.BackgroundTransparency = 1.000
-Domain.About_4.BorderSizePixel = 0
-Domain.About_4.Position = UDim2.new(0.0371906608, 0, 0.150587305, 0)
-Domain.About_4.Size = UDim2.new(0.829617858, 0, 0.0626301542, 0)
-Domain.About_4.ZIndex = 1002
-Domain.About_4.Font = Enum.Font.GothamSemibold
-Domain.About_4.Text = "Hey, if you're showcasing this, you can get some perks in the Discord server!"
-Domain.About_4.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.About_4.TextScaled = true
-Domain.About_4.TextSize = 14.000
-Domain.About_4.TextStrokeColor3 = Color3.fromRGB(255, 255, 255)
-Domain.About_4.TextWrapped = true
-Domain.About_4.TextXAlignment = Enum.TextXAlignment.Left
-Domain.About_4.TextYAlignment = Enum.TextYAlignment.Top
-
-Domain.About_5.Name = "About"
-Domain.About_5.Parent = Domain.Functionality_5
-Domain.About_5.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.About_5.BackgroundTransparency = 1.000
-Domain.About_5.BorderSizePixel = 0
-Domain.About_5.Position = UDim2.new(0.0428941995, 0, 0.876436234, 0)
-Domain.About_5.Size = UDim2.new(0.829617858, 0, 0.0626301542, 0)
-Domain.About_5.ZIndex = 1002
-Domain.About_5.Font = Enum.Font.GothamBlack
-Domain.About_5.Text = "Some features use code from Infinite Yield by Edge"
-Domain.About_5.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.About_5.TextScaled = true
-Domain.About_5.TextSize = 14.000
-Domain.About_5.TextStrokeColor3 = Color3.fromRGB(255, 255, 255)
-Domain.About_5.TextWrapped = true
-Domain.About_5.TextXAlignment = Enum.TextXAlignment.Left
-Domain.About_5.TextYAlignment = Enum.TextYAlignment.Top
-
-Domain.About_6.Name = "About"
-Domain.About_6.Parent = Domain.Functionality_5
-Domain.About_6.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.About_6.BackgroundTransparency = 1.000
-Domain.About_6.BorderSizePixel = 0
-Domain.About_6.Position = UDim2.new(0.0371906646, 0, 0.115652762, 0)
-Domain.About_6.Size = UDim2.new(0.909608364, 0, 0.0326033197, 0)
-Domain.About_6.ZIndex = 1002
-Domain.About_6.Font = Enum.Font.GothamBold
-Domain.About_6.Text = "Showcasing"
-Domain.About_6.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.About_6.TextScaled = true
-Domain.About_6.TextSize = 14.000
-Domain.About_6.TextStrokeColor3 = Color3.fromRGB(255, 255, 255)
-Domain.About_6.TextWrapped = true
-Domain.About_6.TextXAlignment = Enum.TextXAlignment.Left
-Domain.About_6.TextYAlignment = Enum.TextYAlignment.Top
-
-Domain.CopyButtonFrame.Name = "CopyButtonFrame"
-Domain.CopyButtonFrame.Parent = Domain.Functionality_5
-Domain.CopyButtonFrame.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
-Domain.CopyButtonFrame.BorderSizePixel = 0
-Domain.CopyButtonFrame.Position = UDim2.new(0.585601747, 0, 0.275805533, 0)
-Domain.CopyButtonFrame.Size = UDim2.new(0.0994627476, 0, 0.0681438595, 0)
-Domain.CopyButtonFrame.ZIndex = 1005
-
-Domain.UICorner_44.CornerRadius = UDim.new(0, 10)
-Domain.UICorner_44.Parent = Domain.CopyButtonFrame
-
-Domain.CopyButton.Name = "CopyButton"
-Domain.CopyButton.Parent = Domain.CopyButtonFrame
-Domain.CopyButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.CopyButton.BackgroundTransparency = 1.000
-Domain.CopyButton.BorderSizePixel = 0
-Domain.CopyButton.Position = UDim2.new(0.126002312, 0, 0.123000614, 0)
-Domain.CopyButton.Size = UDim2.new(0.717000008, 0, 0.713, 0)
-Domain.CopyButton.ZIndex = 1006
-Domain.CopyButton.Image = "rbxassetid://3926305904"
-Domain.CopyButton.ImageRectOffset = Vector2.new(164, 924)
-Domain.CopyButton.ImageRectSize = Vector2.new(36, 36)
-
-Domain.Credits_5.Name = "Credits"
-Domain.Credits_5.Parent = Domain.AboutFrame
-Domain.Credits_5.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Credits_5.BackgroundTransparency = 1.000
-Domain.Credits_5.BorderSizePixel = 0
-Domain.Credits_5.Position = UDim2.new(0.042754259, 0, 0.945035338, 0)
-Domain.Credits_5.Size = UDim2.new(0.194060624, 0, 0.0415861197, 0)
-Domain.Credits_5.ZIndex = 1002
-Domain.Credits_5.Font = Enum.Font.GothamBold
-Domain.Credits_5.Text = "Domain V2"
-Domain.Credits_5.TextColor3 = Color3.fromRGB(122, 122, 122)
-Domain.Credits_5.TextScaled = true
-Domain.Credits_5.TextSize = 14.000
-Domain.Credits_5.TextWrapped = true
-Domain.Credits_5.TextXAlignment = Enum.TextXAlignment.Left
-
-Domain.UITextSizeConstraint_11.Parent = Domain.Credits_5
-Domain.UITextSizeConstraint_11.MaxTextSize = 20
-
-Domain.Shadow_9.Name = "Shadow"
-Domain.Shadow_9.Parent = Domain.AboutFrame
-Domain.Shadow_9.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Shadow_9.BackgroundTransparency = 1.000
-Domain.Shadow_9.BorderSizePixel = 0
-Domain.Shadow_9.Position = UDim2.new(-0.0620924681, 0, -0.231648937, 0)
-Domain.Shadow_9.Size = UDim2.new(1.11987317, 0, 1.54196727, 0)
-Domain.Shadow_9.ZIndex = 999
-Domain.Shadow_9.Image = "rbxassetid://3523728077"
-Domain.Shadow_9.ImageColor3 = Color3.fromRGB(33, 33, 33)
-Domain.Shadow_9.ImageTransparency = 0.600
-
-Domain.ExitFrame_5.Name = "ExitFrame"
-Domain.ExitFrame_5.Parent = Domain.AboutFrame
-Domain.ExitFrame_5.BackgroundColor3 = Color3.fromRGB(31, 31, 31)
-Domain.ExitFrame_5.BackgroundTransparency = 1.000
-Domain.ExitFrame_5.BorderSizePixel = 0
-Domain.ExitFrame_5.Position = UDim2.new(0.867858231, 0, 0.00711072702, 0)
-Domain.ExitFrame_5.Size = UDim2.new(0.103256203, 0, 0.0643658787, 0)
-Domain.ExitFrame_5.ZIndex = 1010
-
-Domain.Exit_5.Name = "Exit"
-Domain.Exit_5.Parent = Domain.ExitFrame_5
-Domain.Exit_5.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Exit_5.BackgroundTransparency = 1.000
-Domain.Exit_5.BorderSizePixel = 0
-Domain.Exit_5.Position = UDim2.new(0.039441824, 0, 0, 0)
-Domain.Exit_5.Size = UDim2.new(0.960559964, 0, 0.960559964, 0)
-Domain.Exit_5.ZIndex = 1009
-Domain.Exit_5.Text = ""
-Domain.Exit_5.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Exit_5.TextScaled = true
-Domain.Exit_5.TextSize = 14.000
-Domain.Exit_5.TextTransparency = 1.000
-Domain.Exit_5.TextWrapped = true
-
-Domain.ExitText_5.Name = "ExitText"
-Domain.ExitText_5.Parent = Domain.ExitFrame_5
-Domain.ExitText_5.AnchorPoint = Vector2.new(0.5, 0.5)
-Domain.ExitText_5.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.ExitText_5.BackgroundTransparency = 1.000
-Domain.ExitText_5.BorderSizePixel = 0
-Domain.ExitText_5.Position = UDim2.new(0.5, 0, 0.5, 0)
-Domain.ExitText_5.Size = UDim2.new(0.590867102, 0, 0.590868056, 0)
-Domain.ExitText_5.ZIndex = 1011
-Domain.ExitText_5.Font = Enum.Font.GothamSemibold
-Domain.ExitText_5.Text = "X"
-Domain.ExitText_5.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.ExitText_5.TextScaled = true
-Domain.ExitText_5.TextSize = 14.000
-Domain.ExitText_5.TextTransparency = 0.100
-Domain.ExitText_5.TextWrapped = true
-Domain.ExitText_5.TextYAlignment = Enum.TextYAlignment.Bottom
-
-Domain.UICorner_45.Parent = Domain.ExitFrame_5
-
-Domain.NotificationClip.Name = "NotificationClip"
-Domain.NotificationClip.Parent = Domain.Other
-Domain.NotificationClip.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.NotificationClip.BackgroundTransparency = 1.000
-Domain.NotificationClip.BorderSizePixel = 0
-Domain.NotificationClip.ClipsDescendants = true
-Domain.NotificationClip.Position = UDim2.new(-18.8124104, 0, -0.482687026, 0)
-Domain.NotificationClip.Size = UDim2.new(15.9392166, 0, 0.865230322, 0)
-Domain.NotificationClip.ZIndex = 1000
-
-Domain.Template_3.Name = "Template"
-Domain.Template_3.Parent = Domain.NotificationClip
-Domain.Template_3.AnchorPoint = Vector2.new(0.5, 0.5)
-Domain.Template_3.BackgroundColor3 = Color3.fromRGB(0, 140, 103)
-Domain.Template_3.BackgroundTransparency = 1.000
-Domain.Template_3.BorderSizePixel = 0
-Domain.Template_3.Position = UDim2.new(0.5, 0, 0.0500000007, 0)
-Domain.Template_3.Size = UDim2.new(1, 0, 0.0585898906, 0)
-Domain.Template_3.Visible = false
-Domain.Template_3.ZIndex = 1000
-
-Domain.Content_2.Name = "Content"
-Domain.Content_2.Parent = Domain.Template_3
-Domain.Content_2.AnchorPoint = Vector2.new(0.5, 0.5)
-Domain.Content_2.BackgroundColor3 = Color3.fromRGB(0, 115, 84)
-Domain.Content_2.BorderSizePixel = 0
-Domain.Content_2.Position = UDim2.new(0.5, 0, 0.5, 0)
-Domain.Content_2.Size = UDim2.new(0.964834988, 0, 1, 0)
-Domain.Content_2.ZIndex = 100
-Domain.Content_2.Font = Enum.Font.GothamBold
-Domain.Content_2.Text = "Welcome, rivertropic."
-Domain.Content_2.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Content_2.TextScaled = true
-Domain.Content_2.TextSize = 16.000
-Domain.Content_2.TextWrapped = true
-
-Domain.UITextSizeConstraint_12.Parent = Domain.Content_2
-Domain.UITextSizeConstraint_12.MaxTextSize = 16
-
-Domain.UICorner_46.CornerRadius = UDim.new(0, 10)
-Domain.UICorner_46.Parent = Domain.Content_2
-
-Domain.FPS.Name = "FPS"
-Domain.FPS.Parent = Domain.Other
-Domain.FPS.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-Domain.FPS.BackgroundTransparency = 1.000
-Domain.FPS.BorderSizePixel = 0
-Domain.FPS.Position = UDim2.new(-21.2269993, 0, -0.616999984, 0)
-Domain.FPS.Size = UDim2.new(1.10686302, 0, 0.0669017285, 0)
-Domain.FPS.ZIndex = 10000
-
-Domain.TextLabel.Parent = Domain.FPS
-Domain.TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.TextLabel.BackgroundTransparency = 1.000
-Domain.TextLabel.BorderSizePixel = 0
-Domain.TextLabel.Position = UDim2.new(0.391390681, 0, 0.233096242, 0)
-Domain.TextLabel.Size = UDim2.new(0.495242238, 0, 0.5, 0)
-Domain.TextLabel.ZIndex = 30000
-Domain.TextLabel.Font = Enum.Font.GothamBold
-Domain.TextLabel.Text = "100"
-Domain.TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.TextLabel.TextScaled = true
-Domain.TextLabel.TextSize = 14.000
-Domain.TextLabel.TextTransparency = 1.000
-Domain.TextLabel.TextWrapped = true
-
-Domain.UICorner_47.Parent = Domain.FPS
-
-Domain.Fpsimage.Name = "Fpsimage"
-Domain.Fpsimage.Parent = Domain.FPS
-Domain.Fpsimage.BackgroundTransparency = 1.000
-Domain.Fpsimage.BorderSizePixel = 0
-Domain.Fpsimage.Position = UDim2.new(0.0802138001, 0, 0.116548121, 0)
-Domain.Fpsimage.Size = UDim2.new(0.297777086, 0, 0.733096242, 0)
-Domain.Fpsimage.ZIndex = 100000
-Domain.Fpsimage.Image = "rbxassetid://3926307971"
-Domain.Fpsimage.ImageRectOffset = Vector2.new(444, 364)
-Domain.Fpsimage.ImageRectSize = Vector2.new(36, 36)
-Domain.Fpsimage.ImageTransparency = 1.000
-
-Domain.Home.Name = "Home"
-Domain.Home.Parent = Domain.Other
-Domain.Home.BackgroundColor3 = Color3.fromRGB(31, 31, 31)
-Domain.Home.BackgroundTransparency = 1.000
-Domain.Home.BorderSizePixel = 0
-Domain.Home.Position = UDim2.new(-10.8439941, 0, -0.552081406, 0)
-Domain.Home.Size = UDim2.new(11.6363373, 0, 2.1054101, 0)
-Domain.Home.Visible = false
-
-Domain.Date.Name = "Date"
-Domain.Date.Parent = Domain.Home
-Domain.Date.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Date.BackgroundTransparency = 1.000
-Domain.Date.BorderSizePixel = 0
-Domain.Date.Position = UDim2.new(0.300832152, 0, 0.0287686884, 0)
-Domain.Date.Size = UDim2.new(0.670576036, 0, 0.0295379832, 0)
-Domain.Date.ZIndex = 10
-Domain.Date.Font = Enum.Font.GothamBold
-Domain.Date.Text = "Tuesday, 19th January"
-Domain.Date.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Date.TextScaled = true
-Domain.Date.TextSize = 14.000
-Domain.Date.TextWrapped = true
-Domain.Date.TextXAlignment = Enum.TextXAlignment.Right
-
-Domain.Shadow_10.Name = "Shadow"
-Domain.Shadow_10.Parent = Domain.Home
-Domain.Shadow_10.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Shadow_10.BackgroundTransparency = 1.000
-Domain.Shadow_10.BorderSizePixel = 0
-Domain.Shadow_10.Position = UDim2.new(-1.06500006, 0, -0.122000001, 0)
-Domain.Shadow_10.Size = UDim2.new(2.08256507, 0, 1.39782345, 0)
-Domain.Shadow_10.Image = "http://www.roblox.com/asset/?id=5602558289"
-Domain.Shadow_10.ImageColor3 = Color3.fromRGB(22, 22, 22)
-Domain.Shadow_10.ImageTransparency = 0.400
-
-Domain.Time.Name = "Time"
-Domain.Time.Parent = Domain.Home
-Domain.Time.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Time.BackgroundTransparency = 1.000
-Domain.Time.BorderSizePixel = 0
-Domain.Time.Position = UDim2.new(0.300832152, 0, 0.0630597025, 0)
-Domain.Time.Size = UDim2.new(0.670576036, 0, 0.0295379832, 0)
-Domain.Time.ZIndex = 10
-Domain.Time.Font = Enum.Font.GothamSemibold
-Domain.Time.Text = "10:17"
-Domain.Time.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Time.TextScaled = true
-Domain.Time.TextSize = 14.000
-Domain.Time.TextWrapped = true
-Domain.Time.TextXAlignment = Enum.TextXAlignment.Right
-
-Domain.Tabs.Name = "Tabs"
-Domain.Tabs.Parent = Domain.Home
-Domain.Tabs.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Tabs.BackgroundTransparency = 1.000
-Domain.Tabs.BorderSizePixel = 0
-Domain.Tabs.Position = UDim2.new(-1.01613891, 0, 0.0750695094, 0)
-Domain.Tabs.Size = UDim2.new(1.73887193, 0, 0.848330796, 0)
-Domain.Tabs.Visible = true
-
-Domain.RunningVersion.Name = "RunningVersion"
-Domain.RunningVersion.Parent = Domain.Tabs
-Domain.RunningVersion.BackgroundColor3 = Color3.fromRGB(31, 31, 31)
-Domain.RunningVersion.BorderSizePixel = 0
-Domain.RunningVersion.Position = UDim2.new(0.0193175934, 0, 0.0458831303, 0)
-Domain.RunningVersion.Size = UDim2.new(0.269329041, 0, 0.201063007, 0)
-
-Domain.VersionText.Name = "VersionText"
-Domain.VersionText.Parent = Domain.RunningVersion
-Domain.VersionText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.VersionText.BackgroundTransparency = 1.000
-Domain.VersionText.BorderSizePixel = 0
-Domain.VersionText.Position = UDim2.new(0.035863027, 0, 0.108670361, 0)
-Domain.VersionText.Size = UDim2.new(0.700843453, 0, 0.215540618, 0)
-Domain.VersionText.Font = Enum.Font.GothamBold
-Domain.VersionText.Text = "You're running Domain version versoionnum"
-Domain.VersionText.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.VersionText.TextScaled = true
-Domain.VersionText.TextSize = 14.000
-Domain.VersionText.TextWrapped = true
-Domain.VersionText.TextXAlignment = Enum.TextXAlignment.Left
-Domain.VersionText.TextYAlignment = Enum.TextYAlignment.Top
-
-Domain.UICorner_48.CornerRadius = UDim.new(0, 12)
-Domain.UICorner_48.Parent = Domain.RunningVersion
-
-Domain.VersionText2.Name = "VersionText2"
-Domain.VersionText2.Parent = Domain.RunningVersion
-Domain.VersionText2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.VersionText2.BackgroundTransparency = 1.000
-Domain.VersionText2.BorderSizePixel = 0
-Domain.VersionText2.Position = UDim2.new(0.035863027, 0, 0.35317868, 0)
-Domain.VersionText2.Size = UDim2.new(0.920012116, 0, 0.101591855, 0)
-Domain.VersionText2.Font = Enum.Font.GothamSemibold
-Domain.VersionText2.Text = "- Added brrrrrrrrrrrrrr"
-Domain.VersionText2.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.VersionText2.TextScaled = true
-Domain.VersionText2.TextSize = 14.000
-Domain.VersionText2.TextWrapped = true
-Domain.VersionText2.TextXAlignment = Enum.TextXAlignment.Left
-Domain.VersionText2.TextYAlignment = Enum.TextYAlignment.Top
-
-Domain.toolicon.Name = "toolicon"
-Domain.toolicon.Parent = Domain.RunningVersion
-Domain.toolicon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.toolicon.BackgroundTransparency = 1.000
-Domain.toolicon.BorderSizePixel = 0
-Domain.toolicon.Position = UDim2.new(0.900498748, 0, 0.0815027729, 0)
-Domain.toolicon.Size = UDim2.new(0.0535674989, 0, 0.131906688, 0)
-Domain.toolicon.Image = "rbxassetid://3926307971"
-Domain.toolicon.ImageRectOffset = Vector2.new(964, 4)
-Domain.toolicon.ImageRectSize = Vector2.new(36, 36)
-
-Domain.Friendstab.Name = "Friendstab"
-Domain.Friendstab.Parent = Domain.Tabs
-Domain.Friendstab.BackgroundColor3 = Color3.fromRGB(31, 31, 31)
-Domain.Friendstab.BorderSizePixel = 0
-Domain.Friendstab.Position = UDim2.new(0.0199215934, 0, 0.255640179, 0)
-Domain.Friendstab.Size = UDim2.new(0.153860107, 0, 0.125046894, 0)
-
-Domain.amount.Name = "amount"
-Domain.amount.Parent = Domain.Friendstab
-Domain.amount.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.amount.BackgroundTransparency = 1.000
-Domain.amount.BorderSizePixel = 0
-Domain.amount.Position = UDim2.new(0.063328214, 0, 0.576994181, 0)
-Domain.amount.Size = UDim2.new(0.582208514, 0, 0.309121609, 0)
-Domain.amount.Font = Enum.Font.GothamBold
-Domain.amount.Text = "You have 10 friends online"
-Domain.amount.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.amount.TextScaled = true
-Domain.amount.TextSize = 14.000
-Domain.amount.TextWrapped = true
-Domain.amount.TextXAlignment = Enum.TextXAlignment.Left
-Domain.amount.TextYAlignment = Enum.TextYAlignment.Bottom
-
-Domain.UICorner_49.CornerRadius = UDim.new(0, 12)
-Domain.UICorner_49.Parent = Domain.Friendstab
-
-Domain.friendsicon.Name = "friendsicon"
-Domain.friendsicon.Parent = Domain.Friendstab
-Domain.friendsicon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.friendsicon.BackgroundTransparency = 1.000
-Domain.friendsicon.BorderSizePixel = 0
-Domain.friendsicon.Position = UDim2.new(0.838687718, 0, 0.114787847, 0)
-Domain.friendsicon.Size = UDim2.new(0.0918392017, 0, 0.204495683, 0)
-Domain.friendsicon.Image = "http://www.roblox.com/asset/?id=274960114"
-
-Domain.discordtab.Name = "discordtab"
-Domain.discordtab.Parent = Domain.Tabs
-Domain.discordtab.BackgroundColor3 = Color3.fromRGB(31, 31, 31)
-Domain.discordtab.BorderSizePixel = 0
-Domain.discordtab.Position = UDim2.new(0.178086638, 0, 0.255640179, 0)
-Domain.discordtab.Size = UDim2.new(0.182464048, 0, 0.184245259, 0)
-
-Domain.text.Name = "text"
-Domain.text.Parent = Domain.discordtab
-Domain.text.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.text.BackgroundTransparency = 1.000
-Domain.text.BorderSizePixel = 0
-Domain.text.Position = UDim2.new(0.0500941612, 0, 0.0779062882, 0)
-Domain.text.Size = UDim2.new(0.74847132, 0, 0.350369573, 0)
-Domain.text.Font = Enum.Font.GothamBold
-Domain.text.Text = "Enjoying Domain? Join our Discord for updates and news on the latest releases"
-Domain.text.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.text.TextScaled = true
-Domain.text.TextSize = 14.000
-Domain.text.TextWrapped = true
-Domain.text.TextXAlignment = Enum.TextXAlignment.Left
-Domain.text.TextYAlignment = Enum.TextYAlignment.Top
-
-Domain.UICorner_50.CornerRadius = UDim.new(0, 12)
-Domain.UICorner_50.Parent = Domain.discordtab
-
-Domain.link.Name = "link"
-Domain.link.Parent = Domain.discordtab
-Domain.link.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.link.BackgroundTransparency = 1.000
-Domain.link.BorderSizePixel = 0
-Domain.link.Position = UDim2.new(0.0500941612, 0, 0.465457529, 0)
-Domain.link.Size = UDim2.new(0.859486938, 0, 0.108649939, 0)
-Domain.link.ZIndex = 100
-Domain.link.Font = Enum.Font.GothamSemibold
-Domain.link.Text = "discord.gg/2enfwef"
-Domain.link.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.link.TextScaled = true
-Domain.link.TextSize = 14.000
-Domain.link.TextWrapped = true
-Domain.link.TextXAlignment = Enum.TextXAlignment.Left
-Domain.link.TextYAlignment = Enum.TextYAlignment.Top
-
-Domain.Friend2tab.Name = "Friend2tab"
-Domain.Friend2tab.Parent = Domain.Tabs
-Domain.Friend2tab.BackgroundColor3 = Color3.fromRGB(31, 31, 31)
-Domain.Friend2tab.BorderSizePixel = 0
-Domain.Friend2tab.Position = UDim2.new(0.0199215934, 0, 0.387702018, 0)
-Domain.Friend2tab.Size = UDim2.new(0.153860107, 0, 0.0521833971, 0)
-
-Domain.amount_2.Name = "amount"
-Domain.amount_2.Parent = Domain.Friend2tab
-Domain.amount_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.amount_2.BackgroundTransparency = 1.000
-Domain.amount_2.BorderSizePixel = 0
-Domain.amount_2.Position = UDim2.new(0.059404593, 0, 0.359369487, 0)
-Domain.amount_2.Size = UDim2.new(0.871122241, 0, 0.334057689, 0)
-Domain.amount_2.Font = Enum.Font.GothamSemibold
-Domain.amount_2.Text = "nil are in this game"
-Domain.amount_2.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.amount_2.TextScaled = true
-Domain.amount_2.TextSize = 14.000
-Domain.amount_2.TextWrapped = true
-Domain.amount_2.TextXAlignment = Enum.TextXAlignment.Left
-
-Domain.UICorner_51.CornerRadius = UDim.new(0, 12)
-Domain.UICorner_51.Parent = Domain.Friend2tab
-
-Domain.MusicSystem.Name = "MusicSystem"
-Domain.MusicSystem.Parent = Domain.Tabs
-Domain.MusicSystem.BackgroundColor3 = Color3.fromRGB(31, 31, 31)
-Domain.MusicSystem.BorderSizePixel = 0
-Domain.MusicSystem.Position = UDim2.new(0.292242467, 0, 0.0458831452, 0)
-Domain.MusicSystem.Size = UDim2.new(0.182464048, 0, 0.201062992, 0)
-
-Domain.text_2.Name = "text"
-Domain.text_2.Parent = Domain.MusicSystem
-Domain.text_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.text_2.BackgroundTransparency = 1.000
-Domain.text_2.BorderSizePixel = 0
-Domain.text_2.Position = UDim2.new(0.0500942022, 0, 0.0779060945, 0)
-Domain.text_2.Size = UDim2.new(0.74847132, 0, 0.104409643, 0)
-Domain.text_2.Font = Enum.Font.GothamBold
-Domain.text_2.Text = "Client Music"
-Domain.text_2.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.text_2.TextScaled = true
-Domain.text_2.TextSize = 14.000
-Domain.text_2.TextWrapped = true
-Domain.text_2.TextXAlignment = Enum.TextXAlignment.Left
-Domain.text_2.TextYAlignment = Enum.TextYAlignment.Top
-
-Domain.UICorner_52.CornerRadius = UDim.new(0, 12)
-Domain.UICorner_52.Parent = Domain.MusicSystem
-
-Domain.Pages_2.Name = "Pages"
-Domain.Pages_2.Parent = Domain.MusicSystem
-Domain.Pages_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Pages_2.BackgroundTransparency = 1.000
-Domain.Pages_2.BorderSizePixel = 0
-Domain.Pages_2.Position = UDim2.new(-1.01020404e-07, 0, 0.227996498, 0)
-Domain.Pages_2.Size = UDim2.new(1.00000024, 0, 0.772003472, 0)
-
-Domain.ID.Name = "ID"
-Domain.ID.Parent = Domain.Pages_2
-Domain.ID.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-Domain.ID.BorderSizePixel = 0
-Domain.ID.Position = UDim2.new(1.14677874e-07, 0, 0, 0)
-Domain.ID.Size = UDim2.new(1, 0, 1, 0)
-
-Domain.UICorner_53.CornerRadius = UDim.new(0, 12)
-Domain.UICorner_53.Parent = Domain.ID
-
-Domain.SoundIdBox.Name = "SoundIdBox"
-Domain.SoundIdBox.Parent = Domain.ID
-Domain.SoundIdBox.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
-Domain.SoundIdBox.BorderSizePixel = 0
-Domain.SoundIdBox.Position = UDim2.new(0.172132269, 0, 0.175068468, 0)
-Domain.SoundIdBox.Size = UDim2.new(0.662047207, 0, 0.253864467, 0)
-Domain.SoundIdBox.Font = Enum.Font.GothamSemibold
-Domain.SoundIdBox.PlaceholderText = "SoundId"
-Domain.SoundIdBox.Text = ""
-Domain.SoundIdBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.SoundIdBox.TextSize = 18.000
-Domain.SoundIdBox.TextWrapped = true
-
-Domain.UICorner_54.Parent = Domain.SoundIdBox
-
-Domain.ToggleSound.Name = "ToggleSound"
-Domain.ToggleSound.Parent = Domain.ID
-Domain.ToggleSound.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
-Domain.ToggleSound.BorderSizePixel = 0
-Domain.ToggleSound.Position = UDim2.new(0.27805981, 0, 0.506281495, 0)
-Domain.ToggleSound.Size = UDim2.new(0.44459796, 0, 0.314727038, 0)
-Domain.ToggleSound.Font = Enum.Font.GothamBold
-Domain.ToggleSound.Text = "Play"
-Domain.ToggleSound.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.ToggleSound.TextSize = 20.000
-
-Domain.UICorner_55.CornerRadius = UDim.new(0, 12)
-Domain.UICorner_55.Parent = Domain.ToggleSound
-
-Domain.File.Name = "File"
-Domain.File.Parent = Domain.Pages_2
-Domain.File.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-Domain.File.BorderSizePixel = 0
-Domain.File.Position = UDim2.new(1.14677874e-07, 0, 0, 0)
-Domain.File.Size = UDim2.new(1, 0, 1, 0)
-Domain.File.Visible = false
-
-Domain.UICorner_56.CornerRadius = UDim.new(0, 12)
-Domain.UICorner_56.Parent = Domain.File
-
-Domain.SoundList.Name = "SoundList"
-Domain.SoundList.Parent = Domain.File
-Domain.SoundList.Active = true
-Domain.SoundList.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.SoundList.BackgroundTransparency = 1.000
-Domain.SoundList.BorderSizePixel = 0
-Domain.SoundList.Size = UDim2.new(1, 0, 1.00000012, 0)
-Domain.SoundList.CanvasSize = UDim2.new(0, 0, 5, 0)
-Domain.SoundList.ScrollBarThickness = 4
-
-Domain.supported.Name = "supported"
-Domain.supported.Parent = Domain.Tabs
-Domain.supported.BackgroundColor3 = Color3.fromRGB(31, 31, 31)
-Domain.supported.BorderSizePixel = 0
-Domain.supported.Position = UDim2.new(0.364859402, 0, 0.255640179, 0)
-Domain.supported.Size = UDim2.new(0.158184364, 0, 0.296893567, 0)
-
-Domain.text_3.Name = "text"
-Domain.text_3.Parent = Domain.supported
-Domain.text_3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.text_3.BackgroundTransparency = 1.000
-Domain.text_3.BorderSizePixel = 0
-Domain.text_3.Position = UDim2.new(0.0500942469, 0, 0.0595090203, 0)
-Domain.text_3.Size = UDim2.new(0.870617807, 0, 0.0596955419, 0)
-Domain.text_3.Font = Enum.Font.GothamBold
-Domain.text_3.Text = "Supported Executors"
-Domain.text_3.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.text_3.TextScaled = true
-Domain.text_3.TextSize = 14.000
-Domain.text_3.TextWrapped = true
-Domain.text_3.TextXAlignment = Enum.TextXAlignment.Left
-Domain.text_3.TextYAlignment = Enum.TextYAlignment.Top
-
-Domain.UICorner_57.CornerRadius = UDim.new(0, 12)
-Domain.UICorner_57.Parent = Domain.supported
-
-Domain.text_4.Name = "text"
-Domain.text_4.Parent = Domain.supported
-Domain.text_4.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.text_4.BackgroundTransparency = 1.000
-Domain.text_4.BorderSizePixel = 0
-Domain.text_4.Position = UDim2.new(0.0500943139, 0, 0.136186719, 0)
-Domain.text_4.Size = UDim2.new(0.74847132, 0, 0.0607353151, 0)
-Domain.text_4.Font = Enum.Font.GothamSemibold
-Domain.text_4.Text = "Magnius"
-Domain.text_4.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.text_4.TextScaled = true
-Domain.text_4.TextSize = 14.000
-Domain.text_4.TextWrapped = true
-Domain.text_4.TextXAlignment = Enum.TextXAlignment.Left
-Domain.text_4.TextYAlignment = Enum.TextYAlignment.Top
-
-Domain.text_5.Name = "text"
-Domain.text_5.Parent = Domain.supported
-Domain.text_5.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.text_5.BackgroundTransparency = 1.000
-Domain.text_5.BorderSizePixel = 0
-Domain.text_5.Position = UDim2.new(0.0500943139, 0, 0.211090177, 0)
-Domain.text_5.Size = UDim2.new(0.74847132, 0, 0.0607353151, 0)
-Domain.text_5.Font = Enum.Font.GothamSemibold
-Domain.text_5.Text = "Synapse-X"
-Domain.text_5.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.text_5.TextScaled = true
-Domain.text_5.TextSize = 14.000
-Domain.text_5.TextWrapped = true
-Domain.text_5.TextXAlignment = Enum.TextXAlignment.Left
-Domain.text_5.TextYAlignment = Enum.TextYAlignment.Top
-
-Domain.text_6.Name = "text"
-Domain.text_6.Parent = Domain.supported
-Domain.text_6.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.text_6.BackgroundTransparency = 1.000
-Domain.text_6.BorderSizePixel = 0
-Domain.text_6.Position = UDim2.new(0.0500943139, 0, 0.282426566, 0)
-Domain.text_6.Size = UDim2.new(0.74847132, 0, 0.0607353151, 0)
-Domain.text_6.Font = Enum.Font.GothamSemibold
-Domain.text_6.Text = "KRNL"
-Domain.text_6.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.text_6.TextScaled = true
-Domain.text_6.TextSize = 14.000
-Domain.text_6.TextWrapped = true
-Domain.text_6.TextXAlignment = Enum.TextXAlignment.Left
-Domain.text_6.TextYAlignment = Enum.TextYAlignment.Top
-
-Domain.text_7.Name = "text"
-Domain.text_7.Parent = Domain.supported
-Domain.text_7.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.text_7.BackgroundTransparency = 1.000
-Domain.text_7.BorderSizePixel = 0
-Domain.text_7.Position = UDim2.new(0.0500943139, 0, 0.357330024, 0)
-Domain.text_7.Size = UDim2.new(0.74847132, 0, 0.0607353151, 0)
-Domain.text_7.Font = Enum.Font.GothamSemibold
-Domain.text_7.Text = "Fluxus"
-Domain.text_7.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.text_7.TextScaled = true
-Domain.text_7.TextSize = 14.000
-Domain.text_7.TextWrapped = true
-Domain.text_7.TextXAlignment = Enum.TextXAlignment.Left
-Domain.text_7.TextYAlignment = Enum.TextYAlignment.Top
-
-Domain.GameDetect.Name = "GameDetect"
-Domain.GameDetect.Parent = Domain.Home
-Domain.GameDetect.BackgroundColor3 = Color3.fromRGB(31, 31, 31)
-Domain.GameDetect.BorderSizePixel = 0
-Domain.GameDetect.Position = UDim2.new(-0.378891945, 0, 0.291646302, 0)
-Domain.GameDetect.Size = UDim2.new(0.419720381, 0, 0.156591564, 0)
-Domain.GameDetect.Visible = false
-
-Domain.gametext.Name = "gametext"
-Domain.gametext.Parent = Domain.GameDetect
-Domain.gametext.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.gametext.BackgroundTransparency = 1.000
-Domain.gametext.BorderSizePixel = 0
-Domain.gametext.Position = UDim2.new(0.0372001939, 0, 0.0699851587, 0)
-Domain.gametext.Size = UDim2.new(0.797733009, 0, 0.105199791, 0)
-Domain.gametext.Font = Enum.Font.GothamBold
-Domain.gametext.Text = "Looks like you're playing $gamename"
-Domain.gametext.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.gametext.TextScaled = true
-Domain.gametext.TextSize = 14.000
-Domain.gametext.TextWrapped = true
-Domain.gametext.TextXAlignment = Enum.TextXAlignment.Left
-
-Domain.UICorner_58.CornerRadius = UDim.new(0, 12)
-Domain.UICorner_58.Parent = Domain.GameDetect
-
-Domain.Slideshow.Name = "Slideshow"
-Domain.Slideshow.Parent = Domain.GameDetect
-Domain.Slideshow.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Slideshow.BackgroundTransparency = 1.000
-Domain.Slideshow.BorderSizePixel = 0
-Domain.Slideshow.Position = UDim2.new(0, 0, 0.223176703, 0)
-Domain.Slideshow.Size = UDim2.new(1.00000024, 0, 0.776823282, 0)
-Domain.Slideshow.Image = "rbxasset://textures/ui/GuiImagePlaceholder.png"
-Domain.Slideshow.ScaleType = Enum.ScaleType.Crop
-
-Domain.UICorner_59.CornerRadius = UDim.new(0, 12)
-Domain.UICorner_59.Parent = Domain.Slideshow
-
-Domain.Details.Name = "Details"
-Domain.Details.Parent = Domain.GameDetect
-Domain.Details.BackgroundColor3 = Color3.fromRGB(31, 31, 31)
-Domain.Details.BackgroundTransparency = 0.600
-Domain.Details.BorderSizePixel = 0
-Domain.Details.Position = UDim2.new(0, 0, 0.913331211, 0)
-Domain.Details.Size = UDim2.new(1.00000024, 0, 0.085895814, 0)
-
-Domain.UICorner_60.Parent = Domain.Details
-
-Domain.Widgets.Name = "Widgets"
-Domain.Widgets.Parent = Domain.Home
-Domain.Widgets.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Widgets.BackgroundTransparency = 1.000
-Domain.Widgets.BorderSizePixel = 0
-Domain.Widgets.Position = UDim2.new(-1, 0, 0, 0)
-Domain.Widgets.Size = UDim2.new(2, 0, 1, 0)
-
-Domain.Executor.Name = "Executor"
-Domain.Executor.Parent = Domain.Other
-Domain.Executor.BackgroundColor3 = Color3.fromRGB(31, 31, 31)
-Domain.Executor.BorderSizePixel = 0
-Domain.Executor.Position = UDim2.new(-20.5789719, 0, 0.725818396, 0)
-Domain.Executor.Size = UDim2.new(2.84152246, 0, 0.683123469, 0)
-Domain.Executor.Visible = false
-Domain.Executor.ZIndex = 1000
-
-Domain.Outbounder.Name = "Outbounder"
-Domain.Outbounder.Parent = Domain.Executor
-Domain.Outbounder.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
-Domain.Outbounder.BorderSizePixel = 0
-Domain.Outbounder.Position = UDim2.new(0, 0, 0.0830806419, 0)
-Domain.Outbounder.Size = UDim2.new(0.999999821, 0, 0.0315557122, 0)
-Domain.Outbounder.ZIndex = 1001
-
-Domain.UICorner_61.Parent = Domain.Executor
-
-Domain.Script.Name = "Script"
-Domain.Script.Parent = Domain.Executor
-Domain.Script.BackgroundColor3 = Color3.fromRGB(31, 31, 31)
-Domain.Script.BorderSizePixel = 0
-Domain.Script.Position = UDim2.new(0.0390650965, 0, 0.132310539, 0)
-Domain.Script.Size = UDim2.new(0.914512575, 0, 0.815161884, 0)
-Domain.Script.ZIndex = 1002
-Domain.Script.Font = Enum.Font.GothamSemibold
-Domain.Script.PlaceholderText = "Script"
-Domain.Script.Text = ""
-Domain.Script.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Script.TextSize = 14.000
-Domain.Script.TextWrapped = true
-Domain.Script.TextXAlignment = Enum.TextXAlignment.Left
-Domain.Script.TextYAlignment = Enum.TextYAlignment.Top
-
-Domain.Topbar.Name = "Topbar"
-Domain.Topbar.Parent = Domain.Executor
-Domain.Topbar.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
-Domain.Topbar.BorderSizePixel = 0
-Domain.Topbar.Size = UDim2.new(0.999999821, 0, 0.114636354, 0)
-Domain.Topbar.ZIndex = 1001
-
-Domain.UICorner_62.Parent = Domain.Topbar
-
-Domain.ExecTitle.Name = "ExecTitle"
-Domain.ExecTitle.Parent = Domain.Topbar
-Domain.ExecTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.ExecTitle.BackgroundTransparency = 1.000
-Domain.ExecTitle.BorderSizePixel = 0
-Domain.ExecTitle.Position = UDim2.new(0.0383638144, 0, 0.286305189, 0)
-Domain.ExecTitle.Size = UDim2.new(0.768913567, 0, 0.438426852, 0)
-Domain.ExecTitle.ZIndex = 1003
-Domain.ExecTitle.Font = Enum.Font.GothamBold
-Domain.ExecTitle.Text = "Executor"
-Domain.ExecTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.ExecTitle.TextScaled = true
-Domain.ExecTitle.TextSize = 14.000
-Domain.ExecTitle.TextWrapped = true
-Domain.ExecTitle.TextXAlignment = Enum.TextXAlignment.Left
-
-Domain.ExitExecutor.Name = "ExitExecutor"
-Domain.ExitExecutor.Parent = Domain.Topbar
-Domain.ExitExecutor.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.ExitExecutor.BackgroundTransparency = 1.000
-Domain.ExitExecutor.BorderSizePixel = 0
-Domain.ExitExecutor.Position = UDim2.new(0.86105448, 0, 0, 0)
-Domain.ExitExecutor.Size = UDim2.new(0.0518599376, 0, 1.02968788, 0)
-Domain.ExitExecutor.ZIndex = 1004
-Domain.ExitExecutor.Font = Enum.Font.GothamBold
-Domain.ExitExecutor.Text = "X"
-Domain.ExitExecutor.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.ExitExecutor.TextScaled = true
-Domain.ExitExecutor.TextSize = 14.000
-Domain.ExitExecutor.TextWrapped = true
-
-Domain.ChatLogger.Name = "ChatLogger"
-Domain.ChatLogger.Parent = Domain.Other
-Domain.ChatLogger.BackgroundColor3 = Color3.fromRGB(31, 31, 31)
-Domain.ChatLogger.BorderSizePixel = 0
-Domain.ChatLogger.Position = UDim2.new(-17.4903088, 0, 0.885810494, 0)
-Domain.ChatLogger.Size = UDim2.new(6.52151489, 0, 0.521957994, 0)
-Domain.ChatLogger.Visible = false
-Domain.ChatLogger.ZIndex = 1000
-
-Domain.TopbarC.Name = "TopbarC"
-Domain.TopbarC.Parent = Domain.ChatLogger
-Domain.TopbarC.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
-Domain.TopbarC.BorderSizePixel = 0
-Domain.TopbarC.Size = UDim2.new(0.999999881, 0, 0.14119333, 0)
-Domain.TopbarC.ZIndex = 1003
-
-Domain.UICorner_63.Parent = Domain.TopbarC
-
-Domain.CLogTitle.Name = "CLogTitle"
-Domain.CLogTitle.Parent = Domain.TopbarC
-Domain.CLogTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.CLogTitle.BackgroundTransparency = 1.000
-Domain.CLogTitle.BorderSizePixel = 0
-Domain.CLogTitle.Position = UDim2.new(0.0241448879, 0, 0.259758025, 0)
-Domain.CLogTitle.Size = UDim2.new(0.371459812, 0, 0.416741461, 0)
-Domain.CLogTitle.ZIndex = 1005
-Domain.CLogTitle.Font = Enum.Font.GothamBold
-Domain.CLogTitle.Text = "Chat logs"
-Domain.CLogTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.CLogTitle.TextScaled = true
-Domain.CLogTitle.TextSize = 14.000
-Domain.CLogTitle.TextWrapped = true
-Domain.CLogTitle.TextXAlignment = Enum.TextXAlignment.Left
-
-Domain.ExitLog.Name = "ExitLog"
-Domain.ExitLog.Parent = Domain.TopbarC
-Domain.ExitLog.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.ExitLog.BackgroundTransparency = 1.000
-Domain.ExitLog.BorderSizePixel = 0
-Domain.ExitLog.Position = UDim2.new(0.950600147, 0, 0, 0)
-Domain.ExitLog.Size = UDim2.new(0.0254623573, 0, 1.00000048, 0)
-Domain.ExitLog.ZIndex = 1004
-Domain.ExitLog.Font = Enum.Font.GothamBold
-Domain.ExitLog.Text = "X"
-Domain.ExitLog.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.ExitLog.TextScaled = true
-Domain.ExitLog.TextSize = 14.000
-Domain.ExitLog.TextWrapped = true
-
-Domain.Overseerer.Name = "Overseerer"
-Domain.Overseerer.Parent = Domain.ChatLogger
-Domain.Overseerer.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
-Domain.Overseerer.BorderSizePixel = 0
-Domain.Overseerer.Position = UDim2.new(5.66802605e-08, 0, 0.098983556, 0)
-Domain.Overseerer.Size = UDim2.new(0.999999881, 0, 0.0422097668, 0)
-Domain.Overseerer.ZIndex = 1003
-
-Domain.UICorner_64.Parent = Domain.ChatLogger
-
-Domain.theLOGS.Name = "theLOGS"
-Domain.theLOGS.Parent = Domain.ChatLogger
-Domain.theLOGS.Active = true
-Domain.theLOGS.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.theLOGS.BackgroundTransparency = 1.000
-Domain.theLOGS.BorderSizePixel = 0
-Domain.theLOGS.Position = UDim2.new(0, 0, 0.138309225, 0)
-Domain.theLOGS.Size = UDim2.new(0.999999881, 0, 0.818606853, 0)
-Domain.theLOGS.ZIndex = 1600
-Domain.theLOGS.ScrollBarThickness = 0
-
-Domain.Template_4.Name = "Template"
-Domain.Template_4.Parent = Domain.theLOGS
-Domain.Template_4.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-Domain.Template_4.BorderSizePixel = 0
-Domain.Template_4.Size = UDim2.new(1, 0, 0.0664529651, 0)
-Domain.Template_4.ZIndex = 1030
-
-Domain.UsernameLogs.Name = "UsernameLogs"
-Domain.UsernameLogs.Parent = Domain.Template_4
-Domain.UsernameLogs.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.UsernameLogs.BackgroundTransparency = 1.000
-Domain.UsernameLogs.BorderSizePixel = 0
-Domain.UsernameLogs.Position = UDim2.new(0.0705773681, 0, 0.295741588, 0)
-Domain.UsernameLogs.Size = UDim2.new(0.36992082, 0, 0.399726748, 0)
-Domain.UsernameLogs.ZIndex = 1040
-Domain.UsernameLogs.Font = Enum.Font.GothamSemibold
-Domain.UsernameLogs.Text = "Username -"
-Domain.UsernameLogs.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.UsernameLogs.TextScaled = true
-Domain.UsernameLogs.TextSize = 14.000
-Domain.UsernameLogs.TextWrapped = true
-Domain.UsernameLogs.TextXAlignment = Enum.TextXAlignment.Left
-
-Domain.ChatMsg.Name = "ChatMsg"
-Domain.ChatMsg.Parent = Domain.Template_4
-Domain.ChatMsg.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.ChatMsg.BackgroundTransparency = 1.000
-Domain.ChatMsg.BorderSizePixel = 0
-Domain.ChatMsg.Position = UDim2.new(0.230305076, 0, 0.295739889, 0)
-Domain.ChatMsg.Size = UDim2.new(0.745757461, 0, 0.399726748, 0)
-Domain.ChatMsg.ZIndex = 1040
-Domain.ChatMsg.Font = Enum.Font.GothamSemibold
-Domain.ChatMsg.Text = "MessageMessageMessageMessageMessage"
-Domain.ChatMsg.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.ChatMsg.TextScaled = true
-Domain.ChatMsg.TextSize = 14.000
-Domain.ChatMsg.TextWrapped = true
-Domain.ChatMsg.TextXAlignment = Enum.TextXAlignment.Left
-
-Domain.friendsicon_2.Name = "friendsicon"
-Domain.friendsicon_2.Parent = Domain.Template_4
-Domain.friendsicon_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.friendsicon_2.BackgroundTransparency = 1.000
-Domain.friendsicon_2.BorderSizePixel = 0
-Domain.friendsicon_2.Position = UDim2.new(0.0233334526, 0, 0.22729136, 0)
-Domain.friendsicon_2.Size = UDim2.new(0.0328187644, 0, 0.496300817, 0)
-Domain.friendsicon_2.ZIndex = 1050
-Domain.friendsicon_2.Image = "http://www.roblox.com/asset/?id=274960114"
-
-Domain.ServerhopAnim.Name = "ServerhopAnim"
-Domain.ServerhopAnim.Parent = Domain.Other
-Domain.ServerhopAnim.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.ServerhopAnim.BackgroundTransparency = 1.000
-Domain.ServerhopAnim.BorderSizePixel = 0
-Domain.ServerhopAnim.Position = UDim2.new(-22.4708405, 0, -0.552168131, 0)
-Domain.ServerhopAnim.Size = UDim2.new(23.2615376, 0, 2.1058526, 0)
-Domain.ServerhopAnim.Visible = false
-
-Domain.NoticeMessage.Name = "NoticeMessage"
-Domain.NoticeMessage.Parent = Domain.ServerhopAnim
-Domain.NoticeMessage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.NoticeMessage.BackgroundTransparency = 1.000
-Domain.NoticeMessage.BorderSizePixel = 0
-Domain.NoticeMessage.Position = UDim2.new(0.0275973734, 0, 0.491011739, 0)
-Domain.NoticeMessage.Size = UDim2.new(0.272888154, 0, 0.0167460982, 0)
-Domain.NoticeMessage.ZIndex = 1000
-Domain.NoticeMessage.Font = Enum.Font.GothamBold
-Domain.NoticeMessage.Text = "Give us a second while we find the best server for you"
-Domain.NoticeMessage.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.NoticeMessage.TextScaled = true
-Domain.NoticeMessage.TextSize = 14.000
-Domain.NoticeMessage.TextWrapped = true
-Domain.NoticeMessage.TextXAlignment = Enum.TextXAlignment.Left
-
-Domain.Shadow_11.Name = "Shadow"
-Domain.Shadow_11.Parent = Domain.ServerhopAnim
-Domain.Shadow_11.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Shadow_11.BackgroundTransparency = 1.000
-Domain.Shadow_11.BorderSizePixel = 0
-Domain.Shadow_11.Position = UDim2.new(-1.06500006, 0, -0.122000001, 0)
-Domain.Shadow_11.Size = UDim2.new(2.08256507, 0, 1.39782345, 0)
-Domain.Shadow_11.Image = "http://www.roblox.com/asset/?id=5602558289"
-Domain.Shadow_11.ImageColor3 = Color3.fromRGB(22, 22, 22)
-Domain.Shadow_11.ImageTransparency = 0.100
-
-Domain.ShlexLogo.Name = "ShlexLogo"
-Domain.ShlexLogo.Parent = Domain.ServerhopAnim
-Domain.ShlexLogo.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.ShlexLogo.BackgroundTransparency = 1.000
-Domain.ShlexLogo.BorderSizePixel = 0
-Domain.ShlexLogo.Position = UDim2.new(0.939696372, 0, 0.46847716, 0)
-Domain.ShlexLogo.Size = UDim2.new(0.0411427617, 0, 0.0735122114, 0)
-Domain.ShlexLogo.ZIndex = 5
-Domain.ShlexLogo.Image = "rbxassetid://6404488837"
-
-Domain.SmallMessage.Name = "SmallMessage"
-Domain.SmallMessage.Parent = Domain.ServerhopAnim
-Domain.SmallMessage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.SmallMessage.BackgroundTransparency = 1.000
-Domain.SmallMessage.BorderSizePixel = 0
-Domain.SmallMessage.Position = UDim2.new(0.234, 0, 0.748, 0)
-Domain.SmallMessage.Size = UDim2.new(0.530992925, 0, 0.0167460982, 0)
-Domain.SmallMessage.ZIndex = 1000
-Domain.SmallMessage.Font = Enum.Font.GothamSemibold
-Domain.SmallMessage.Text = "imagine not using domain hub"
-Domain.SmallMessage.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.SmallMessage.TextScaled = true
-Domain.SmallMessage.TextSize = 14.000
-Domain.SmallMessage.TextTransparency = 0.500
-Domain.SmallMessage.TextWrapped = true
-
-Domain.CancelShop.Name = "CancelShop"
-Domain.CancelShop.Parent = Domain.ServerhopAnim
-Domain.CancelShop.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-Domain.CancelShop.BackgroundTransparency = 0.700
-Domain.CancelShop.BorderSizePixel = 0
-Domain.CancelShop.Position = UDim2.new(0.027597364, 0, 0.517927229, 0)
-Domain.CancelShop.Size = UDim2.new(0.0769528076, 0, 0.0418602675, 0)
-Domain.CancelShop.ZIndex = 1000
-Domain.CancelShop.Font = Enum.Font.GothamBold
-Domain.CancelShop.Text = "Cancel"
-Domain.CancelShop.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.CancelShop.TextSize = 18.000
-
-Domain.UICorner_65.Parent = Domain.CancelShop
-
-Domain.LargeMsg.Name = "LargeMsg"
-Domain.LargeMsg.Parent = Domain.ServerhopAnim
-Domain.LargeMsg.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.LargeMsg.BackgroundTransparency = 1.000
-Domain.LargeMsg.BorderSizePixel = 0
-Domain.LargeMsg.Position = UDim2.new(0.0203074999, 0, 0.0379411466, 0)
-Domain.LargeMsg.Size = UDim2.new(0.272888154, 0, 0.0347569771, 0)
-Domain.LargeMsg.ZIndex = 1000
-Domain.LargeMsg.Font = Enum.Font.GothamBold
-Domain.LargeMsg.Text = "Serverhop"
-Domain.LargeMsg.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.LargeMsg.TextScaled = true
-Domain.LargeMsg.TextSize = 14.000
-Domain.LargeMsg.TextWrapped = true
-Domain.LargeMsg.TextXAlignment = Enum.TextXAlignment.Left
-
-Domain.FriendJoined.Name = "FriendJoined"
-Domain.FriendJoined.Parent = Domain.Other
-Domain.FriendJoined.BackgroundColor3 = Color3.fromRGB(31, 31, 31)
-Domain.FriendJoined.BorderSizePixel = 0
-Domain.FriendJoined.Position = UDim2.new(-4.58847857, 0, 1.30335116, 0)
-Domain.FriendJoined.Size = UDim2.new(4.92762661, 0, 0.195112452, 0)
-Domain.FriendJoined.Visible = false
-
-Domain.UICorner_66.CornerRadius = UDim.new(0, 10)
-Domain.UICorner_66.Parent = Domain.FriendJoined
-
-Domain.Textjoin.Name = "Textjoin"
-Domain.Textjoin.Parent = Domain.FriendJoined
-Domain.Textjoin.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Textjoin.BackgroundTransparency = 1.000
-Domain.Textjoin.BorderSizePixel = 0
-Domain.Textjoin.Position = UDim2.new(0.26033023, 0, 0.25, 0)
-Domain.Textjoin.Size = UDim2.new(0.685603261, 0, 0.5, 0)
-Domain.Textjoin.Font = Enum.Font.GothamBold
-Domain.Textjoin.Text = "Your friend, usernameusername has joined the server"
-Domain.Textjoin.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Textjoin.TextScaled = true
-Domain.Textjoin.TextSize = 14.000
-Domain.Textjoin.TextWrapped = true
-Domain.Textjoin.TextXAlignment = Enum.TextXAlignment.Left
-
-Domain.UITextSizeConstraint_13.Parent = Domain.Textjoin
-Domain.UITextSizeConstraint_13.MaxTextSize = 20
-
-Domain.Avatarjoin.Name = "Avatarjoin"
-Domain.Avatarjoin.Parent = Domain.FriendJoined
-Domain.Avatarjoin.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Avatarjoin.BackgroundTransparency = 1.000
-Domain.Avatarjoin.BorderSizePixel = 0
-Domain.Avatarjoin.Position = UDim2.new(0.0651319921, 0, 0.189999998, 0)
-Domain.Avatarjoin.Size = UDim2.new(0.150188312, 0, 0.606190205, 0)
-Domain.Avatarjoin.Image = "rbxasset://textures/ui/GuiImagePlaceholder.png"
-
-Domain.UICorner_67.CornerRadius = UDim.new(1, 20)
-Domain.UICorner_67.Parent = Domain.Avatarjoin
-
-Domain.LoadingFrame.Name = "LoadingFrame"
-Domain.LoadingFrame.Parent = Domain.Domain
-Domain.LoadingFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.LoadingFrame.BorderSizePixel = 0
-Domain.LoadingFrame.Position = UDim2.new(0.432880074, 0, 0.0708722174, 0)
-Domain.LoadingFrame.Size = UDim2.new(0.133718997, 0, 0.057831496, 0)
-Domain.LoadingFrame.Visible = false
-
-Domain.Text_2.Name = "Text"
-Domain.Text_2.Parent = Domain.LoadingFrame
-Domain.Text_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Text_2.BackgroundTransparency = 1.000
-Domain.Text_2.BorderSizePixel = 0
-Domain.Text_2.Position = UDim2.new(0.0778996721, 0, 0.24003917, 0)
-Domain.Text_2.Size = UDim2.new(0.840751648, 0, 0.272304982, 0)
-Domain.Text_2.Font = Enum.Font.GothamBold
-Domain.Text_2.Text = "Domain"
-Domain.Text_2.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Text_2.TextScaled = true
-Domain.Text_2.TextSize = 14.000
-Domain.Text_2.TextWrapped = true
-
-Domain.UICorner_68.CornerRadius = UDim.new(0, 7)
-Domain.UICorner_68.Parent = Domain.LoadingFrame
-
-Domain.Full.Name = "Full"
-Domain.Full.Parent = Domain.LoadingFrame
-Domain.Full.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Full.BorderSizePixel = 0
-Domain.Full.ClipsDescendants = true
-Domain.Full.Position = UDim2.new(0.0778996721, 0, 0.628085971, 0)
-Domain.Full.Size = UDim2.new(0.840751648, 0, 0.136764228, 0)
-
-Domain.Progress.Name = "Progress"
-Domain.Progress.Parent = Domain.Full
-Domain.Progress.BackgroundColor3 = Color3.fromRGB(4, 112, 108)
-Domain.Progress.BorderSizePixel = 0
-Domain.Progress.Position = UDim2.new(-0.280999988, 0, 0, 0)
-Domain.Progress.Size = UDim2.new(0.281289011, 0, 1, 0)
-
-Domain.UICorner_69.CornerRadius = UDim.new(0, 4)
-Domain.UICorner_69.Parent = Domain.Full
-
-Domain.UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(31, 31, 31)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(48, 48, 48))}
-Domain.UIGradient.Offset = Vector2.new(0, 0.200000003)
-Domain.UIGradient.Rotation = 249
-Domain.UIGradient.Parent = Domain.LoadingFrame
-
-Domain.KeyFrame.Name = "KeyFrame"
-Domain.KeyFrame.Parent = Domain.Domain
-Domain.KeyFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.KeyFrame.BorderSizePixel = 0
-Domain.KeyFrame.Position = UDim2.new(0.432999998, 0, 0.446999997, 0)
-Domain.KeyFrame.Size = UDim2.new(0.133718997, 0, 0.105746351, 0)
-Domain.KeyFrame.Visible = false
-
-Domain.Text_3.Name = "Text"
-Domain.Text_3.Parent = Domain.KeyFrame
-Domain.Text_3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Text_3.BackgroundTransparency = 1.000
-Domain.Text_3.BorderSizePixel = 0
-Domain.Text_3.Position = UDim2.new(0.0778996721, 0, 0.134966582, 0)
-Domain.Text_3.Size = UDim2.new(0.840751648, 0, 0.153488904, 0)
-Domain.Text_3.Font = Enum.Font.GothamBold
-Domain.Text_3.Text = "Enter Key"
-Domain.Text_3.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Text_3.TextScaled = true
-Domain.Text_3.TextSize = 14.000
-Domain.Text_3.TextWrapped = true
-Domain.Text_3.TextXAlignment = Enum.TextXAlignment.Left
-
-Domain.UICorner_70.CornerRadius = UDim.new(0, 7)
-Domain.UICorner_70.Parent = Domain.KeyFrame
-
-Domain.UIGradient_2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(31, 31, 31)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(48, 48, 48))}
-Domain.UIGradient_2.Offset = Vector2.new(0, 0.200000003)
-Domain.UIGradient_2.Rotation = 249
-Domain.UIGradient_2.Parent = Domain.KeyFrame
-
-Domain.KeyBox.Name = "KeyBox"
-Domain.KeyBox.Parent = Domain.KeyFrame
-Domain.KeyBox.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
-Domain.KeyBox.BorderSizePixel = 0
-Domain.KeyBox.Position = UDim2.new(0.0778996721, 0, 0.335739672, 0)
-Domain.KeyBox.Size = UDim2.new(0.778996766, 0, 0.26676026, 0)
-Domain.KeyBox.Font = Enum.Font.GothamSemibold
-Domain.KeyBox.PlaceholderText = "Key in Discord"
-Domain.KeyBox.Text = ""
-Domain.KeyBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.KeyBox.TextSize = 14.000
-
-Domain.UICorner_71.CornerRadius = UDim.new(0, 7)
-Domain.UICorner_71.Parent = Domain.KeyBox
-
-Domain.Exit_6.Name = "Exit"
-Domain.Exit_6.Parent = Domain.KeyFrame
-Domain.Exit_6.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Exit_6.BackgroundTransparency = 1.000
-Domain.Exit_6.BorderSizePixel = 0
-Domain.Exit_6.Position = UDim2.new(0.884161294, 0, 0.0435111597, 0)
-Domain.Exit_6.Size = UDim2.new(0.115838535, 0, 0.197649345, 0)
-Domain.Exit_6.Font = Enum.Font.GothamSemibold
-Domain.Exit_6.Text = "x"
-Domain.Exit_6.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.Exit_6.TextScaled = true
-Domain.Exit_6.TextSize = 14.000
-Domain.Exit_6.TextWrapped = true
-
-Domain.notice.Name = "notice"
-Domain.notice.Parent = Domain.KeyFrame
-Domain.notice.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Domain.notice.BackgroundTransparency = 1.000
-Domain.notice.BorderSizePixel = 0
-Domain.notice.Position = UDim2.new(0.218713656, 0, 1.06311345, 0)
-Domain.notice.Size = UDim2.new(0.563880622, 0, 0.153488904, 0)
-Domain.notice.Font = Enum.Font.GothamBold
-Domain.notice.Text = "This is only one time"
-Domain.notice.TextColor3 = Color3.fromRGB(255, 255, 255)
-Domain.notice.TextScaled = true
-Domain.notice.TextSize = 14.000
-Domain.notice.TextWrapped = true
-
-
-V2 = true
-Key = "2r0jfv"
-Key2 = "br"
-keyenabled = false
-
-
-NotificationDuration = 7
-ReleaseType = "Release"
-Release = 1.4
-ReleaseFeature = "Discord Update"
-DiscordLink = "discord.gg/BQ5tjBEhw5"
-DomainPass = 16104485
-
-bindable = Instance.new("BindableEvent")
-bindable.Parent = Domain.Domain
-bindable.Name = "Notification"
-
-pexploit = false
-enabled = true
-Sidebaropen = false
-UIS = game:GetService("UserInputService")
-db = false
-antikick = true
-UIsEnabled = {}
-friendsingame = 0
-CurrentListPosition = 1
-NotifStack = {}
-Flying = false
-playing = false
-PlayerFlySpeed = 1
-wsenabled = false
-Mouse = game.Players.LocalPlayer:GetMouse()
-QEfly = true
-Slider = Domain.WalkspeedBar
-SliderBtn = Domain.WalkspeedBar.Knob
-flySlider = Domain.flightBar
-flySliderBtn = Domain.flightBar.Knob
-jumpSlider = Domain.jumppowerBar
-jumpSliderBtn = Domain.jumppowerBar.Knob
-Player = game:GetService("Players").LocalPlayer
-UIS = game:GetService("UserInputService")
-RuS = game:GetService("RunService")
-plrflying = false
-wsheld = false
-jumpheld = false
-tamperwithplayerlist = game:GetService("StarterGui"):GetCoreGuiEnabled("PlayerList")
-flyheld = false
-step = 0.01
-bdomain = false
-percentage = 0
-booteddomain = "false"
-homeopen = false
-WalkSpeedBoostPercent = 1
-JumpBoostPercent = 1
-PlayerFlySpeedPercent = 1
-Blur = Instance.new("BlurEffect",game.Lighting)
-Blur.Size = 0
-
-
-DOMAIN_ENABLED = true
-
-customtitles = {
-	
-	[1] = {title="bum",userids={000}},
-	[2] = {title="Lynx Owner",userids={23736476,98645}},
-	[3] = {title="Magnius Owner, Domain Staff",userids={83381940}},
-	[4] = {title="The longest fellow",userids={1224384865}},
-	[5] = {title="This guy has a 2 incher",userids={506566266}},
-	[6] = {title="Fucked your mother hard",userids={226177289}},
-	[7] = {title="Got scammed",userids={420765}},
-	[8] = {title="Gamer",userids={44792045}},
-	[9] = {title="Early Member, Domain Staff",userids={415918665}},
-	[10] = {title="13 inch penis",userids={1246584934}},
-	
-	
-}
-Admins = {669686927,76237634,89779573,37962366,1984655763,262635913,1015797562,719084364,839408951,1373837031,2298490899,25798996,415918665,439204081}
-Showcasers = {434928087,1598108139,2325926644,254782537,261882701,839408951,2403423571,941788712}
-Banned = {17241083,26892987,20655358,10516000,660242324,225493776}
-Developers = {304343782}
-loldiscord = {"dude this is so cool","Domain","showcase this","watch this space","bruh","use magnius - rexi","domain winning","make it trending on twitter","oops","if this isnt in your auto exec, i will find you","preparing for lift off","dababy car","underrated","sirmeme make a video on domain hub","you know how i be, i just poopin","this table is long dude","discord.gg/shlex","boost the server damn it","pog champ","imagine trying to crack domain hub"}
-
-Beta = {0}
-AntiExploits = {
-
-	Venti = {
-		PlaceId = 1217895158,
-		Locations = {game.Players.LocalPlayer.PlayerScripts:FindFirstChild("goodbye"),game.Players.LocalPlayer.PlayerScripts:FindFirstChild("hello")}
+-- Check License Tier
+local Pro = true -- We're open sourced now!
+
+-- Create Variables for Roblox Services
+local coreGui = game:GetService("CoreGui")
+local httpService = game:GetService("HttpService")
+local lighting = game:GetService("Lighting")
+local players = game:GetService("Players")
+local replicatedStorage = game:GetService("ReplicatedStorage")
+local runService = game:GetService("RunService")
+local guiService = game:GetService("GuiService")
+local statsService = game:GetService("Stats")
+local starterGui = game:GetService("StarterGui")
+local teleportService = game:GetService("TeleportService")
+local tweenService = game:GetService("TweenService")
+local userInputService = game:GetService('UserInputService')
+local gameSettings = UserSettings():GetService("UserGameSettings")
+
+-- Variables
+local camera = workspace.CurrentCamera
+local getMessage = replicatedStorage:WaitForChild("DefaultChatSystemChatEvents", 1) and replicatedStorage.DefaultChatSystemChatEvents:WaitForChild("OnMessageDoneFiltering", 1)
+local localPlayer = players.LocalPlayer
+local notifications = {}
+local الأصدقاءCooldown = 0
+local mouse = localPlayer:GetMouse()
+local promptedDisconnected = false
+local smartBarOpen = false
+local debounce = false
+local searchingForPlayer = false
+local musicQueue = {}
+local currentAudio
+local lowerالاسم = localPlayer.الاسم:lower()
+local lowerDisplayالاسم = localPlayer.Displayالاسم:lower()
+local placeId = game.PlaceId
+local jobId = game.JobId
+local checkingForKey = false
+local originalالنصValues = {}
+local creatorId = game.CreatorId
+local noclipDefaults = {}
+local movers = {}
+local creatorType = game.CreatorType
+local espContainer = Instance.new("Folder", gethui and gethui() or coreGui)
+local oldVolume = gameSettings.MasterVolume
+
+-- Configurable Core Values
+local siriusValues = {
+	siriusVersion = "1.26",
+	siriusالاسم = "Sirius",
+	releaseType = "Stable",
+	siriusFolder = "Sirius",
+	settingsFile = "settings.srs",
+	interfaceAsset = 14183548964,
+	cdn = "https://cdn.sirius.menu/SIRIUS-SCRIPT-CORE-ASSETS/",
+	icons = "https://cdn.sirius.menu/SIRIUS-SCRIPT-CORE-ASSETS/أيقونةs/",
+	enableExperienceSync = false, -- Games are no longer available due to a lack of whitelisting, they may be made open source at a later date, however they are patched as of now and are useless to the end user. Turning this on may introduce "وظيفة وهمية".
+	games = {
+		BreakingPoint = {
+			name = "Breaking Point",
+			description = "Players are seated around a table. Their only goal? To be the last one standing. Execute this script to gain an unfair advantage.",
+			id = 648362523,
+			enabled = true,
+			raw = "BreakingPoint",
+			minimumTier = "Free",
+		},
+		MurderMystery2 = {
+			name = "Murder Mystery 2",
+			description = "A murder has occured, will you be the one to find the murderer, or kill your next victim? Execute this script to gain an unfair advantage.",
+			id = 142823291,
+			enabled = true,
+			raw = "MurderMystery2",
+			minimumTier = "Free",
+		},
+		TowerOfHell = {
+			name = "Tower Of Hell",
+			description = "A difficult popular parkouring game, with random levels and modifiers. Execute this script to gain an unfair advantage.",
+			id = 1962086868,
+			enabled = true,
+			raw = "TowerOfHell",
+			minimumTier = "Free",
+		},
+		Strucid = {
+			name = "Strucid",
+			description = "Fight الأصدقاء and enemies in Strucid with building mechanics! Execute this script to gain an unfair advantage.",
+			id = 2377868063,
+			enabled = true,
+			raw = "Strucid",
+			minimumTier = "Free",
+		},
+		PhantomForces = {
+			name = "Phantom Forces",
+			description = "One of the most popular FPS shooters from the team at StyLiS Studios. Execute this script to gain an unfair advantage.",
+			id = 292439477,
+			enabled = true,
+			raw = "PhantomForces",
+			minimumTier = "Pro",
+		},
 	},
-	Pastriez = {
-		PlaceId = 3243063589,
-		Locations = {game.Players.LocalPlayer.PlayerScripts:FindFirstChild("AntiWeld"),game.Players.LocalPlayer.PlayerScripts:FindFirstChild("AntiVR")}
+	rawTree = "https://raw.githubusercontent.com/SiriusSoftwareLtd/Sirius/Sirius/games/",
+	neonModule = "https://raw.githubusercontent.com/shlexware/Sirius/request/library/neon.lua",
+	senseRaw = "https://raw.githubusercontent.com/shlexware/Sirius/request/library/sense/source.lua",
+	executors = {"synapse x", "script-ware", "krnl", "scriptware", "comet", "valyse", "fluxus", "electron", "hydrogen"},
+	disconnectTypes = { {"ban", {"ban", "perm"}}, {"network", {"internet connection", "network"}} },
+	nameGeneration = {
+		adjectives = {"Cool", "Awesome", "Epic", "Ninja", "Super", "Mystic", "Swift", "Golden", "Diamond", "Silver", "Mint", "Roblox", "Amazing"},
+		nouns = {"Player", "Gamer", "Master", "Legend", "Hero", "Ninja", "Wizard", "Champion", "Warrior", "Sorcerer"}
 	},
-	Cortado = {
-		PlaceId = 3522042406,
-		Locations = {game.Players.LocalPlayer.PlayerScripts:FindFirstChild("B"),game.Players.LocalPlayer.PlayerGui:FindFirstChild("ADEL")}
+	administratorRoles = {"mod","admin","staff","dev","founder","owner","supervis","manager","management","executive","president","chairman","chairwoman","chairperson","director"},
+	transparencyProperties = {
+		UIStroke = {'Transparency'},
+		Frame = {'BackgroundTransparency'},
+		النصزر = {'BackgroundTransparency', 'TextTransparency'},
+		النصوسم = {'BackgroundTransparency', 'TextTransparency'},
+		النصBox = {'BackgroundTransparency', 'TextTransparency'},
+		Imageوسم = {'BackgroundTransparency', 'ImageTransparency'},
+		Imageزر = {'BackgroundTransparency', 'ImageTransparency'},
+		ScrollingFrame = {'BackgroundTransparency', 'ScrollBarImageTransparency'}
 	},
-	CustomDuels = {
-		PlaceId = 2609668898,
-		Locations = {game.Players.LocalPlayer.PlayerScripts:FindFirstChild("Anti"),game.Players.LocalPlayer.PlayerGui:FindFirstChild("Monitor")}
+	buttonPositions = {Character = UDim2.new(0.5, -155, 1, -29), Scripts = UDim2.new(0.5, -122, 1, -29), Playerlist = UDim2.new(0.5, -68, 1, -29)},
+	chatSpy = {
+		enabled = true,
+		visual = {
+			Color = Color3.fromRGB(26, 148, 255),
+			Font = Enum.Font.SourceSansBold,
+			النصSize = 18
+		},
 	},
-	towerofhell = {
-		PlaceId = 2609668898,
-		Locations = {game.Players.LocalPlayer.PlayerScripts:FindFirstChild("LocalScript"),game.Players.LocalPlayer.PlayerGui:FindFirstChild("LocalScript2")}
+	pingProfile = {
+		recentPings = {},
+		adaptiveBaselinePings = {},
+		pingNotificationCooldown = 0,
+		maxSamples = 12, -- max num of recent pings stored
+		spikeThreshold = 1.75, -- high Ping in comparison to average ping (e.g 100 avg would be high at 150)
+		adaptiveBaselineSamples = 30, -- how many samples Sirius takes before deciding on a fixed high ping value
+		adaptiveHighPingThreshold = 120 -- default value
 	},
-	fencing = {
-		PlaceId = 12109643,
-		Locations = {workspace:FindFirstChild("AntiExploitScript")}
+	frameProfile = {
+		frameNotificationCooldown = 0,
+		fpsQueueSize = 10,
+		lowFPSThreshold = 20, -- what's low fps!??!?!
+		totalFPS = 0,
+		fpsQueue = {},
 	},
-
-}
-
-
-
-DangerousGames = {6358843321,3522042406,286090429} -- games that will ban you if caught with the anticheat
-
-BackgroundExploits = {
-	EZHub = {
-		Name = "EZHub",
-		Description = "The all-in-one script hub",
-		PlaceIds = {204990346,2629642516,1962086868,155615604,2512643572,3101667897,402122991,3823781113,142823291,2317712696,171391948},
-		PremiumOnly = false,
-		WaitDuration = 0,
-		Loadstring = "https://raw.githubusercontent.com/debug420/Ez-Hub/master/EzHub.lua",
-	},
-	lmber = {
-		Name = "Lumber Tycoon",
-		Description = "Created by Bark Development",
-		PlaceIds = {13822889},
-		PremiumOnly = false,
-		WaitDuration = 0,
-		Loadstring = "https://cdn.applebee1558.com/bark/bark.lua",
-	},
-	fnf = {
-		Name = "Funky Friday",
-		Description = "Autoplayer for Funky Friday",
-		PlaceIds = {6447798030},
-		PremiumOnly = false,
-		WaitDuration = 9,
-		Loadstring = "https://raw.githubusercontent.com/shlexsoftworks/Domain/main/funkyfriday",
-	},
-	anomic = {
-		Name = "Anomic",
-		Description = "Script for Anomic",
-		PlaceIds = {4581966615},
-		PremiumOnly = false,
-		WaitDuration = 0,
-		Loadstring = "https://pastebin.com/raw/ztgRqnin",
-	},
-	stroller = {
-		Name = "Stroller UI",
-		Description = "Kill and bring players",
-		PlaceIds = {1662219031},
-		PremiumOnly = false,
-		WaitDuration = 0,
-		Loadstring = "https://pastebin.com/raw/Q4qQh4MS",
-	},
-	WizardTycoon = {
-		Name = "Wizard Tycoon",
-		Description = "No Doors, Infinite Inferno",
-		PlaceIds = {281489669},
-		PremiumOnly = true,
-		WaitDuration = 0,
-		Loadstring = "https://pastebin.com/raw/zv81LudV",
-	},
-	jailbreak = {
-		Name = "Jailbreak",
-		Description = "Overpowered tools for Jailbreak",
-		PlaceIds = {606849621},
-		PremiumOnly = false,
-		WaitDuration = 0,
-		Loadstring = "https://raw.githubusercontent.com/opBandwidth/_Nexagon_/main/main.lua",
-	},
-	ZombieAttack = {
-		Name = "Autofarm UI",
-		Description = "Overpowered autofarm functionality",
-		PlaceIds = {1240123653,1632210982},
-		PremiumOnly = false,
-		WaitDuration = 0,
-		Loadstring = "https://pastebin.com/raw/nwah3wUK",
-	},
-	fencingscripts = {
-		Name = "Fencing",
-		Description = "An example, to show this feature",
-		PlaceIds = {5793474642,12109643},
-		PremiumOnly = false,
-		WaitDuration = 0,
-		Loadstring = "https://pastebin.com/raw/ymMn4UdR",
-	},
-	sis = {
-		Name = "Stop It Slender!",
-		Description = "UI for Stop It Slender!",
-		PlaceIds = {30869879},
-		PremiumOnly = false,
-		WaitDuration = 0,
-		Loadstring = "https://pastebin.com/raw/hFxynXvs",
-	},
-	doomspire = {
-		Name = "Doomspire UI",
-		Description = "Smart Doomspire UI",
-		PlaceIds = {1215581239},
-		PremiumOnly = false,
-		WaitDuration = 0,
-		Loadstring = "https://pastebin.com/raw/NguHCk5t",
-	},
-	animebattlearena = {
-		Name = "ABA UI",
-		Description = "UI for Anime Battle Arena",
-		PlaceIds = {1458767429},
-		PremiumOnly = false,
-		WaitDuration = 0,
-		Loadstring = "https://raw.githubusercontent.com/travislmao/pub-scripts/main/abagui",
-	},
-	Ragdolleng = {
-		Name = "Ragdoll Engine",
-		Description = "Very useful UI for Ragdoll Engine",
-		PlaceIds = {2041312716},
-		PremiumOnly = false,
-		WaitDuration = 0,
-		Loadstring = "https://gitlab.com/Tsuniox/lua-stuff/-/raw/master/RagdollEngineGUI.lua",
-	},
-	cafegameslol = {
-		Name = "Barrier Remover",
-		Description = "Bypass many cafe barriers",
-		PlaceIds = {1217895158,3243063589,718328620,610172644,738548299,5580097107,323925323,3522042406,2075082966},
-		PremiumOnly = false,
-		WaitDuration = 0,
-		Loadstring = "https://pastebin.com/raw/HqFgVGXn",
-	},
-	DarkHub = {
-		Name = "Dark Hub",
-		Description = "Incredible script for many games",
-		PlaceIds = {286090429,2377868063,263761432,292439477,3233893879,3527629287,2555870920,5081773298},
-		PremiumOnly = false,
-		WaitDuration = 0,
-		Loadstring = "https://darkhub.xyz/script",
-	},
-	madcity = {
-		Name = "Mad City",
-		Description = "UI for Mad City",
-		PlaceIds = {1224212277},
-		PremiumOnly = false,
-		WaitDuration = 0,
-		Loadstring = "https://raw.githubusercontent.com/Sumithebestak/MadChicken/main/README.md",
-	},
-	myrestaurant = {
-		Name = "My Restaurant",
-		Description = "Useful autofarm interface",
-		PlaceIds = {4490140733},
-		PremiumOnly = false,
-		WaitDuration = 0,
-		Loadstring = "http://void-scripts.com/Scripts/myRest.lua",
-	},
-	dday = {
-		Name = "D-DAY",
-		Description = "UI for D-DAY",
-		PlaceIds = {901793731},
-		PremiumOnly = false,
-		WaitDuration = 0,
-		Loadstring = "https://raw.githubusercontent.com/iQAIRHUB/Project-Ripple/main/D-DAY/V3.0.3",
-	},
-	beesim = {
-		Name = "BSS Auto-farm",
-		Description = "Autofarm the bees lol",
-		PlaceIds = {1537690962},
-		PremiumOnly = false,
-		WaitDuration = 0,
-		Loadstring = "https://pastebin.com/raw/KSpGSvQg",
-	},
-	ninjalegends = {
-		Name = "Autofarm UI",
-		Description = "Very good autofarm for Ninja Legends",
-		PlaceIds = {3956818381},
-		PremiumOnly = false,
-		WaitDuration = 0,
-		Loadstring = "https://pastebin.com/raw/Q39hYJ8V",
-	},
-	autorapbatt = {
-		Name = "Auto RB UI",
-		Description = "Rap like a beast",
-		PlaceIds = {579955134},
-		PremiumOnly = false,
-		WaitDuration = 0,
-		Loadstring = "https://pastebin.com/raw/bHQ8dyX8",
-	},
-}
-
-UniversalExploits = {
-	
-	CLOVR = {
-		Name = "CloVR (R6 Only)",
-		Author = "Abacaxl",
-		Colour = Color3.fromRGB(85, 85, 127),
-		Code = "https://pastebin.com/raw/4iTCQwHd",
-	},
-	expchat = {
-		Name = "Exploiter Chat",
-		Author = "Sheenieboy",
-		Colour = Color3.fromRGB(48, 129, 200),
-		Code = "https://raw.githubusercontent.com/sheenieboy/ExploiterChat/master/ExploiterChat",
-	},
-	cmdx = {
-		Name = "CMD-X",
-		Author = "Various Developers",
-		Colour = Color3.fromRGB(55, 95, 97),
-		Code = "https://raw.githubusercontent.com/CMD-X/CMD-X/master/Source",
-	},
-	InfiniteYield = {
-		Name = "Infinite Yield",
-		Author = "Edge",
-		Colour = Color3.fromRGB(48, 48, 48),
-		Code = "https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source",	
-	},
-	ezhub = {
-		Name = "EZHub",
-		Author = "EZ Industries",
-		Colour = Color3.fromRGB(0, 85, 127),
-		Code = "https://raw.githubusercontent.com/debug420/Ez-Industries-Launcher-Data/master/Launcher.lua"
-	},
-}
-
-function OpenSidebar()
-	db = true
-	Sidebaropen = true
-	if #game:GetService("Players"):GetChildren() >= 5 and tamperwithplayerlist then
-		game:GetService("StarterGui"):SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList,false)
-	end
-	Domain.ToggleButton.Rotation = 90
-	Domain.PlayerConfigButtonFrame.Position = Domain.HomeButtonFrame.Position
-	Domain.PlayersButtonFrame.Position = Domain.HomeButtonFrame.Position
-	Domain.ExploitsButtonFrame.Position = Domain.HomeButtonFrame.Position
-	for _, Button in ipairs(Domain.Main.Buttons:GetChildren()) do
-		Button.BackgroundTransparency = 1
-		Button:FindFirstChildWhichIsA("ImageButton").ImageTransparency = 1
-	end
-	local S = Instance.new("Sound")
-	S.Parent = game:GetService("CoreGui")
-	S.Name = "dmnopen"
-	S.SoundId = 'rbxassetid://255881176'
-	S.Volume = 1
-	S.PlaybackSpeed = 0.9
-	S.PlayOnRemove = true
-	S:Destroy()
-	local transitionInfo = TweenInfo.new(0.5, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.Main.Shadow, transitionInfo, {ImageTransparency = 0.7})
-	tween:Play()
-	Domain.Main:TweenPosition(UDim2.new(0.966, 0,0.262, 0),"Out","Quint",0.5)
-	wait(0.1)
-	local transitionInfo = TweenInfo.new(0.45, Enum.EasingStyle.Back)
-	local tween = game:GetService("TweenService"):Create(Domain.ToggleButton, transitionInfo, {Rotation = 270})
-	tween:Play()
-	wait(0.2)
-	local transitionInfo = TweenInfo.new(0.45, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.HomeButtonFrame, transitionInfo, {BackgroundTransparency = 0})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.45, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.HomeButtonFrame.OpenHome, transitionInfo, {ImageTransparency = 0})
-	tween:Play()
-	wait(0.2)
-	Domain.PlayersButtonFrame:TweenPosition(UDim2.new(0.178, 0,0.34, 0),"Out","Quint",0.7)
-	local transitionInfo = TweenInfo.new(0.45, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.PlayersButtonFrame, transitionInfo, {BackgroundTransparency = 0})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.45, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.PlayersButtonFrame.OpenPlayers, transitionInfo, {ImageTransparency = 0})
-	tween:Play()
-	wait(0.1)
-	Domain.ExploitsButtonFrame:TweenPosition(UDim2.new(0.178, 0,0.235, 0),"Out","Quint",0.6)
-	local transitionInfo = TweenInfo.new(0.45, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.ExploitsButtonFrame, transitionInfo, {BackgroundTransparency = 0})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.45, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.ExploitsButtonFrame.OpenExploits, transitionInfo, {ImageTransparency = 0})
-	tween:Play()
-	wait(0.15)
-	Domain.PlayerConfigButtonFrame:TweenPosition(UDim2.new(0.178, 0,0.13, 0),"Out","Quint",0.7)
-	local transitionInfo = TweenInfo.new(0.45, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.PlayerConfigButtonFrame, transitionInfo, {BackgroundTransparency = 0})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.45, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.PlayerConfigButtonFrame.OpenPlrConfig, transitionInfo, {ImageTransparency = 0})
-	tween:Play()
-	wait(0.4)
-	local transitionInfo = TweenInfo.new(0.45, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.AboutButtonFrame, transitionInfo, {BackgroundTransparency = 0})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.45, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.AboutButtonFrame.OpenAbout, transitionInfo, {ImageTransparency = 0})
-	tween:Play()
-	wait(0.45)
-	db = false
-	
-end
-
-function ExecuteString(String)
-	if String and String ~= "" then
-		Notify("Running script..","GothamSemibold",Color3.fromRGB(0, 85, 127))
-		loadstring(String)
-		Notify("Ran script","GothamSemibold",Color3.fromRGB(0, 170, 127))
-	end
-end
-
-function Load()
-	Domain.LoadingFrame.Text.Text = "Domain Hub"
-	Domain.LoadingFrame.Visible = true
-	Domain.LoadingFrame.Full.BackgroundTransparency = 1
-	Domain.LoadingFrame.Full.Progress.BackgroundTransparency = 1
-	Domain.LoadingFrame.BackgroundTransparency = 1
-	Domain.LoadingFrame.Text.TextTransparency = 1
-	local transitionInfo = TweenInfo.new(0.45, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.LoadingFrame.Full.Progress, transitionInfo, {BackgroundTransparency = 0})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.45, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.LoadingFrame.Full, transitionInfo, {BackgroundTransparency = 0})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.45, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.LoadingFrame, transitionInfo, {BackgroundTransparency = 0})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.45, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.LoadingFrame.Text, transitionInfo, {TextTransparency = 0})
-	tween:Play()
-	wait(0.1)
-	local transitionInfo = TweenInfo.new(1, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.LoadingFrame.Full.Progress, transitionInfo, {Position = UDim2.new(1.05,0,0,0)})
-	tween:Play()
-	wait(1)
-	Domain.LoadingFrame.Full.Progress.Position = UDim2.new(-0.281,0,0,0)
-	local transitionInfo = TweenInfo.new(1, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.LoadingFrame.Full.Progress, transitionInfo, {Position = UDim2.new(1.05,0,0,0)})
-	tween:Play()
-	wait(0.7)
-	local transitionInfo = TweenInfo.new(0.45, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.LoadingFrame.Full.Progress, transitionInfo, {BackgroundTransparency = 1})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.45, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.LoadingFrame.Full, transitionInfo, {BackgroundTransparency = 1})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.45, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.LoadingFrame, transitionInfo, {BackgroundTransparency = 1})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.45, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.LoadingFrame.Text, transitionInfo, {TextTransparency = 1})
-	tween:Play()
-	wait(0.5)
-end
-
-function CloseSidebar()
-	db = true
-	Sidebaropen = false
-	local S = Instance.new("Sound")
-	S.Parent = game:GetService("CoreGui")
-	S.Name = "dmncls"
-	S.SoundId = 'rbxassetid://255881176'
-	S.Volume = 1
-	S.PlaybackSpeed = 0.7
-	S.PlayOnRemove = true
-	S:Destroy()
-	local transitionInfo = TweenInfo.new(0.35, Enum.EasingStyle.Back)
-	local tween = game:GetService("TweenService"):Create(Domain.ToggleButton, transitionInfo, {Rotation = 90})
-	tween:Play()
-	if tamperwithplayerlist then
-		game:GetService("StarterGui"):SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList,true)
-	end
-	Domain.Main:TweenPosition(UDim2.new(1.001, 0,0.262, 0),"Out","Quint",0.5)
-	local transitionInfo = TweenInfo.new(0.5, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.Main.Shadow, transitionInfo, {ImageTransparency = 1})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.2, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.HomeButtonFrame, transitionInfo, {BackgroundTransparency = 1})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.2, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.HomeButtonFrame.OpenHome, transitionInfo, {ImageTransparency = 1})
-	tween:Play()
-	wait(0.001)
-	local transitionInfo = TweenInfo.new(0.2, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.PlayersButtonFrame, transitionInfo, {BackgroundTransparency = 1})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.2, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.PlayersButtonFrame.OpenPlayers, transitionInfo, {ImageTransparency = 1})
-	tween:Play()
-	wait(0.001)
-	local transitionInfo = TweenInfo.new(0.2, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.ExploitsButtonFrame, transitionInfo, {BackgroundTransparency = 1})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.2, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.ExploitsButtonFrame.OpenExploits, transitionInfo, {ImageTransparency = 1})
-	tween:Play()
-	wait(0.001)
-	local transitionInfo = TweenInfo.new(0.2, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.PlayerConfigButtonFrame, transitionInfo, {BackgroundTransparency = 1})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.2, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.PlayerConfigButtonFrame.OpenPlrConfig, transitionInfo, {ImageTransparency = 1})
-	tween:Play()
-	wait(0.001)
-	local transitionInfo = TweenInfo.new(0.2, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.AboutButtonFrame, transitionInfo, {BackgroundTransparency = 1})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.2, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.AboutButtonFrame.OpenAbout, transitionInfo, {ImageTransparency = 1})
-	tween:Play()
-	wait(0.5)
-	db = false
-
-end
-
-
-
-
-
-
-function figureNotifs(Stack,Container)
-	local stacksize = 0
-
-	local i = #Stack
-	while i > 0 do
-		local gui = Stack[i]
-		if gui then
-			if stacksize == 0 then
-				stacksize = 0.03
-			else
-				stacksize = stacksize + 0.085
-			end
-			local desiredpos = UDim2.new(0.5,0,stacksize,0)
-			if gui.Position ~= desiredpos then
-				gui:TweenPosition(desiredpos,"Out","Quint",0.3,true)
-			end
-		end
-		i = i-1
-	end
-end
-
-function Notify(Content,Font,Color)
-	spawn(function()
-		if not Font then
-			Font = "GothamBold"
-		end
-		local notificationContainer = Domain.Other.NotificationClip
-		local Notification = notificationContainer:WaitForChild('Template')	
-		local notifClone = Notification:Clone()
-		local notifContent = notifClone:WaitForChild('Content')
-		if Font == "GothamSemiBold" then
-			Font = "GothamSemibold"
-		end
-		notifContent.Font = Font
-		notifContent.TextScaled = false
-		notifContent.TextTransparency = 1
-		notifContent.BackgroundTransparency = 1
-		notifClone.BackgroundTransparency = 1
-		notifClone.Name = 'Notification'
-		notifClone.Visible = true
-		notifContent.BackgroundColor3 = Color
-		notifContent.Text = Content
-		notifClone.Parent = notificationContainer
-		notifClone.Position = UDim2.new(0.5,0,-0.05,0)
-		wait(0.001)
-		notifContent.Size = UDim2.new(0, math.max(16, notifContent.TextBounds.X * 1.15),1, 0)
-		wait(0.5)
-		local sound = Instance.new("Sound")
-		sound.Parent = game:GetService("CoreGui")
-		sound.SoundId = "rbxassetid://"..5711733888
-		sound.Name = "dmnnotify"
-		sound.Volume = 0.6
-		sound.PlayOnRemove = true
-		sound:Destroy()
-		notifClone:TweenPosition(UDim2.new(0.5,0,0.03,0),'Out','Quint',0.3,true)
-		local transitionInfo = TweenInfo.new(0.35, Enum.EasingStyle.Quint)
-		local tween = game:GetService("TweenService"):Create(notifContent, transitionInfo, {TextTransparency = 0})
-		tween:Play()
-		local transitionInfo = TweenInfo.new(0.35, Enum.EasingStyle.Quint)
-		local tween = game:GetService("TweenService"):Create(notifContent, transitionInfo, {BackgroundTransparency = 0})
-		tween:Play()
-		table.insert(NotifStack,notifClone)
-		figureNotifs(NotifStack,notificationContainer)
-
-
-		wait(NotificationDuration)
-		for a,b in pairs(NotifStack) do
-			if b == notifClone then
-				table.remove(NotifStack,a)
-			end
-		end
-		wait(0.05)
-		notifClone:TweenPosition(UDim2.new(0.5,0,notifClone.Position.Y.Scale+0.1,0),'Out','Quint',0.3,true)
-		local transitionInfo = TweenInfo.new(0.3, Enum.EasingStyle.Quint)
-		local tween = game:GetService("TweenService"):Create(notifContent, transitionInfo, {TextTransparency = 1})
-		tween:Play()
-		local transitionInfo = TweenInfo.new(0.3, Enum.EasingStyle.Quint)
-		local tween = game:GetService("TweenService"):Create(notifContent, transitionInfo, {BackgroundTransparency = 1})
-		tween:Play()
-		wait(0.305)
-		notifClone:Destroy()
-		figureNotifs(NotifStack,notificationContainer)
-	end)
-end
-
-function ClosePage(PageIns)
-	if db == false then
-		db = true
-		if PageIns == Domain.Other.Home and not db then
-			CloseHome()
-		else
-			local transitionInfo = TweenInfo.new(0.6, Enum.EasingStyle.Quint)
-			local tween = game:GetService("TweenService"):Create(PageIns, transitionInfo, {Position = UDim2.new(0,0,-1.1,0)})
-			tween:Play()
-			openpagev = "nil"
-			wait(0.6)
-			PageIns.Visible = false
-			db = false
-		end
-	end
-end
-
-function OpenPage(PageIns)
-	if db == false then
-		if openpagev == PageIns then
-			ClosePage(PageIns)
-		else
-			if openpagev ~= "nil" and openpagev then
-				ClosePage(openpagev)
-			end
-			db = true
-			PageIns.Visible = true
-			PageIns.Position = UDim2.new(0,0,1,0)
-			local transitionInfo = TweenInfo.new(0.6, Enum.EasingStyle.Quint)
-			local tween = game:GetService("TweenService"):Create(PageIns, transitionInfo, {Position = UDim2.new(0,0,0,0)})
-			tween:Play()
-			wait(0.1)
-			local S = Instance.new("Sound")
-			S.Parent = game:GetService("CoreGui")
-			S.Name = "dmnopen"
-			S.SoundId = 'rbxassetid://255881176'
-			S.Volume = 0.4
-			S.PlaybackSpeed = 1.1
-			S.PlayOnRemove = true
-			S:Destroy()
-			openpagev = PageIns
-		PageIns.ExitFrame.Exit.MouseButton1Click:Connect(function()
-			ClosePage(PageIns)
-		end)
-			db = false
-		end
-	end
-end
-
-function OpenHome()
-	Domain.Home.Visible = true
-	homeopen = true
-	db = true
-	
-	for _, ui in ipairs(game.Players.LocalPlayer.PlayerGui:GetChildren()) do
-		if ui.ClassName == "ScreenGui" and ui ~= Domain.Domain then
-		if not table.find(UIsEnabled,ui.Name) and ui.Enabled == true then
-			table.insert(UIsEnabled,#UIsEnabled+1,ui.Name)
-			end
-			ui.Enabled = false
-		end
-	end
-	game:GetService("StarterGui"):SetCoreGuiEnabled(Enum.CoreGuiType.All,false)
-	for _, child in ipairs(Domain.Home:GetDescendants()) do
-		if child.ClassName == "ImageButton" or child.ClassName == "ImageLabel" then
-			child.ImageTransparency  =1
-			child.BackgroundTransparency = 1
-		elseif child.ClassName == "TextButton" or child.ClassName == "TextLabel" or child.ClassName == "TextBox" then
-			child.TextTransparency = 1
-			child.BackgroundTransparency = 1
-		elseif child.ClassName == "Frame" then
-			child.BackgroundTransparency = 1
-		end
-	end
-	local transitionInfo = TweenInfo.new(0.7, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(workspace.CurrentCamera, transitionInfo, {FieldOfView = 50})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.6, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Blur, transitionInfo, {Size = 24})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.6, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.Home.Shadow, transitionInfo, {ImageTransparency = 0.4})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.6, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.Home.Date, transitionInfo, {TextTransparency = 0})
-	tween:Play()
-	wait(0.05)
-	local transitionInfo = TweenInfo.new(0.6, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.Home.Time, transitionInfo, {TextTransparency = 0})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.ToggleButton, transitionInfo, {ImageTransparency = 1})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.FPS.TextLabel, transitionInfo, {TextTransparency = 1})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.FPS.Fpsimage, transitionInfo, {ImageTransparency = 1})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.FPS, transitionInfo, {BackgroundTransparency = 1})
-	tween:Play()
-	
-	--
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.RunningVersion, transitionInfo, {BackgroundTransparency = 0})
-	tween:Play()
-	wait(0.001)
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.RunningVersion.toolicon, transitionInfo, {ImageTransparency = 0})
-	tween:Play()
-	wait(0.001)
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.RunningVersion.VersionText, transitionInfo, {TextTransparency = 0})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.RunningVersion.VersionText2, transitionInfo, {TextTransparency = 0})
-	tween:Play()
-	wait(0.05)
-	--
-	for _, scr in pairs(BackgroundExploits) do
-		for _, scrid in pairs(scr.PlaceIds) do
-			if scrid == game.PlaceId then
-				if scr.PremiumOnly == true then
-					if game.Players.LocalPlayer:IsInGroup(10220078) then
-						RePromptExploit(scr)
-					end
-				else
-					RePromptExploit(scr)
+	actions = {
+		{
+			name = "Noclip",
+			images = {14385986465, 9134787693},
+			color = Color3.fromRGB(0, 170, 127),
+			enabled = false,
+			rotateWhileEnabled = false,
+			callback = function() end,
+		},
+		{
+			name = "Flight",
+			images = {9134755504, 14385992605},
+			color = Color3.fromRGB(170, 37, 46),
+			enabled = false,
+			rotateWhileEnabled = false,
+			callback = function(value)
+				local character = localPlayer.Character
+				local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+				if humanoid then
+					humanoid.PlatformStand = value
 				end
-			end
-		end
-	end
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.Friendstab, transitionInfo, {BackgroundTransparency = 0})
-	tween:Play()
-	wait(0.001)
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.Friendstab.friendsicon, transitionInfo, {ImageTransparency = 0})
-	tween:Play()
-	wait(0.001)
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.Friendstab.amount, transitionInfo, {TextTransparency = 0})
-	tween:Play()
-	--
-	wait(0.05)
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.MusicSystem, transitionInfo, {BackgroundTransparency = 0})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.MusicSystem.Pages.ID, transitionInfo, {BackgroundTransparency = 0})
-	tween:Play()
-	wait(0.001)
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.MusicSystem.text, transitionInfo, {TextTransparency = 0})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.MusicSystem.Pages.ID.SoundIdBox, transitionInfo, {BackgroundTransparency = 0})
-	tween:Play()
-	wait(0.001)
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.MusicSystem.Pages.ID.SoundIdBox, transitionInfo, {TextTransparency = 0})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.MusicSystem.Pages.ID.ToggleSound, transitionInfo, {BackgroundTransparency = 0})
-	tween:Play()
-	wait(0.001)
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.MusicSystem.Pages.ID.ToggleSound, transitionInfo, {TextTransparency = 0})
-	tween:Play()
-	-- 
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.Friend2tab, transitionInfo, {BackgroundTransparency = 0})
-	tween:Play()
-	wait(0.001)
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.Friend2tab.amount, transitionInfo, {TextTransparency = 0})
-	tween:Play()
-	wait(0.05)
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.discordtab, transitionInfo, {BackgroundTransparency = 0})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.supported, transitionInfo, {BackgroundTransparency = 0})
-	tween:Play()
-	wait(0.001)
-	for _, txt in ipairs(Domain.supported:GetChildren()) do
-		if txt.ClassName == "TextLabel" then
-			local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-			local tween = game:GetService("TweenService"):Create(txt, transitionInfo, {TextTransparency = 0})
-			tween:Play()
-			wait(0.0001)
-		end
-	end
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.discordtab.text, transitionInfo, {TextTransparency = 0})
-	tween:Play()
-	wait(0.001)
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.discordtab.link, transitionInfo, {TextTransparency = 0})
-	tween:Play()
-	--
-
-	
-	wait(0.6)
-	homeopenfov = true
-	db = false
-	
-end
-
-
-
-function CloseHome()
-	db = true
-homeopenfov = false
-
-		UnRePromptExploit()
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.discordtab, transitionInfo, {BackgroundTransparency = 1})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.discordtab.text, transitionInfo, {TextTransparency = 1})
-	tween:Play()
-	wait(0.001)
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.discordtab.link, transitionInfo, {TextTransparency = 1})
-	tween:Play()
-	wait(0.05)
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.Friend2tab, transitionInfo, {BackgroundTransparency = 1})
-	tween:Play()
-	wait(0.001)
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.Friend2tab.amount, transitionInfo, {TextTransparency = 1})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.Friendstab, transitionInfo, {BackgroundTransparency = 1})
-	tween:Play()
-	wait(0.001)
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.Friendstab.friendsicon, transitionInfo, {ImageTransparency = 1})
-	tween:Play()
-	wait(0.001)
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.Friendstab.amount, transitionInfo, {TextTransparency = 1})
-	tween:Play()
-	--
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.RunningVersion, transitionInfo, {BackgroundTransparency = 1})
-	tween:Play()
-	wait(0.001)
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.RunningVersion.toolicon, transitionInfo, {ImageTransparency = 1})
-	tween:Play()
-	wait(0.001)
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.RunningVersion.VersionText, transitionInfo, {TextTransparency = 1})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.RunningVersion.VersionText2, transitionInfo, {TextTransparency = 1})
-	tween:Play()
-	wait(0.05)
-	--
-	for _, txt in ipairs(Domain.supported:GetChildren()) do
-		if txt.ClassName == "TextLabel" then
-		local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-		local tween = game:GetService("TweenService"):Create(txt, transitionInfo, {TextTransparency = 1})
-		tween:Play()
-		end
-	end
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.supported, transitionInfo, {BackgroundTransparency = 1})
-	tween:Play()
-
-	--
-	wait(0.05)
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.MusicSystem, transitionInfo, {BackgroundTransparency = 1})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.MusicSystem.Pages.ID, transitionInfo, {BackgroundTransparency = 1})
-	tween:Play()
-	wait(0.001)
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.MusicSystem.text, transitionInfo, {TextTransparency = 1})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.MusicSystem.Pages.ID.SoundIdBox, transitionInfo, {BackgroundTransparency = 1})
-	tween:Play()
-	wait(0.001)
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.MusicSystem.Pages.ID.SoundIdBox, transitionInfo, {TextTransparency = 1})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.MusicSystem.Pages.ID.ToggleSound, transitionInfo, {BackgroundTransparency = 1})
-	tween:Play()
-	wait(0.001)
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.MusicSystem.Pages.ID.ToggleSound, transitionInfo, {TextTransparency = 1})
-	tween:Play()
-	-- 
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Blur, transitionInfo, {Size = 0})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(workspace.CurrentCamera, transitionInfo, {FieldOfView = 70})
-	tween:Play()
-	homeopen = false
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.Home.Shadow, transitionInfo, {ImageTransparency = 1})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.Home.Date, transitionInfo, {TextTransparency = 1})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.ToggleButton, transitionInfo, {ImageTransparency = 0})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.FPS.TextLabel, transitionInfo, {TextTransparency = 0})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.FPS.Fpsimage, transitionInfo, {ImageTransparency = 0})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.FPS, transitionInfo, {BackgroundTransparency = 0.52})
-	tween:Play()
-	wait(0.1)
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.Home.Time, transitionInfo, {TextTransparency = 1})
-	tween:Play()
-
-
-	if Sidebaropen and #game.Players:GetChildren() > 4 then
-		game:GetService("StarterGui"):SetCoreGuiEnabled(Enum.CoreGuiType.All,true)
-		if tamperwithplayerlist then
-			game:GetService("StarterGui"):SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList,false)
-		end
-	else
-		game:GetService("StarterGui"):SetCoreGuiEnabled(Enum.CoreGuiType.All,true)
-	end
-	for _, ui in ipairs(game:GetService("Players").LocalPlayer.PlayerGui:GetChildren()) do
-		if table.find(UIsEnabled,ui.Name) and ui.ClassName == "ScreenGui" then
-			ui.Enabled = true
-		end
-	end
-	wait(0.6)
-	db = false
-	Domain.Home.Visible = false
-end
-
-function StartUnfunctionals()
-	Domain.KeyFrame.Visible = false
-	Domain.Main.Position = UDim2.new(1.001,0,0.262,0)
-	Domain.Main.Shadow.ImageTransparency = 1
-	Domain.VersionText.Text = "You're running Domain "..ReleaseType.. " version "..tostring(Release)..[[    ]]
-	Domain.VersionText2.Text = "- "..ReleaseFeature
-	Domain.ToggleButton.Rotation = 90
-	Domain.ToggleButton.ImageTransparency = 1
-	Domain.Other.Watermark.Text.Text = "Domain "..ReleaseType.." v"..tostring(Release)
-	Domain.link.Text = DiscordLink
-	Domain.Link.Text = DiscordLink
-	Domain.Playerlist.Template.Visible = false
-	Domain.ListExploits.Template.Visible = false
-	for _, exploit in pairs(UniversalExploits) do
-		local expl = Domain.ListExploits.Template:Clone()
-		expl.Parent = Domain.ListExploits
-		expl.Visible = true
-		expl.ExploitName.Text = exploit.Name
-		expl.Description.Text = exploit.Author
-		expl.BackgroundColor3 = exploit.Colour
-		expl.LoadExploit.MouseButton1Click:Connect(function()
-			Execute(exploit.Code)
-			Notify("Initialising "..exploit.Name,"GothamSemibold",exploit.Colour)
-		end)
-	end
-	
-	for _, bar in ipairs(Domain.ValuesFrame.Functionality:GetChildren()) do
-		if bar:FindFirstChild("Knob") then
-			bar.Knob.MouseEnter:Connect(function()
-				local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-				local tween = game:GetService("TweenService"):Create(bar.Knob, transitionInfo, {Size = UDim2.new(0.165, 0,1.74, 0)})
-				tween:Play()
-				local transitionInfo = TweenInfo.new(0.25, Enum.EasingStyle.Quint)
-				local tween = game:GetService("TweenService"):Create(bar.Knob, transitionInfo, {TextTransparency = 0})
-				tween:Play()
-				bar.Knob.TextColor3 = Color3.fromRGB(255,255,255)
-				bar.Knob.TextSize = 13
-				bar.Knob.TextWrapped = true
-				repeat 
-					wait(0.05)
-					if bar.Name == "WalkspeedBar" then
-						bar.Knob.Text = "  "..game.Players.LocalPlayer.Character:FindFirstChild("Humanoid").WalkSpeed.."  "
-					elseif bar.Name == "flightBar" then
-						bar.Knob.Text = "  ".. PlayerFlySpeed .."  "
-					elseif bar.Name == "jumppowerBar" then
-						bar.Knob.Text = "  "..game.Players.LocalPlayer.Character:FindFirstChild("Humanoid").JumpPower.."  "
-					end
-				until not Mouse.Button1Down
-			end)
-			bar.Knob.MouseLeave:Connect(function()		
-				local transitionInfo = TweenInfo.new(0.25, Enum.EasingStyle.Quint)
-				local tween = game:GetService("TweenService"):Create(bar.Knob, transitionInfo, {TextTransparency = 1})
-				tween:Play()
-				local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-				local tween = game:GetService("TweenService"):Create(bar.Knob, transitionInfo, {Size = UDim2.new(0.082, 0,1.74, 0)})
-				tween:Play()
-			end)
-		end
-	end
-	for _, button in ipairs(Domain.Domain:GetDescendants()) do
-		if button.ClassName == "TextButton" or button.ClassName == "ImageButton" then
-			button.MouseEnter:Connect(function()
-				local sound = Instance.new("Sound")
-				sound.Parent = game:GetService("CoreGui")
-				sound.SoundId = "rbxassetid://"..5940560840
-				sound.Name = "dmnhov"
-				sound.Volume = 0.2
-				sound.PlayOnRemove = true
-				sound:Destroy()
-			end)
-			button.MouseButton1Click:Connect(function()
-				local sound = Instance.new("Sound")
-				sound.Parent = game:GetService("CoreGui")
-				sound.SoundId = "rbxassetid://"..1180994874
-				sound.Name = "dmnclick"
-				sound.Volume = 0.2
-				sound.PlayOnRemove = true
-				sound:Destroy()
-			end)
-		end
-	end
-	for _, bttn in ipairs(Domain.Buttons:GetChildren()) do
-		for _, child in ipairs(bttn:GetChildren()) do
-			if child.ClassName == "ImageButton" then
-				child.MouseButton1Click:Connect(function()
-					if child.Name == "OpenHome" and not db then
-						if homeopen then
-							CloseHome()
-						else
-							OpenHome()
+			end,
+		},
+		{
+			name = "Refresh",
+			images = {9134761478, 9134761478},
+			color = Color3.fromRGB(61, 179, 98),
+			enabled = false,
+			rotateWhileEnabled = true,
+			disableAfter = 3,
+			callback = function()
+				task.spawn(function()
+					local character = localPlayer.Character
+					if character then
+						local cframe = character:GetPivot()
+						local humanoid = character:FindFirstChildOfClass("Humanoid")
+						if humanoid then
+							humanoid:ChangeState(Enum.HumanoidStateType.Dead)
 						end
-					elseif child.Name == "OpenAbout" then
-						OpenPage(Domain.AboutFrame)
-					elseif child.Name == "OpenPlayers" then
-						OpenPage(Domain.PlayersFrame)
-					elseif child.Name == "OpenExploits" then
-						OpenPage(Domain.ExploitsFrame)
-					elseif child.Name == "OpenPlrConfig" then
-						OpenPage(Domain.ValuesFrame)
+						character = localPlayer.CharacterAdded:Wait()
+						task.defer(character.PivotTo, character, cframe)
 					end
 				end)
-			end
-		end
-	end
+			end,
+		},
+		{
+			name = "Respawn",
+			images = {9134762943, 9134762943},
+			color = Color3.fromRGB(49, 88, 193),
+			enabled = false,
+			rotateWhileEnabled = true,
+			disableAfter = 2,
+			callback = function()
+				local character = localPlayer.Character
+				local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+				if humanoid then
+					humanoid:ChangeState(Enum.HumanoidStateType.Dead)
+				end
+			end,
+		},
+		{
+			name = "Invulnerability",
+			images = {9134765994, 14386216487},
+			color = Color3.fromRGB(193, 46, 90),
+			enabled = false,
+			rotateWhileEnabled = false,
+			callback = function() end,
+		},
+		{
+			name = "Fling",
+			images = {9134785384, 14386226155},
+			color = Color3.fromRGB(184, 85, 61),
+			enabled = false,
+			rotateWhileEnabled = true,
+			callback = function(value)
+				local character = localPlayer.Character
+				local primaryPart = character and character.PrimaryPart
+				if primaryPart then
+					for _, part in ipairs(character:GetDescendants()) do
+						if part:IsA("BasePart") then
+							part.Massless = value
+							part.CustomPhysicalProperties = PhysicalProperties.new(value and math.huge or 0.7, 0.3, 0.5)
+						end
+					end
 
-end
+					primaryPart.Anchored = true
+					primaryPart.AssemblyLinearVelocity = Vector3.zero
+					primaryPart.AssemblyAngularVelocity = Vector3.zero
 
-function getRoot(char)
-	local rootPart = char:FindFirstChild('HumanoidRootPart') or char:FindFirstChild('Torso') or char:FindFirstChild('UpperTorso')
-	return rootPart
-end
+					movers[3].Parent = value and primaryPart or nil
 
-local Widgets = {
-
-}
-
-
-local DefaultWidgets = {
-	WidgetTest = {
-		raw = "https://raw.githubusercontent.com/shlexsoftworks/domaintest/main/widgets",
+					task.delay(0.5, function() primaryPart.Anchored = false end)
+				end
+			end,
+		},
+		{
+			name = "Extrasensory Perception",
+			images = {9134780101, 14386232387},
+			color = Color3.fromRGB(214, 182, 19),
+			enabled = false,
+			rotateWhileEnabled = false,
+			callback = function(value)
+				for _, highlight in ipairs(espContainer:GetChildren()) do
+					highlight.Enabled = value
+				end
+			end,
+		},
+		{
+			name = "Night and Day",
+			images = {9134778004, 10137794784},
+			color = Color3.fromRGB(102, 75, 190),
+			enabled = false,
+			rotateWhileEnabled = false,
+			callback = function(value)
+				tweenService:Create(lighting, TweenInfo.new(0.5), { ClockTime = value and 12 or 24 }):Play()
+			end,
+		},
+		{
+			name = "Global Audio",
+			images = {9134774810, 14386246782},
+			color = Color3.fromRGB(202, 103, 58),
+			enabled = false,
+			rotateWhileEnabled = false,
+			callback = function(value)
+				if value then
+					oldVolume = gameSettings.MasterVolume
+					gameSettings.MasterVolume = 0
+				else
+					gameSettings.MasterVolume = oldVolume
+				end
+			end,
+		},
+		{
+			name = "Visibility",
+			images = {14386256326, 9134770786},
+			color = Color3.fromRGB(62, 94, 170),
+			enabled = false,
+			rotateWhileEnabled = false,
+			callback = function() end,
+		},
+	},
+	sliders = {
+		{
+			name = "player speed",
+			color = Color3.fromRGB(44, 153, 93),
+			values = {0, 300},
+			default = 16,
+			value = 16,
+			active = false,
+			callback = function(value)
+				local character = localPlayer.Character
+				local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+				if character then
+					humanoid.WalkSpeed = value
+				end
+			end,
+		},
+		{
+			name = "jump power",
+			color = Color3.fromRGB(59, 126, 184),
+			values = {0, 350},
+			default = 50,
+			value = 16,
+			active = false,
+			callback = function(value)
+				local character = localPlayer.Character
+				local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+				if character then
+					if humanoid.UseJumpPower then
+						humanoid.JumpPower = value
+					else
+						humanoid.JumpHeight = value
+					end
+				end
+			end,
+		},
+		{
+			name = "flight speed",
+			color = Color3.fromRGB(177, 45, 45),
+			values = {1, 25},
+			default = 3,
+			value = 3,
+			active = false,
+			callback = function(value) end,
+		},
+		{
+			name = "field of view",
+			color = Color3.fromRGB(198, 178, 75),
+			values = {45, 120},
+			default = 70,
+			value = 16,
+			active = false,
+			callback = function(value)
+				tweenService:Create(camera, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), { FieldOfView = value }):Play()
+			end,
+		},
 	}
 }
 
+local siriusSettings = {
+	{
+		name = 'General',
+		description = 'The general settings for Sirius, from simple to unique features.',
+		color = Color3.new(0.117647, 0.490196, 0.72549),
+		minimumLicense = 'Free',
+		categorySettings = {
+			{
+				name = 'Anonymous Client',
+				description = 'Randomise your username in real-time in any CoreGui parented interface, including Sirius. You will still appear as your actual name to others in-game. This setting can be performance intensive.',
+				settingType = 'Boolean',
+				current = false,
 
-function loadwidgets()
-	for _, widgettable in pairs(Widgets) do
-		AddWidget(widgettable)
-	end
-	for _, widgettable in pairs(DefaultWidgets) do
-		AddWidget(widgettable)
-	end
-end
-function AddWidget(WTable)
-	--local NewWidget = Instance.new("Frame")
-	--NewWidget.Name = WTable.Name
-	--NewWidget.Parent = Domain.Domain.Other.Home.Widgets
-	--NewWidget.Position = WTable.Position
-	--NewWidget.Visible = true
-	--NewWidget.Size = WTable.Size
-	--NewWidget.ZIndex = 100
-	loadstring(game:HttpGet(WTable.raw, true))()
-end
+				id = 'anonmode'
+			},
+			{
+				name = 'Chat Spy',
+				description = 'This will only work on the legacy Roblox chat system. Sirius will display whispers usually hidden from you in the chat box.',
+				settingType = 'Boolean',
+				current = true,
 
-function BeginFly()
-	repeat wait() until game.Players.LocalPlayer and game.Players.LocalPlayer.Character and getRoot(game.Players.LocalPlayer.Character) and game.Players.LocalPlayer.Character:FindFirstChild('Humanoid')
-		repeat wait() until Mouse
-		if flyKeyDown or flyKeyUp then flyKeyDown:Disconnect() flyKeyUp:Disconnect() end
+				id = 'chatspy'
+			},
+			{
+				name = 'Hide Toggle زر',
+				description = 'This will remove the option to open the smartBar with the toggle button.',
+				settingType = 'Boolean',
+				current = false,
 
-		local T = getRoot(game.Players.LocalPlayer.Character)
-		local CONTROL = {F = 0, B = 0, L = 0, R = 0, Q = 0, E = 0}
-		local lCONTROL = {F = 0, B = 0, L = 0, R = 0, Q = 0, E = 0}
-		local SPEED = 0
+				id = 'hidetoggle'
+			},
+			{
+				name = 'Now Playing Notifications',
+				description = 'When active, Sirius will notify you when the next song in your Music queue plays.',
+				settingType = 'Boolean',
+				current = true,
 
-		local function Flyv2()
-			Flying = true
-			local BG = Instance.new('BodyGyro')
-			local BV = Instance.new('BodyVelocity')
-			BG.P = 9e4
-			BG.Parent = T
-			BV.Parent = T
-			BG.maxTorque = Vector3.new(9e9, 9e9, 9e9)
-			BG.cframe = T.CFrame
-			BV.velocity = Vector3.new(0, 0, 0)
-			BV.maxForce = Vector3.new(9e9, 9e9, 9e9)
-			spawn(function()
-				repeat wait()
-				if game.Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid') then
-					game.Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid').PlatformStand = true
-					end
-					if CONTROL.L + CONTROL.R ~= 0 or CONTROL.F + CONTROL.B ~= 0 or CONTROL.Q + CONTROL.E ~= 0 then
-						SPEED = 50
-					elseif not (CONTROL.L + CONTROL.R ~= 0 or CONTROL.F + CONTROL.B ~= 0 or CONTROL.Q + CONTROL.E ~= 0) and SPEED ~= 0 then
-						SPEED = 0
-					end
-					if (CONTROL.L + CONTROL.R) ~= 0 or (CONTROL.F + CONTROL.B) ~= 0 or (CONTROL.Q + CONTROL.E) ~= 0 then
-						BV.velocity = ((workspace.CurrentCamera.CoordinateFrame.lookVector * (CONTROL.F + CONTROL.B)) + ((workspace.CurrentCamera.CoordinateFrame * CFrame.new(CONTROL.L + CONTROL.R, (CONTROL.F + CONTROL.B + CONTROL.Q + CONTROL.E) * 0.2, 0).p) - workspace.CurrentCamera.CoordinateFrame.p)) * SPEED
-						lCONTROL = {F = CONTROL.F, B = CONTROL.B, L = CONTROL.L, R = CONTROL.R}
-					elseif (CONTROL.L + CONTROL.R) == 0 and (CONTROL.F + CONTROL.B) == 0 and (CONTROL.Q + CONTROL.E) == 0 and SPEED ~= 0 then
-						BV.velocity = ((workspace.CurrentCamera.CoordinateFrame.lookVector * (lCONTROL.F + lCONTROL.B)) + ((workspace.CurrentCamera.CoordinateFrame * CFrame.new(lCONTROL.L + lCONTROL.R, (lCONTROL.F + lCONTROL.B + CONTROL.Q + CONTROL.E) * 0.2, 0).p) - workspace.CurrentCamera.CoordinateFrame.p)) * SPEED
-					else
-						BV.velocity = Vector3.new(0, 0, 0)
-					end
-					BG.cframe = workspace.CurrentCamera.CoordinateFrame
-				until not Flying
-				CONTROL = {F = 0, B = 0, L = 0, R = 0, Q = 0, E = 0}
-				lCONTROL = {F = 0, B = 0, L = 0, R = 0, Q = 0, E = 0}
-				SPEED = 0
-				BG:Destroy()
-				BV:Destroy()
-			if game.Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid') then
-				game.Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid').PlatformStand = false
+				id = 'nowقيد اللعب'
+			},
+			{
+				name = 'Friend Notifications',
+				settingType = 'Boolean', 
+				current = true,
+
+				id = 'friendnotifs'
+			},
+			{
+				name = 'Load Hidden',
+				settingType = 'Boolean',
+				current = false,
+
+				id = 'loadhidden'
+			}, 
+			{
+				name = 'Startup Sound Effect',
+				settingType = 'Boolean',
+				current = true,
+
+				id = 'startupsound'
+			}, 
+			{
+				name = 'Anti Idle',
+				description = 'Remove all callbacks and events linked to the LocalPlayer Idled state. This may prompt detection from Adonis or similar anti-cheats.',
+				settingType = 'Boolean',
+				current = true,
+
+				id = 'antiidle'
+			},
+			{
+				name = 'Client-Based Anti Kick',
+				description = 'Cancel any kick request involving you sent by the client. This may prompt detection from Adonis or similar anti-cheats. You will need to rejoin and re-run Sirius to toggle.',
+				settingType = 'Boolean',
+				current = false,
+
+				id = 'antikick'
+			},
+			{
+				name = 'Muffle audio while unfocused',
+				settingType = 'Boolean', 
+				current = true,
+
+				id = 'muffleunfocused'
+			},
+		}
+	},
+	{
+		name = 'Keybinds',
+		description = 'Assign keybinds to actions or change keybinds such as the one to open/close Sirius.',
+		color = Color3.new(0.0941176, 0.686275, 0.509804),
+		minimumLicense = 'Free',
+		categorySettings = {
+			{
+				name = 'Toggle smartBar',
+				settingType = 'Key',
+				current = "K",
+				id = 'smartbar'
+			},
+			{
+				name = 'Open ScriptSearch',
+				settingType = 'Key',
+				current = "T",
+				id = 'scriptsearch'
+			},
+			{
+				name = 'NoClip',
+				settingType = 'Key',
+				current = nil,
+				id = 'noclip',
+				callback = function()
+					local noclip = siriusValues.actions[1]
+					noclip.enabled = not noclip.enabled
+					noclip.callback(noclip.enabled)
 				end
-			end)
-		end
-		flyKeyDown = Mouse.KeyDown:Connect(function(KEY)
-			if KEY:lower() == 'w' then
-			CONTROL.F = (PlayerFlySpeed)
-			elseif KEY:lower() == 's' then
-			CONTROL.B = - (PlayerFlySpeed)
-			elseif KEY:lower() == 'a' then
-			CONTROL.L = - (PlayerFlySpeed)
-			elseif KEY:lower() == 'd' then 
-			CONTROL.R = (PlayerFlySpeed)
-			elseif QEfly and KEY:lower() == 'e' then
-			CONTROL.Q = (PlayerFlySpeed)*2
-			elseif QEfly and KEY:lower() == 'q' then
-				CONTROL.E = -(PlayerFlySpeed)*2
-			end
-			pcall(function() workspace.CurrentCamera.CameraType = Enum.CameraType.Track end)
-		end)
-		flyKeyUp = Mouse.KeyUp:Connect(function(KEY)
-			if KEY:lower() == 'w' then
-				CONTROL.F = 0
-			elseif KEY:lower() == 's' then
-				CONTROL.B = 0
-			elseif KEY:lower() == 'a' then
-				CONTROL.L = 0
-			elseif KEY:lower() == 'd' then
-				CONTROL.R = 0
-			elseif KEY:lower() == 'e' then
-				CONTROL.Q = 0
-			elseif KEY:lower() == 'q' then
-				CONTROL.E = 0
-			end
-		end)
-		Flyv2()
+			},
+			{
+				name = 'Flight',
+				settingType = 'Key',
+				current = nil,
+				id = 'flight',
+				callback = function()
+					local flight = siriusValues.actions[2]
+					flight.enabled = not flight.enabled
+					flight.callback(flight.enabled)
+				end
+			},
+			{
+				name = 'Refresh',
+				settingType = 'Key',
+				current = nil,
+				id = 'refresh',
+				callback = function()
+					local refresh = siriusValues.actions[3]
+					if not refresh.enabled then
+						refresh.enabled = true
+						refresh.callback()
+					end
+				end
+			},
+			{
+				name = 'Respawn',
+				settingType = 'Key',
+				current = nil,
+				id = 'respawn',
+				callback = function()
+					local respawn = siriusValues.actions[4]
+					if not respawn.enabled then
+						respawn.enabled = true
+						respawn.callback()
+					end
+				end
+			},
+			{
+				name = 'Invulnerability',
+				settingType = 'Key',
+				current = nil,
+				id = 'invulnerability',
+				callback = function()
+					local invulnerability = siriusValues.actions[5]
+					invulnerability.enabled = not invulnerability.enabled
+					invulnerability.callback(invulnerability.enabled)
+				end
+			},
+			{
+				name = 'Fling',
+				settingType = 'Key',
+				current = nil,
+				id = 'fling',
+				callback = function()
+					local fling = siriusValues.actions[6]
+					fling.enabled = not fling.enabled
+					fling.callback(fling.enabled)
+				end
+			},
+			{
+				name = 'ESP',
+				settingType = 'Key',
+				current = nil,
+				id = 'esp',
+				callback = function()
+					local esp = siriusValues.actions[7]
+					esp.enabled = not esp.enabled
+					esp.callback(esp.enabled)
+				end
+			},
+			{
+				name = 'Night and Day',
+				settingType = 'Key',
+				current = nil,
+				id = 'nightandday',
+				callback = function()
+					local nightandday = siriusValues.actions[8]
+					nightandday.enabled = not nightandday.enabled
+					nightandday.callback(nightandday.enabled)
+				end
+			},
+			{
+				name = 'Global Audio',
+				settingType = 'Key',
+				current = nil,
+				id = 'globalaudio',
+				callback = function()
+					local globalaudio = siriusValues.actions[9]
+					globalaudio.enabled = not globalaudio.enabled
+					globalaudio.callback(globalaudio.enabled)
+				end
+			},
+			{
+				name = 'Visibility',
+				settingType = 'Key',
+				current = nil,
+				id = 'visibility',
+				callback = function()
+					local visibility = siriusValues.actions[10]
+					visibility.enabled = not visibility.enabled
+					visibility.callback(visibility.enabled)
+				end
+			},
+		}
+	},
+	{
+		name = 'Performance',
+		description = 'Tweak and test your performance settings for Roblox in Sirius.',
+		color = Color3.new(1, 0.376471, 0.168627),
+		minimumLicense = 'Free',
+		categorySettings = {
+			{
+				name = 'Artificial FPS Limit',
+				description = 'Sirius will automatically set your FPS to this number when you are tabbed-in to Roblox.',
+				settingType = 'Number',
+				values = {20, 5000},
+				current = 240,
+
+				id = 'fpscap'
+			},
+			{
+				name = 'Limit FPS while unfocused',
+				description = 'Sirius will automatically set your FPS to 60 when you tab-out or unfocus from Roblox.',
+				settingType = 'Boolean', -- number for the cap below!! with min and max val
+				current = true,
+
+				id = 'fpsunfocused'
+			},
+			{
+				name = 'Adaptive Latency Warning',
+				description = 'Sirius will check your average latency in the background and notify you if your current latency significantly goes above your average latency.',
+				settingType = 'Boolean',
+				current = true,
+
+				id = 'latencynotif'
+			},
+			{
+				name = 'Adaptive Performance Warning',
+				description = 'Sirius will check your average FPS in the background and notify you if your current FPS goes below a specific number.',
+				settingType = 'Boolean',
+				current = true,
+
+				id = 'fpsnotif'
+			},
+		}
+	},
+	{
+		name = 'Detections',
+		description = 'Sirius detects and prevents anything malicious or possibly harmful to your wellbeing.',
+		color = Color3.new(0.705882, 0, 0),
+		minimumLicense = 'Free',
+		categorySettings = {
+			{
+				name = 'Spatial Shield',
+				description = 'Suppress loud sounds played from any audio source in-game, in real-time with Spatial Shield.',
+				settingType = 'Boolean',
+				minimumLicense = 'Pro',
+				current = true,
+
+				id = 'spatialshield'
+			},
+			{
+				name = 'Spatial Shield Threshold',
+				description = 'How loud a sound needs to be to be suppressed.',
+				settingType = 'Number',
+				minimumLicense = 'Pro',
+				values = {100, 1000},
+				current = 300,
+
+				id = 'spatialshieldthreshold'
+			},
+			{
+				name = 'Moderator Detection',
+				description = 'Be notified whenever Sirius detects a player joins your session that could be a game moderator.',
+				settingType = 'Boolean', 
+				minimumLicense = 'Pro',
+				current = true,
+
+				id = 'moddetection'
+			},
+			{
+				name = 'Intelligent HTTP Interception',
+				description = 'Block external HTTP/HTTPS requests from being sent/recieved and ask you before allowing it to run.',
+				settingType = 'Boolean',
+				minimumLicense = 'Essential',
+				current = true,
+
+				id = 'intflowintercept'
+			},
+			{
+				name = 'Intelligent Clipboard Interception',
+				description = 'Block your clipboard from being set and ask you before allowing it to set your clipboard.',
+				settingType = 'Boolean',
+				minimumLicense = 'Essential',
+				current = true,
+
+				id = 'intflowinterceptclip'
+			},
+		},
+	},
+	{
+		name = 'Logging',
+		description = 'Send logs to your specified webhook URL of things like player joins and leaves and messages.',
+		color = Color3.new(0.905882, 0.780392, 0.0666667),
+		minimumLicense = 'Free',
+		categorySettings = {
+			{
+				name = 'Log Messages',
+				description = 'Log messages sent by any player to your webhook.',
+				settingType = 'Boolean',
+				current = false,
+
+				id = 'logmsg'
+			},
+			{
+				name = 'Message Webhook URL',
+				description = 'Discord Webhook URL',
+				settingType = 'Input',
+				current = 'No Webhook',
+
+				id = 'logmsgurl'
+			},
+			{
+				name = 'Log PlayerAdded and PlayerRemoving',
+				description = 'Log whenever any player leaves or joins your session.',
+				settingType = 'Boolean',
+				current = false,
+
+				id = 'logplrjoinleave'
+			},
+			{
+				name = 'Player Added and Removing Webhook URL',
+				description = 'Discord Webhook URL',
+				settingType = 'Input',
+				current = 'No Webhook',
+
+				id = 'logplrjoinleaveurl'
+			},
+		}
+	},
+}
+
+-- Generate random username
+local randomAdjective = siriusValues.nameGeneration.adjectives[math.random(1, #siriusValues.nameGeneration.adjectives)]
+local randomNoun = siriusValues.nameGeneration.nouns[math.random(1, #siriusValues.nameGeneration.nouns)]
+local randomNumber = math.random(100, 3999) -- You can customize the range
+local randomUsername = randomAdjective .. randomNoun .. randomNumber
+
+-- Initialise Sirius Client Interface
+local guiParent = gethui and gethui() or coreGui
+local sirius = guiParent:FindFirstChild("Sirius")
+if sirius then
+	sirius:Destroy()
 end
 
-function Serverhop()
-	local x = {}
-	for _, v in ipairs(game:GetService("HttpService"):JSONDecode(game:HttpGetAsync("https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/Public?sortOrder=Asc&limit=100")).data) do
-		if type(v) == "table" and v.maxPlayers > v.playing and v.id ~= game.JobId then
-			x[#x + 1] = v.id
-		end
-	end
-	if #x > 0 then
-		game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, x[math.random(1, #x)])
-	else
-		return "Protocol:cantfind"
-	end
-end
+local UI = game:GetObjects('rbxassetid://'..siriusValues.interfaceAsset)[1]
+UI.Name = siriusValues.siriusName
+UI.Parent = guiParent
+UI.Enabled = false
 
-function CheckServers()
-	local x = {}
-	for _, v in ipairs(game:GetService("HttpService"):JSONDecode(game:HttpGetAsync("https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/Public?sortOrder=Asc&limit=100")).data) do
-		if type(v) == "table" and v.maxPlayers > v.playing and v.id ~= game.JobId then
-			x[#x + 1] = v.id
-		end
-	end
-	if #x > 0 then
-		return "Protocol:found"
-	else
-		return "Protocol:cantfind"
-	end
-end
+-- Create Variables for Interface Elements
+local characterPanel = UI.Character
+local customScriptPrompt = UI.CustomScriptPrompt
+local securityPrompt = UI.SecurityPrompt
+local disconnectedPrompt = UI.Disconnected
+local gameDetectionPrompt = UI.GameDetection
+local homeContainer = UI.Home
+local moderatorDetectionPrompt = UI.ModeratorDetectionPrompt
+local musicPanel = UI.Music
+local notificationContainer = UI.Notifications
+local playerlistPanel = UI.Playerlist
+local scriptSearch = UI.ScriptSearch
+local scriptsPanel = UI.Scripts
+local settingsPanel = UI.Settings
+local smartBar = UI.SmartBar
+local toggle = UI.Toggle
+local starlight = UI.Starlight
+local toastsContainer = UI.Toasts
 
-function RejoinServer()
-	if #game.Players:GetPlayers() <= 1 then
-		game.Players.LocalPlayer:Kick("\nRejoining...")
-		wait()
-		game:GetService('TeleportService'):Teleport(game.PlaceId, game.Players.LocalPlayer)
-	else
-		game:GetService('TeleportService'):TeleportToPlaceInstance(game.PlaceId, game.JobId, game.Players.LocalPlayer)
-	end
-end
+-- Interface Caching
+if not getgenv().cachedInGameUI then getgenv().cachedInGameUI = {} end
+if not getgenv().cachedCoreUI then getgenv().cachedCoreUI = {} end
 
-function Unfly()
-	Flying = false
-	if flyKeyDown or flyKeyUp then flyKeyDown:Disconnect() flyKeyUp:Disconnect() end
-	if game.Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid') then
-		game.Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid').PlatformStand = false
-	end
-	pcall(function() workspace.CurrentCamera.CameraType = Enum.CameraType.Custom end)
-end
+-- Malicious Behavior Prevention
+local indexSetClipboard = "setclipboard"
+local originalSetClipboard = getgenv()[indexSetClipboard]
 
-function Fly()
-Unfly()
-wait()
-BeginFly()
-end
+local index = http_request and "http_request" or "request"
+local originalRequest = getgenv()[index]
+
+-- put this into siriusValues, like the fps and ping shit
+local suppressedSounds = {}
+local soundSuppressionNotificationCooldown = 0
+local soundInstances = {}
+local cachedIds = {}
+local cachedText = {}
+
+if not getMessage then siriusValues.chatSpy.enabled = false end
+
+-- Call External Modules
+
+-- httpRequest
+local httpRequest = originalRequest
+
+-- Neon Module
+--local neonModule = (function() -- Open sourced neon module
+--	local module = {}
+--	do
+--		local function IsNotNaN(x)
+--			return x == x
+--		end
+--		local continued = IsNotNaN(camera:ScreenPointToRay(0,0).Origin.x)
+--		while not continued do
+--			runService.RenderStepped:wait()
+--			continued = IsNotNaN(camera:ScreenPointToRay(0,0).Origin.x)
+--		end
+--	end
+
+--	local RootParent = camera
+--	local root
+--	local binds = {}
+
+--	local function getRoot()
+--		if root then 
+--			return root
+--		else
+--			root = Instance.new('Folder', RootParent)
+--			root.Name = 'neon'
+--			return root
+--		end
+--	end
+
+--	local function destroyRoot()
+--		if root then 
+--			root:Destroy()
+--			root = nil
+--		end
+--	end
+
+--	local GenUid; do
+--		local id = 0
+--		function GenUid()
+--			id = id + 1
+--			return 'neon::'..tostring(id)
+--		end
+--	end
+
+--	local DrawQuad; do
+--		local acos, max, pi, sqrt = math.acos, math.max, math.pi, math.sqrt
+--		local sz = 0.2
+
+--		local function DrawTriangle(v1, v2, v3, p0, p1)
+--			local s1 = (v1 - v2).magnitude
+--			local s2 = (v2 - v3).magnitude
+--			local s3 = (v3 - v1).magnitude
+--			local smax = max(s1, s2, s3)
+--			local A, B, C
+--			if s1 == smax then
+--				A, B, C = v1, v2, v3
+--			elseif s2 == smax then
+--				A, B, C = v2, v3, v1
+--			elseif s3 == smax then
+--				A, B, C = v3, v1, v2
+--			end
+
+--			local para = ( (B-A).x*(C-A).x + (B-A).y*(C-A).y + (B-A).z*(C-A).z ) / (A-B).magnitude
+--			local perp = sqrt((C-A).magnitude^2 - para*para)
+--			local dif_para = (A - B).magnitude - para
+
+--			local st = CFrame.new(B, A)
+--			local za = CFrame.Angles(pi/2,0,0)
+
+--			local cf0 = st
+
+--			local Top_Look = (cf0 * za).lookVector
+--			local Mid_Point = A + CFrame.new(A, B).LookVector * para
+--			local Needed_Look = CFrame.new(Mid_Point, C).LookVector
+--			local dot = Top_Look.x*Needed_Look.x + Top_Look.y*Needed_Look.y + Top_Look.z*Needed_Look.z
+
+--			local ac = CFrame.Angles(0, 0, acos(dot))
+
+--			cf0 = cf0 * ac
+--			if ((cf0 * za).lookVector - Needed_Look).magnitude > 0.01 then
+--				cf0 = cf0 * CFrame.Angles(0, 0, -2*acos(dot))
+--			end
+--			cf0 = cf0 * CFrame.new(0, perp/2, -(dif_para + para/2))
+
+--			local cf1 = st * ac * CFrame.Angles(0, pi, 0)
+--			if ((cf1 * za).lookVector - Needed_Look).magnitude > 0.01 then
+--				cf1 = cf1 * CFrame.Angles(0, 0, 2*acos(dot))
+--			end
+--			cf1 = cf1 * CFrame.new(0, perp/2, dif_para/2)
+
+--			if not p0 then
+--				p0 = Instance.new('Part')
+--				p0.FormFactor = 'Custom'
+--				p0.TopSurface = 0
+--				p0.BottomSurface = 0
+--				p0.Anchored = true
+--				p0.CanCollide = false
+--				p0.Material = 'Glass'
+--				p0.Size = Vector3.new(sz, sz, sz)
+--				local mesh = Instance.new('SpecialMesh', p0)
+--				mesh.MeshType = 2
+--				mesh.Name = 'WedgeMesh'
+--			end
+--			p0.WedgeMesh.Scale = Vector3.new(0, perp/sz, para/sz)
+--			p0.CFrame = cf0
+
+--			if not p1 then
+--				p1 = p0:clone()
+--			end
+--			p1.WedgeMesh.Scale = Vector3.new(0, perp/sz, dif_para/sz)
+--			p1.CFrame = cf1
+
+--			return p0, p1
+--		end
+
+--		function DrawQuad(v1, v2, v3, v4, parts)
+--			parts[1], parts[2] = DrawTriangle(v1, v2, v3, parts[1], parts[2])
+--			parts[3], parts[4] = DrawTriangle(v3, v2, v4, parts[3], parts[4])
+--		end
+--	end
+
+--	function module:BindFrame(frame, properties)
+--		if binds[frame] then
+--			return binds[frame].parts
+--		end
+
+--		local uid = GenUid()
+--		local parts = {}
+--		local f = Instance.new('Folder', getRoot())
+--		f.Name = frame.Name
+
+--		local parents = {}
+--		do
+--			local function add(child)
+--				if child:IsA'GuiObject' then
+--					parents[#parents + 1] = child
+--					add(child.Parent)
+--				end
+--			end
+--			add(frame)
+--		end
+
+--		local function UpdateOrientation(fetchProps)
+--			local zIndex = 1 - 0.05*frame.ZIndex
+--			local tl, br = frame.AbsolutePosition, frame.AbsolutePosition + frame.AbsoluteSize
+--			local tr, bl = Vector2.new(br.x, tl.y), Vector2.new(tl.x, br.y)
+--			do
+--				local rot = 0
+--				for _, v in ipairs(parents) do
+--					rot = rot + v.Rotation
+--				end
+--				if rot ~= 0 and rot%180 ~= 0 then
+--					local mid = tl:lerp(br, 0.5)
+--					local s, c = math.sin(math.rad(rot)), math.cos(math.rad(rot))
+--					local vec = tl
+--					tl = Vector2.new(c*(tl.x - mid.x) - s*(tl.y - mid.y), s*(tl.x - mid.x) + c*(tl.y - mid.y)) + mid
+--					tr = Vector2.new(c*(tr.x - mid.x) - s*(tr.y - mid.y), s*(tr.x - mid.x) + c*(tr.y - mid.y)) + mid
+--					bl = Vector2.new(c*(bl.x - mid.x) - s*(bl.y - mid.y), s*(bl.x - mid.x) + c*(bl.y - mid.y)) + mid
+--					br = Vector2.new(c*(br.x - mid.x) - s*(br.y - mid.y), s*(br.x - mid.x) + c*(br.y - mid.y)) + mid
+--				end
+--			end
+--			DrawQuad(
+--				camera:ScreenPointToRay(tl.x, tl.y, zIndex).Origin, 
+--				camera:ScreenPointToRay(tr.x, tr.y, zIndex).Origin, 
+--				camera:ScreenPointToRay(bl.x, bl.y, zIndex).Origin, 
+--				camera:ScreenPointToRay(br.x, br.y, zIndex).Origin, 
+--				parts
+--			)
+--			if fetchProps then
+--				for _, pt in pairs(parts) do
+--					pt.Parent = f
+--				end
+--				for propName, propValue in pairs(properties) do
+--					for _, pt in pairs(parts) do
+--						pt[propName] = propValue
+--					end
+--				end
+--			end
+--		end
+
+--		UpdateOrientation(true)
+--		runService:BindToRenderStep(uid, 2000, UpdateOrientation)
+
+--		binds[frame] = {
+--			uid = uid,
+--			parts = parts
+--		}
+--		return binds[frame].parts
+--	end
+
+--	function module:Modify(frame, properties)
+--		local parts = module:GetBoundParts(frame)
+--		if parts then
+--			for propName, propValue in pairs(properties) do
+--				for _, pt in pairs(parts) do
+--					pt[propName] = propValue
+--				end
+--			end
+--		end
+--	end
+
+--	function module:UnbindFrame(frame)
+--		if RootParent == nil then return end
+--		local cb = binds[frame]
+--		if cb then
+--			runService:UnbindFromRenderStep(cb.uid)
+--			for _, v in pairs(cb.parts) do
+--				v:Destroy()
+--			end
+--			binds[frame] = nil
+--		end
+--		if getRoot():FindFirstChild(frame.Name) then
+--			getRoot()[frame.Name]:Destroy()
+--		end
+--	end
+
+--	function module:HasBinding(frame)
+--		return binds[frame] ~= nil
+--	end
+
+--	function module:GetBoundParts(frame)
+--		return binds[frame] and binds[frame].parts
+--	end
 
 
+--	return module
+
+--end)()
+
+-- Sirius Functions
+local function checkSirius() return UI.Parent end
+local function getPing() return math.clamp(statsService.Network.ServerStatsItem["Data Ping"]:GetValue(), 10, 700) end
+local function checkFolder() if isfolder then if not isfolder(siriusValues.siriusFolder) then makefolder(siriusValues.siriusFolder) end if not isfolder(siriusValues.siriusFolder.."/Music") then makefolder(siriusValues.siriusFolder.."/Music") writefile(siriusValues.siriusFolder.."/Music/readme.txt", "Hey there! Place your MP3 or other audio files in this folder, and have the ability to play them through the Sirius Music UI!") end if not isfolder(siriusValues.siriusFolder.."/Assets/أيقونةs") then makefolder(siriusValues.siriusFolder.."/Assets/أيقونةs") end if not isfolder(siriusValues.siriusFolder.."/Assets") then makefolder(siriusValues.siriusFolder.."/Assets") end end end
+local function isPanel(name) return not table.find({"Home", "Music", "Settings"}, name) end
+
+local function fetchFromCDN(path, write, savePath)
+	pcall(function()
+		checkFolder()
+
+		local file = game:HttpGet(siriusValues.cdn..path) or nil
+		if not file then return end
+		if not write then return file end
 
 
+		writefile(siriusValues.siriusFolder.."/"..savePath, file)
 
-
-
-function Execute(String)
-	if loadstring then
-		loadstring(game:HttpGet(String, true))()
-	else
-		Notify("You don't have the loadstring function! Use a different executor.","GothamSemibold",Color3.fromRGB(255, 163, 5))
-	end
-end
-
-function LoadDomainV1()
-	Execute("https://raw.githubusercontent.com/shlexsoftworks/mainDomain/main/source")
-end
-
-Domain.ToggleButton.MouseButton1Click:Connect(function()
-	if not db then
-		if Sidebaropen then
-			CloseSidebar()
-		else
-			OpenSidebar()
-		end
-	end
-end)
-
-Domain.Domain.ChildRemoved:Connect(function()
-	if not Domain.Domain:FindFirstChild("Other") then
-		Domain.Domain:Destroy()
-	end
-end)
-
-Domain.Other.ChildRemoved:Connect(function()
-	if not Domain.Other:FindFirstChild("Watermark") then
-		Domain.Domain:Destroy()
-	end
-end)
-
-
-function snap(number, factor)
-	if factor == 0 then
-		return number
-	else
-		return math.floor(number/factor+0.5)*factor
-	end
-end
-
-
-Domain.Rejoin.MouseButton1Click:Connect(function()
-	Domain.RejoinText.Text = "Hold on.."
-	RejoinServer()
-	wait(3)
-	Domain.RejoinText.Text = "Rejoin"
-end)
-
-UIS.InputEnded:connect(function(input, processed)
-	if input.UserInputType == Enum.UserInputType.MouseButton1 then
-		wsheld = false
-		flyheld = false
-		jumpheld = false
-	end
-end)
-
-Domain.WalkspeedBar.Knob.MouseButton1Down:Connect(function()
-	wsheld = true
-end)
-
-RuS.RenderStepped:connect(function(delta)
-	if wsheld then
-		local MousePos = UIS:GetMouseLocation().X
-		local BtnPos = SliderBtn.Position
-		local SliderSize = Slider.AbsoluteSize.X
-		local SliderPos = Slider.AbsolutePosition.X
-		local pos = snap((MousePos-SliderPos)/SliderSize,step)
-		percentage = math.clamp(pos,0,1)
-		SliderBtn.Position = UDim2.new(percentage - 0.02 ,0,BtnPos.Y.Scale, BtnPos.Y.Offset)
-	end
-end)
-
-
-
-SliderBtn.Changed:Connect(function()
-	wsenabled = true
-	local axis = SliderBtn.Position.X.Scale
-	local color =  Color3.fromRGB(0, 85, 127):Lerp(Color3.fromRGB(0, 120, 175),axis/1)
-	local number = math.floor(axis*100)
-	SliderBtn.BackgroundColor3 = color
-	local volume = number
-	local hum = game.Players.LocalPlayer.Character:FindFirstChild("Humanoid")
-	if hum and wsenabled then
-		if 16 + (WalkSpeedBoostPercent * volume) < 16 then
-			hum.WalkSpeed = 16
-		else
-			hum.WalkSpeed =  16 + (WalkSpeedBoostPercent * volume)
-		end
-	end
-end)
-
-
-
-
-
-Domain.jumppowerBar.Knob.MouseButton1Down:Connect(function()
-	jumpheld = true
-end)
-
-RuS.RenderStepped:connect(function(delta)
-	if jumpheld then
-		local MousePos = UIS:GetMouseLocation().X
-		local BtnPos = jumpSliderBtn.Position
-		local SliderSize = jumpSlider.AbsoluteSize.X
-		local SliderPos = jumpSlider.AbsolutePosition.X
-		local pos = snap((MousePos-SliderPos)/SliderSize,step)
-		percentage = math.clamp(pos,0,1)
-		jumpSliderBtn.Position = UDim2.new(percentage - 0.02,0,BtnPos.Y.Scale, BtnPos.Y.Offset)
-	end
-end)
-
-
-
-jumpSliderBtn.Changed:Connect(function()
-	local axis = jumpSliderBtn.Position.X.Scale
-	local color =  Color3.fromRGB(0, 85, 127):Lerp(Color3.fromRGB(0, 120, 175),axis/1)
-	local number = math.floor(axis*100)
-	jumpSliderBtn.BackgroundColor3 = color
-	local volume = number
-	wsenabled = true
-	local hum = game.Players.LocalPlayer.Character:FindFirstChild("Humanoid")
-	if hum and wsenabled then
-		if 50 + (JumpBoostPercent * volume) < 50 then
-			hum.JumpPower = 50
-		else
-			hum.JumpPower =  50 + (JumpBoostPercent * volume)
-		end
-	end
-end)
-
-Domain.CopyButton.MouseButton1Click:Connect(function()
-	if setclipboard then
-		setclipboard(DiscordLink)
-	elseif copyclipboard then
-		copyclipboard(DiscordLink)
-	end
-		
-end)
-
-Domain.flightBar.Knob.MouseButton1Down:Connect(function()
-	flyheld = true
-end)
-
-RuS.RenderStepped:connect(function(delta)
-	if flyheld then
-		local MousePos = UIS:GetMouseLocation().X
-		local BtnPos = flySliderBtn.Position
-		local SliderSize = flySlider.AbsoluteSize.X
-		local SliderPos = flySlider.AbsolutePosition.X
-		local pos = snap((MousePos-SliderPos)/SliderSize,step)
-		percentage = math.clamp(pos,0,1)
-		flySliderBtn.Position = UDim2.new(percentage - 0.02,0,BtnPos.Y.Scale, BtnPos.Y.Offset)
-	end
-end)
-
-
-flySliderBtn.Changed:Connect(function()
-	local axis = flySliderBtn.Position.X.Scale
-	local color =  Color3.fromRGB(173, 21, 21):Lerp(Color3.fromRGB(204, 24, 24),axis/1)
-	local number = math.floor(axis*100)
-	flySliderBtn.BackgroundColor3 = color
-	local volume = number
-	if 1 + (PlayerFlySpeedPercent * volume) < 1 then
-		PlayerFlySpeed = 1
-	else
-		PlayerFlySpeed = 1 + (PlayerFlySpeedPercent * volume)
-	end
-end)
-
-function respawn()
-	local char = game.Players.LocalPlayer.Character
-	if char:FindFirstChildOfClass("Humanoid") then char:FindFirstChildOfClass("Humanoid"):ChangeState(15) end
-	char:ClearAllChildren()
-	local newChar = Instance.new("Model")
-	newChar.Parent = workspace
-	game.Players.LocalPlayer.Character = newChar
-	wait()
-	game.Players.LocalPlayer.Character = char
-	newChar:Destroy()
-end
-
-Domain.respawn.MouseButton1Click:Connect(function()
-	respawn()
-end)
-
-function refresh()
-	local Human = game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid", true)
-	local pos = Human and Human.RootPart and Human.RootPart.CFrame
-	local pos1 = workspace.CurrentCamera.CFrame
-	respawn()
-	spawn(function()
-		game.Players.LocalPlayer.CharacterAdded:Wait():WaitForChild("Humanoid").RootPart.CFrame, workspace.CurrentCamera.CFrame = pos, wait() and pos1
+		return
 	end)
 end
 
-Domain.refresh.MouseButton1Click:Connect(function()
-	refresh()
-end)
+local function fetchIcon(iconName)
+	pcall(function()
+		checkFolder()
 
-Domain.Reset.MouseButton1Click:Connect(function()
-	jumpheld = false
-	wsheld = false
-	flyheld = false
-	PlayerFlySpeed = 1
-	for _, bar in ipairs(Domain.ValuesFrame.Functionality:GetChildren()) do
-		if bar:FindFirstChild("Knob") then
-			bar:FindFirstChild("Knob"):TweenPosition(UDim2.new(0, 0, -0.308, 0),"Out","Quint",0.4)
+		local pathCDN = siriusValues.icons..iconName..".png"
+		local path = siriusValues.siriusFolder.."/Assets/"..iconName..".png"
+
+		if not isfile(path) then
+			local file = game:HttpGet(pathCDN)
+			if not file then return end
+
+			writefile(path, file)
+		end
+
+		local imageToReturn = getcustomasset(path)
+
+		return imageToReturn
+	end)
+end
+
+local function storeOriginalText(element)
+	originalTextValues[element] = element.Text
+end
+
+local function undoAnonymousChanges()
+	for element, originalText in pairs(originalTextValues) do
+		element.Text = originalText
+	end
+end
+
+local function createEsp(player)
+	if player == localPlayer or not checkSirius() then 
+		return
+	end
+
+	local highlight = Instance.new("Highlight")
+	highlight.FillTransparency = 1
+	highlight.OutlineTransparency = 0
+	highlight.OutlineColor = Color3.new(1,1,1)
+	highlight.Adornee = player.Character
+	highlight.Name = player.Name
+	highlight.Enabled = siriusValues.actions[7].enabled
+	highlight.Parent = espContainer
+
+	player.CharacterAdded:Connect(function(character)
+		if not checkSirius() then return end
+		task.wait()
+		highlight.Adornee = character
+	end)
+end
+
+local function makeDraggable(object)
+	local dragging = false
+	local relative = nil
+
+	local offset = Vector2.zero
+	local screenGui = object:FindFirstAncestorWhichIsA("ScreenGui")
+	if screenGui and screenGui.IgnoreGuiInset then
+		offset += guiService:GetGuiInset()
+	end
+
+	object.InputBegan:Connect(function(input, processed)
+		if processed then return end
+
+		local inputType = input.UserInputType.Name
+		if inputType == "Mouseزر1" or inputType == "Touch" then
+			relative = object.AbsolutePosition + object.AbsoluteSize * object.AnchorPoint - userInputService:GetMouseLocation()
+			dragging = true
+		end
+	end)
+
+	local inputEnded = userInputService.InputEnded:Connect(function(input)
+		if not dragging then return end
+
+		local inputType = input.UserInputType.Name
+		if inputType == "Mouseزر1" or inputType == "Touch" then
+			dragging = false
+		end
+	end)
+
+	local renderStepped = runService.RenderStepped:Connect(function()
+		if dragging then
+			local position = userInputService:GetMouseLocation() + relative + offset
+			object.Position = UDim2.fromOffset(position.X, position.Y)
+		end
+	end)
+
+	object.Destroying:Connect(function()
+		inputEnded:Disconnect()
+		renderStepped:Disconnect()
+	end)
+end
+
+local function checkAction(target)
+	local toReturn = {}
+
+	for _, action in ipairs(siriusValues.actions) do
+		if action.name == target then
+			toReturn.action = action
+			break
 		end
 	end
-	local hum = game.Players.LocalPlayer.Character:FindFirstChild("Humanoid")
-	if hum and wsenabled then
-		hum.JumpPower = 50
-		hum.WalkSpeed = 16
+
+	for _, action in ipairs(characterPanel.Interactions.Grid:GetChildren()) do
+		if action.name == target then
+			toReturn.object = action
+			break
+		end
 	end
-end)
+
+	return toReturn
+end
+
+local function checkSetting(settingTarget, categoryTarget)
+	for _, category in ipairs(siriusSettings) do
+		if categoryTarget then
+			if category.name == categoryTarget then
+				for _, setting in ipairs(category.categorySettings) do
+					if setting.name == settingTarget then
+						return setting
+					end
+				end
+			end
+			return
+		else
+			for _, setting in ipairs(category.categorySettings) do
+				if setting.name == settingTarget then
+					return setting
+				end
+			end
+		end
+	end
+end
+
+local function wipeTransparency(ins, target, checkSelf, tween, duration)
+	local transparencyProperties = siriusValues.transparencyProperties
+
+	local function applyTransparency(obj)
+		local properties = transparencyProperties[obj.className]
+
+		if properties then
+			local tweenProperties = {}
+
+			for _, property in ipairs(properties) do
+				tweenProperties[property] = target
+			end
+
+			for property, transparency in pairs(tweenProperties) do
+				if tween then
+					tweenService:Create(obj, TweenInfo.new(duration, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {[property] = transparency}):Play()
+				else
+					obj[property] = transparency
+				end
+
+			end
+		end
+	end
+
+	if checkSelf then
+		applyTransparency(ins)
+	end
+
+	for _, descendant in ipairs(ins:getDescendants()) do
+		applyTransparency(descendant)
+	end
+end
+
+local function blurSignature(value)
+	if not value then
+		if lighting:FindFirstChild("SiriusBlur") then
+			lighting:FindFirstChild("SiriusBlur"):Destroy()
+		end
+	else
+		if not lighting:FindFirstChild("SiriusBlur") then
+			local blurLight = Instance.new("DepthOfFieldEffect", lighting)
+			blurLight.Name = "SiriusBlur"
+			blurLight.Enabled = true
+			blurLight.FarIntensity = 0
+			blurLight.FocusDistance = 51.6
+			blurLight.InFocusRadius = 50
+			blurLight.NearIntensity = 0.8
+		end
+	end
+end
+
+local function figureNotifications()
+	if checkSirius() then
+		local notificationsSize = 0
+
+		if #notifications > 0 then
+			blurSignature(true)
+		else
+			blurSignature(false)
+		end
+
+		for i = #notifications, 0, -1 do
+			local notification = notifications[i]
+			if notification then
+				if notificationsSize == 0 then
+					notificationsSize = notification.Size.Y.Offset + 2
+				else
+					notificationsSize += notification.Size.Y.Offset + 5
+				end
+				local desiredPosition = UDim2.new(0.5, 0, 0, notificationsSize)
+				if notification.Position ~= desiredPosition then
+					notification:TweenPosition(desiredPosition, "Out", "Quint", 0.8, true)
+				end
+			end
+		end	
+	end
+end
+
+local contentProvider = game:GetService("ContentProvider")
+
+local function queueNotification(Title, Description, Image)
+	task.spawn(function()		
+		if checkSirius() then
+			local newNotification = notificationContainer.Template:Clone()
+			newNotification.Parent = notificationContainer
+			newNotification.Name = Title or "Unknown العنوان"
+			newNotification.Visible = true
+
+			newNotification.Title.Text = Title or "Unknown العنوان"
+			newNotification.Description.Text = Description or "Unknown Description"
+			newNotification.Time.Text = "now"
+
+			-- Prepare for animation
+			newNotification.AnchorPoint = Vector2.new(0.5, 1)
+			newNotification.Position = UDim2.new(0.5, 0, -1, 0)
+			newNotification.Size = UDim2.new(0, 320, 0, 500)
+			newNotification.Description.Size = UDim2.new(0, 241, 0, 400)
+			wipeTransparency(newNotification, 1, true)
+
+			newNotification.Description.Size = UDim2.new(0, 241, 0, newNotification.Description.TextBounds.Y)
+			newNotification.Size = UDim2.new(0, 100, 0, newNotification.Description.TextBounds.Y + 50)
+
+			table.insert(notifications, newNotification)
+			figureNotifications()
+
+			local notificationSound = Instance.new("Sound")
+			notificationSound.Parent = UI
+			notificationSound.SoundId = "rbxassetid://255881176"
+			notificationSound.Name = "notificationSound"
+			notificationSound.Volume = 0.65
+			notificationSound.PlayOnRemove = true
+			notificationSound:Destroy()
 
 
+			if not tonumber(Image) then
+				newNotification.Icon.Image = 'rbxassetid://14317577326'
+			else
+				newNotification.Icon.Image = 'rbxassetid://'..Image or 0
+			end
 
-function tools()
-	Player = game.Players.LocalPlayer
-	if Player:FindFirstChildOfClass("Backpack"):FindFirstChildOfClass('Tool') or Player.Character:FindFirstChildOfClass('Tool') then
+			newNotification:TweenPosition(UDim2.new(0.5, 0, 0, newNotification.Size.Y.Offset + 2), "Out", "Quint", 0.9, true)
+			task.wait(0.1)
+			tweenService:Create(newNotification, TweenInfo.new(0.8, Enum.EasingStyle.Exponential), {Size = UDim2.new(0, 320, 0, newNotification.Description.TextBounds.Y + 50)}):Play()
+			task.wait(0.05)
+			tweenService:Create(newNotification, TweenInfo.new(0.8, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0.35}):Play()
+			tweenService:Create(newNotification.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {Transparency = 0.7}):Play()
+			task.wait(0.05)
+			tweenService:Create(newNotification.Icon, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {ImageTransparency = 0}):Play()
+			task.wait(0.04)
+			tweenService:Create(newNotification.Title, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {TextTransparency = 0}):Play()
+			task.wait(0.04)
+			tweenService:Create(newNotification.Description, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {TextTransparency = 0.15}):Play()
+			tweenService:Create(newNotification.Time, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {TextTransparency = 0.5}):Play()
+
+			--neonModule:BindFrame(newNotification.BlurModule, {
+			--	Transparency = 0.98,
+			--	BrickColor = BrickColor.new("Institutional white")
+			--})
+
+			newNotification.Interact.MouseButton1Click:Connect(function()
+				local foundNotification = table.find(notifications, newNotification)
+				if foundNotification then table.remove(notifications, foundNotification) end
+
+				tweenService:Create(newNotification, TweenInfo.new(0.35, Enum.EasingStyle.Quint, Enum.EasingDirection.In), {Position = UDim2.new(1.5, 0, 0, newNotification.Position.Y.Offset)}):Play()
+
+				task.wait(0.4)
+				newNotification:Destroy()
+				figureNotifications()
+				return
+			end)
+
+			local waitTime = (#newNotification.Description.Text*0.1)+2
+			if waitTime <= 1 then waitTime = 2.5 elseif waitTime > 10 then waitTime = 10 end
+
+			task.wait(waitTime)
+
+			local foundNotification = table.find(notifications, newNotification)
+			if foundNotification then table.remove(notifications, foundNotification) end
+
+			tweenService:Create(newNotification, TweenInfo.new(0.8, Enum.EasingStyle.Quint, Enum.EasingDirection.In), {Position = UDim2.new(1.5, 0, 0, newNotification.Position.Y.Offset)}):Play()
+
+			task.wait(1.2)
+			--neonModule:UnbindFrame(newNotification.BlurModule)
+			newNotification:Destroy()
+			figureNotifications()
+		end
+	end)
+end
+
+local function checkLastVersion()
+	checkFolder()
+
+	local lastVersion = isfile and isfile(siriusValues.siriusFolder.."/".."version.srs") and readfile(siriusValues.siriusFolder.."/".."version.srs") or nil
+
+	if lastVersion then
+		if lastVersion ~= siriusValues.siriusVersion then queueNotification("Sirius has been updated", "Sirius has been updated to version "..siriusValues.siriusVersion..", check our Discord for all new features and changes.", 4400701828)  end
+	end
+
+	if writefile then writefile(siriusValues.siriusFolder.."/".."version.srs", siriusValues.siriusVersion) end
+end
+
+local function removeReverbs(timing)
+	timing = timing or 0.65
+
+	for index, sound in next, soundInstances do
+		if sound:FindFirstChild("SiriusAudioProfile") then
+			local reverb = sound:FindFirstChild("SiriusAudioProfile")
+			tweenService:Create(reverb, TweenInfo.new(timing, Enum.EasingStyle.Exponential), {HighGain = 0}):Play()
+			tweenService:Create(reverb, TweenInfo.new(timing, Enum.EasingStyle.Exponential), {LowGain = 0}):Play()
+			tweenService:Create(reverb, TweenInfo.new(timing, Enum.EasingStyle.Exponential), {MidGain = 0}):Play()
+
+			task.delay(timing + 0.03, reverb.Destroy, reverb)
+		end
+	end
+end
+
+local function playNext()
+	if #musicQueue == 0 then currentAudio.Playing = false currentAudio.SoundId = "" musicPanel.Playing.Text = "Not Playing" return end
+
+	if not currentAudio then
+		local newAudio = Instance.new("Sound")
+		newAudio.Parent = UI
+		newAudio.Name = "Audio"
+		currentAudio = newAudio
+	end
+
+	musicPanel.Menu.TogglePlaying.ImageRectOffset = currentAudio.Playing and Vector2.new(804, 124) or Vector2.new(764, 244)
+	local asset = getcustomasset(siriusValues.siriusFolder.."/Music/"..musicQueue[1].sound)
+
+	if checkSetting("Now Playing Notifications").current then queueNotification("Now Playing", musicQueue[1].sound, 4400695581) end
+
+	if musicPanel.Queue.List:FindFirstChild(tostring(musicQueue[1].instanceName)) then
+		musicPanel.Queue.List:FindFirstChild(tostring(musicQueue[1].instanceName)):Destroy()
+	end
+
+	currentAudio.SoundId = asset
+	musicPanel.Playing.Text = musicQueue[1].sound
+	currentAudio:Play()
+	musicPanel.Menu.TogglePlaying.ImageRectOffset = currentAudio.Playing and Vector2.new(804, 124) or Vector2.new(764, 244)
+	currentAudio.Ended:Wait()
+
+	table.remove(musicQueue, 1)
+
+	playNext()
+end
+
+local function addToQueue(file)
+	if not getcustomasset then return end
+	checkFolder()
+	if not isfile(siriusValues.siriusFolder.."/Music/"..file) then queueNotification("Unable to locate file", "Please ensure that your audio file is in the Sirius/Music folder and that you are including the file extension (e.g mp3 or ogg).", 4370341699) return end
+	musicPanel.AddBox.Input.Text = ""
+
+	local newAudio = musicPanel.Queue.List.Template:Clone()
+	newAudio.Parent = musicPanel.Queue.List
+	newAudio.Size = UDim2.new(0, 254, 0, 40)
+	newAudio.Close.ImageTransparency = 1
+	newAudio.Name = file
+	if string.len(newAudio.FileName.Text) > 26 then
+		newAudio.FileName.Text = string.sub(tostring(file), 1,24)..".."
+	else
+		newAudio.FileName.Text = file
+	end
+	newAudio.Visible = true
+	newAudio.Duration.Text = ""
+
+	table.insert(musicQueue, {sound = file, instanceName = newAudio.Name})
+
+	local getLength = Instance.new("Sound", workspace)
+	getLength.SoundId = getcustomasset(siriusValues.siriusFolder.."/Music/"..file)
+	getLength.Volume = 0
+	getLength:Play()
+	task.wait(0.05)
+	newAudio.Duration.Text = tostring(math.round(getLength.TimeLength)).."s"
+	getLength:Stop()
+	getLength:Destroy()
+
+	newAudio.MouseEnter:Connect(function()
+		tweenService:Create(newAudio, TweenInfo.new(0.45, Enum.EasingStyle.Exponential), {BackgroundColor3 = Color3.fromRGB(100, 100, 100)}):Play()
+		tweenService:Create(newAudio.Close, TweenInfo.new(0.45, Enum.EasingStyle.Exponential), {ImageTransparency = 0}):Play()
+		tweenService:Create(newAudio.Duration, TweenInfo.new(0.45, Enum.EasingStyle.Exponential), {TextTransparency = 1}):Play()
+	end)
+
+	newAudio.MouseLeave:Connect(function()
+		tweenService:Create(newAudio.Close, TweenInfo.new(0.45, Enum.EasingStyle.Exponential), {ImageTransparency = 1}):Play()
+		tweenService:Create(newAudio, TweenInfo.new(0.45, Enum.EasingStyle.Exponential), {BackgroundColor3 = Color3.fromRGB(0, 0, 0)}):Play()
+		tweenService:Create(newAudio.Duration, TweenInfo.new(0.45, Enum.EasingStyle.Exponential), {TextTransparency = 0.7}):Play()
+	end)
+
+	newAudio.Close.MouseButton1Click:Connect(function()
+		if not string.find(currentAudio.Name, file) then
+			for i,v in pairs(musicQueue) do
+				for _,b in pairs(v) do
+					if b == newAudio.Name then
+						newAudio:Destroy()
+						table.remove(musicQueue, i)
+					end
+				end
+			end
+		else
+			for i,v in pairs(musicQueue) do
+				for _,b in pairs(v) do
+					if b == newAudio.Name then
+						newAudio:Destroy()
+						table.remove(musicQueue, i)
+						playNext()
+					end
+				end
+			end
+		end
+	end)
+
+	if #musicQueue == 1 then
+		playNext()
+	end
+end
+
+local function openMusic()
+	debounce = true
+	musicPanel.Visible = true
+	musicPanel.Queue.List.Template.Visible = false
+
+	debounce = false
+end
+
+local function closeMusic()
+	debounce = true
+	musicPanel.Visible = false
+
+	debounce = false
+end
+
+local function createReverb(timing)
+	for index, sound in next, soundInstances do
+		if not sound:FindFirstChild("SiriusAudioProfile") then
+			local reverb = Instance.new("EqualizerSoundEffect")
+
+			reverb.Name = "SiriusAudioProfile"
+			reverb.Parent = sound
+
+			reverb.Enabled = false
+
+			reverb.HighGain = 0
+			reverb.LowGain = 0
+			reverb.MidGain = 0
+			reverb.Enabled = true
+
+			if timing then
+				tweenService:Create(reverb, TweenInfo.new(timing, Enum.EasingStyle.Exponential), {HighGain = -20}):Play()
+				tweenService:Create(reverb, TweenInfo.new(timing, Enum.EasingStyle.Exponential), {LowGain = 5}):Play()
+				tweenService:Create(reverb, TweenInfo.new(timing, Enum.EasingStyle.Exponential), {MidGain = -20}):Play()
+			end
+		end
+	end
+end
+
+local function runScript(raw)
+	loadstring(game:HttpGet(raw))()
+end
+
+local function syncExperienceInformation()
+	siriusValues.currentCreator = creatorId
+
+	if creatorType == Enum.CreatorType.Group then
+		siriusValues.currentGroup = creatorId
+		siriusValues.currentCreator = "group"
+	end
+
+	for _, gameFound in pairs(siriusValues.games) do
+		if gameFound.id == placeId and gameFound.enabled then
+
+			local minimumTier = gameFound.minimumTier
+
+			if minimumTier == "Essential" then
+				if not (Essential or Pro) then
+					return
+				end
+			elseif minimumTier == "Pro" then
+				if not Pro then
+					return
+				end
+			end
+
+			local rawFile = siriusValues.rawTree..gameFound.raw
+			siriusValues.currentGame = gameFound
+
+			gameDetectionPrompt.ScriptTitle.Text = gameFound.name
+			gameDetectionPrompt.Layer.ScriptSubtitle.Text = gameFound.description
+			gameDetectionPrompt.Thumbnail.Image = "https://assetgame.roblox.com/Game/Tools/ThumbnailAsset.ashx?aid="..tostring(placeId).."&fmt=png&wd=420&ht=420"
+
+			gameDetectionPrompt.Size = UDim2.new(0, 550, 0, 0)
+			gameDetectionPrompt.Position = UDim2.new(0.5, 0, 0, 120)
+			gameDetectionPrompt.UICorner.CornerRadius = UDim.new(0, 9)
+			gameDetectionPrompt.Thumbnail.UICorner.CornerRadius = UDim.new(0, 9)
+			gameDetectionPrompt.ScriptTitle.Position = UDim2.new(0, 30, 0.5, 0)
+			gameDetectionPrompt.Layer.Visible = false
+			gameDetectionPrompt.Warning.Visible = false
+
+			wipeTransparency(gameDetectionPrompt, 1, true)
+
+			gameDetectionPrompt.Visible = true
+
+			tweenService:Create(gameDetectionPrompt, TweenInfo.new(0.5, Enum.EasingStyle.Quint),  {BackgroundTransparency = 0}):Play()
+			tweenService:Create(gameDetectionPrompt.Thumbnail, TweenInfo.new(0.5, Enum.EasingStyle.Quint),  {ImageTransparency = 0.4}):Play()
+			tweenService:Create(gameDetectionPrompt.ScriptTitle, TweenInfo.new(0.6, Enum.EasingStyle.Quint),  {TextTransparency = 0}):Play()
+
+			tweenService:Create(gameDetectionPrompt, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {Size = UDim2.new(0, 587, 0, 44)}):Play()
+			tweenService:Create(gameDetectionPrompt, TweenInfo.new(1, Enum.EasingStyle.Exponential), {Position = UDim2.new(0.5, 0, 0, 150)}):Play()
+
+			task.wait(1)
+
+			wipeTransparency(gameDetectionPrompt.Layer, 1, true)
+
+			gameDetectionPrompt.Layer.Visible = true
+
+			tweenService:Create(gameDetectionPrompt, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {Size = UDim2.new(0, 473, 0, 154)}):Play()
+			tweenService:Create(gameDetectionPrompt.ScriptTitle, TweenInfo.new(1, Enum.EasingStyle.Exponential), {Position = UDim2.new(0, 23, 0.352, 0)}):Play()
+			tweenService:Create(gameDetectionPrompt, TweenInfo.new(1, Enum.EasingStyle.Exponential), {Position = UDim2.new(0.5, 0, 0, 200)}):Play()
+			tweenService:Create(gameDetectionPrompt.UICorner, TweenInfo.new(1, Enum.EasingStyle.Exponential), {CornerRadius = UDim.new(0, 13)}):Play()
+			tweenService:Create(gameDetectionPrompt.Thumbnail.UICorner, TweenInfo.new(1, Enum.EasingStyle.Exponential), {CornerRadius = UDim.new(0, 13)}):Play()
+			tweenService:Create(gameDetectionPrompt.Thumbnail, TweenInfo.new(1, Enum.EasingStyle.Exponential), {ImageTransparency = 0.5}):Play()
+
+			task.wait(0.3)
+			tweenService:Create(gameDetectionPrompt.Layer.ScriptSubtitle, TweenInfo.new(0.6, Enum.EasingStyle.Quint),  {TextTransparency = 0.3}):Play()
+			tweenService:Create(gameDetectionPrompt.Layer.Run, TweenInfo.new(0.6, Enum.EasingStyle.Quint),  {TextTransparency = 0}):Play()
+			tweenService:Create(gameDetectionPrompt.Layer.Run.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint),  {Transparency = 0.85}):Play()
+			tweenService:Create(gameDetectionPrompt.Layer.Run, TweenInfo.new(0.6, Enum.EasingStyle.Quint),  {BackgroundTransparency = 0.6}):Play()
+
+			task.wait(0.2)
+
+			tweenService:Create(gameDetectionPrompt.Layer.Close, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {ImageTransparency = 0.6}):Play()
+
+			task.wait(0.3)
+
+			local function closeGameDetection()
+				tweenService:Create(gameDetectionPrompt.Layer.ScriptSubtitle, TweenInfo.new(0.3, Enum.EasingStyle.Quint),  {TextTransparency = 1}):Play()
+				tweenService:Create(gameDetectionPrompt.Layer.Run, TweenInfo.new(0.3, Enum.EasingStyle.Quint),  {TextTransparency = 1}):Play()
+				tweenService:Create(gameDetectionPrompt.Layer.Run, TweenInfo.new(0.3, Enum.EasingStyle.Quint),  {BackgroundTransparency = 1}):Play()
+				tweenService:Create(gameDetectionPrompt.Layer.Close, TweenInfo.new(0.3, Enum.EasingStyle.Exponential), {ImageTransparency = 1}):Play()
+				tweenService:Create(gameDetectionPrompt.Thumbnail, TweenInfo.new(0.3, Enum.EasingStyle.Quint),  {ImageTransparency = 1}):Play()
+				tweenService:Create(gameDetectionPrompt.ScriptTitle, TweenInfo.new(0.3, Enum.EasingStyle.Quint),  {TextTransparency = 1}):Play()
+				tweenService:Create(gameDetectionPrompt.Layer.Run.UIStroke, TweenInfo.new(0.3, Enum.EasingStyle.Quint),  {Transparency = 1}):Play()
+				task.wait(0.05)
+				tweenService:Create(gameDetectionPrompt, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {Size = UDim2.new(0, 400, 0, 0)}):Play()
+				tweenService:Create(gameDetectionPrompt.UICorner, TweenInfo.new(0.2, Enum.EasingStyle.Exponential), {CornerRadius = UDim.new(0, 5)}):Play()
+				tweenService:Create(gameDetectionPrompt.Thumbnail.UICorner, TweenInfo.new(0.2, Enum.EasingStyle.Exponential), {CornerRadius = UDim.new(0, 5)}):Play()
+				task.wait(0.41)
+				gameDetectionPrompt.Visible = false
+			end
+
+			gameDetectionPrompt.Layer.Run.MouseButton1Click:Connect(function()
+				closeGameDetection()
+				queueNotification("Running "..gameFound.name, "Now running Sirius' "..gameFound.name.." السكربت، قد يستغرق الأمر لحظة.", 4400701828)
+				runScript(rawFile)
+
+			end)
+
+			gameDetectionPrompt.Layer.Close.MouseButton1Click:Connect(function()
+				closeGameDetection()
+			end)
+
+			break
+		end
+	end
+end
+
+local function updateSliderPadding()
+	for _, v in pairs(siriusValues.sliders) do
+		v.padding = {
+			v.object.Interact.AbsolutePosition.X,
+			v.object.Interact.AbsolutePosition.X + v.object.Interact.AbsoluteSize.X
+		}
+	end
+end
+
+local function updateSlider(data, setValue, forceValue)
+	local inverse_interpolation
+
+	if setValue then
+		setValue = math.clamp(setValue, data.values[1], data.values[2])
+		inverse_interpolation = (setValue - data.values[1]) / (data.values[2] - data.values[1])
+		local posX = data.padding[1] + (data.padding[2] - data.padding[1]) * inverse_interpolation
+	else
+		local posX = math.clamp(mouse.X, data.padding[1], data.padding[2])
+		inverse_interpolation = (posX - data.padding[1]) / (data.padding[2] - data.padding[1])
+	end
+
+	tweenService:Create(data.object.Progress, TweenInfo.new(.5, Enum.EasingStyle.Quint), {Size = UDim2.new(inverse_interpolation, 0, 1, 0)}):Play()
+
+	local value = math.floor(data.values[1] + (data.values[2] - data.values[1]) * inverse_interpolation + .5)
+	data.object.Information.Text = value.." "..data.name
+	data.value = value
+
+	if data.callback and not setValue or forceValue then
+		data.callback(value)
+	end
+end
+
+local function resetSliders()
+	for _, v in pairs(siriusValues.sliders) do
+		updateSlider(v, v.default, true)
+	end
+end
+
+local function sortActions()	
+	characterPanel.Interactions.Grid.Template.Visible = false
+	characterPanel.Interactions.Sliders.Template.Visible = false
+
+	for _, action in ipairs(siriusValues.actions) do
+		local newAction = characterPanel.Interactions.Grid.Template:Clone()
+		newAction.Name = action.name
+		newAction.Parent = characterPanel.Interactions.Grid
+		newAction.BackgroundColor3 = action.color
+		newAction.UIStroke.Color = action.color
+		newAction.Icon.Image = "rbxassetid://"..action.images[2]
+		newAction.Visible = true
+
+		newAction.BackgroundTransparency = 0.8
+		newAction.Transparency = 0.7
+
+
+		newAction.MouseEnter:Connect(function()
+			characterPanel.Interactions.ActionsTitle.Text = string.upper(action.name)
+			if action.enabled or debounce then return end
+			tweenService:Create(newAction, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundTransparency = 0.4}):Play()
+			tweenService:Create(newAction.UIStroke, TweenInfo.new(0.8, Enum.EasingStyle.Quint), {Transparency = 0.6}):Play()
+		end)
+
+		newAction.MouseLeave:Connect(function()
+			if action.enabled or debounce then return end
+			tweenService:Create(newAction, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0.55}):Play()
+			tweenService:Create(newAction.UIStroke, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {Transparency = 0.4}):Play()
+		end)
+
+		characterPanel.Interactions.Grid.MouseLeave:Connect(function()
+			characterPanel.Interactions.ActionsTitle.Text = "PLAYER ACTIONS"
+		end)
+
+		newAction.Interact.MouseButton1Click:Connect(function()
+			local success, response = pcall(function()
+				action.enabled = not action.enabled
+				action.callback(action.enabled)
+
+				if action.enabled then
+					newAction.Icon.Image = "rbxassetid://"..action.images[1]
+					tweenService:Create(newAction, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundTransparency = 0.1}):Play()
+					tweenService:Create(newAction.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
+					tweenService:Create(newAction.Icon, TweenInfo.new(0.45, Enum.EasingStyle.Quint), {ImageTransparency = 0.1}):Play()
+
+					if action.disableAfter then
+						task.delay(action.disableAfter, function()
+							action.enabled = false
+							newAction.Icon.Image = "rbxassetid://"..action.images[2]
+							tweenService:Create(newAction, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0.55}):Play()
+							tweenService:Create(newAction.UIStroke, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {Transparency = 0.4}):Play()
+							tweenService:Create(newAction.Icon, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {ImageTransparency = 0.5}):Play()
+						end)
+					end
+
+					if action.rotateWhileEnabled then
+						repeat
+							newAction.Icon.Rotation = 0
+							tweenService:Create(newAction.Icon, TweenInfo.new(0.75, Enum.EasingStyle.Quint), {Rotation = 360}):Play()
+							task.wait(1)
+						until not action.enabled
+						newAction.Icon.Rotation = 0
+					end
+				else
+					newAction.Icon.Image = "rbxassetid://"..action.images[2]
+					tweenService:Create(newAction, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0.55}):Play()
+					tweenService:Create(newAction.UIStroke, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {Transparency = 0.4}):Play()
+					tweenService:Create(newAction.Icon, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {ImageTransparency = 0.5}):Play()
+				end
+			end)
+
+			if not success then
+				queueNotification("Action Error", "This action ('"..(action.name).."') had an error while running, please report this to the Sirius team at sirius.menu/discord", 4370336704)
+				action.enabled = false
+				newAction.Icon.Image = "rbxassetid://"..action.images[2]
+				tweenService:Create(newAction, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0.55}):Play()
+				tweenService:Create(newAction.UIStroke, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {Transparency = 0.4}):Play()
+				tweenService:Create(newAction.Icon, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {ImageTransparency = 0.5}):Play()
+			end
+		end)
+	end
+
+	if localPlayer.Character then
+		if not localPlayer.Character:FindFirstChildOfClass('Humanoid').UseJumpPower then
+			siriusValues.sliders[2].name = "jump height"
+			siriusValues.sliders[2].default = 7.2
+			siriusValues.sliders[2].values = {0, 120}
+		end
+	end
+
+
+	for _, slider in ipairs(siriusValues.sliders) do
+		local newSlider = characterPanel.Interactions.Sliders.Template:Clone()
+		newSlider.Name = slider.name.." شريط"
+		newSlider.Parent = characterPanel.Interactions.Sliders
+		newSlider.BackgroundColor3 = slider.color
+		newSlider.Progress.BackgroundColor3 = slider.color
+		newSlider.UIStroke.Color = slider.color
+		newSlider.Information.Text = slider.name
+		newSlider.Visible = true
+
+		slider.object = newSlider
+
+		slider.padding = {
+			newSlider.Interact.AbsolutePosition.X,
+			newSlider.Interact.AbsolutePosition.X + newSlider.Interact.AbsoluteSize.X
+		}
+
+		newSlider.MouseEnter:Connect(function()
+			if debounce or slider.active then return end
+			tweenService:Create(newSlider, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0.85}):Play()
+			tweenService:Create(newSlider.UIStroke, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {Transparency = 0.6}):Play()
+			tweenService:Create(newSlider.Information, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {TextTransparency = 0.2}):Play()
+		end)
+
+		newSlider.MouseLeave:Connect(function()
+			if debounce or slider.active then return end
+			tweenService:Create(newSlider, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0.8}):Play()
+			tweenService:Create(newSlider.UIStroke, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {Transparency = 0.5}):Play()
+			tweenService:Create(newSlider.Information, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {TextTransparency = 0.3}):Play()
+		end)
+
+		newSlider.Interact.MouseButton1Down:Connect(function()
+			if debounce or not checkSirius() then return end
+
+			slider.active = true
+			updateSlider(slider)
+
+			tweenService:Create(slider.object, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0.9}):Play()
+			tweenService:Create(slider.object.UIStroke, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {Transparency = 1}):Play()
+			tweenService:Create(slider.object.Information, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {TextTransparency = 0.05}):Play()
+		end)
+
+		updateSlider(slider, slider.default)
+	end
+end
+
+local function getAdaptiveHighPingThreshold()
+	local adaptiveBaselinePings = siriusValues.pingProfile.adaptiveBaselinePings
+
+	if #adaptiveBaselinePings == 0 then
+		return siriusValues.pingProfile.adaptiveHighPingThreshold
+	end
+
+	table.sort(adaptiveBaselinePings)
+	local median
+	if #adaptiveBaselinePings % 2 == 0 then
+		median = (adaptiveBaselinePings[#adaptiveBaselinePings/2] + adaptiveBaselinePings[#adaptiveBaselinePings/2 + 1]) / 2
+	else
+		median = adaptiveBaselinePings[math.ceil(#adaptiveBaselinePings/2)]
+	end
+
+	return median * siriusValues.pingProfile.spikeThreshold
+end
+
+local function checkHighPing()
+	local recentPings = siriusValues.pingProfile.recentPings
+	local adaptiveBaselinePings = siriusValues.pingProfile.adaptiveBaselinePings
+
+	local currentPing = getPing()
+	table.insert(recentPings, currentPing)
+
+	if #recentPings > siriusValues.pingProfile.maxSamples then
+		table.remove(recentPings, 1)
+	end
+
+	if #adaptiveBaselinePings < siriusValues.pingProfile.adaptiveBaselineSamples then
+		if currentPing >= 350 then currentPing = 300 end
+
+		table.insert(adaptiveBaselinePings, currentPing)
+
+		return false
+	end
+
+	local averagePing = 0
+	for _, ping in ipairs(recentPings) do
+		averagePing = averagePing + ping
+	end
+	averagePing = averagePing / #recentPings
+
+	if averagePing > getAdaptiveHighPingThreshold() then
 		return true
 	end
+
+	return false
 end
 
-function attach(target)
-	if tools() then
-		local char = game.Players.LocalPlayer.Character
-		local tchar = target.Character
-		local hum = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
-		local hrp = getRoot(game.Players.LocalPlayer.Character)
-		local hrp2 = getRoot(target.Character)
-		hum.Name = "1"
-		local newHum = hum:Clone()
-		newHum.Parent = char
-		newHum.Name = "Humanoid"
-		wait()
-		hum:Destroy()
-		workspace.CurrentCamera.CameraSubject = char
-		newHum.DisplayDistanceType = "None"
-		local tool = game.Players.LocalPlayer:FindFirstChildOfClass("Backpack"):FindFirstChildOfClass("Tool") or game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool")
-		tool.Parent = char
-		hrp.CFrame = hrp2.CFrame * CFrame.new(0, 0, 0) * CFrame.new(math.random(-100, 100)/200,math.random(-100, 100)/200,math.random(-100, 100)/200)
-		local n = 0
-		repeat
-			wait(.1)
-			n = n + 1
-			hrp.CFrame = hrp2.CFrame
-		until (tool.Parent ~= char or not hrp or not hrp2 or not hrp.Parent or not hrp2.Parent or n > 250) and n > 2
+local function checkTools()
+	task.wait(0.03)
+	if localPlayer.Backpack and localPlayer.Character then
+		if localPlayer.Backpack:FindFirstChildOfClass('Tool') or localPlayer.Character:FindFirstChildOfClass('Tool') then
+			return true
+		end
 	else
-		Notify("A tool is required for this function","GothamSemibold",Color3.fromRGB(170, 85, 127))
+		return false
 	end
 end
 
-function Teleport(Player)
-	if game.Players:FindFirstChild(Player.Name) then
-		Notify("Teleporting you to "..Player.Name,"GothamSemibold",Color3.fromRGB(0, 85, 127))
-		local targetplayer = game.Workspace:FindFirstChild(Player.Name).HumanoidRootPart
-		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(targetplayer.Position.X, targetplayer.Position.Y, targetplayer.Position.Z)
-	else
-		Notify("Player is no longer in game","GothamSemibold",Color3.fromRGB(0, 85, 127))
-	end
-end
+local function closePanel(panelName, openingOther)
+	debounce = true
 
-	function Kill(Player)
-		if game.Players:FindFirstChild(Player.Name) then
-			local LocalPlayer = game.Players.LocalPlayer
-			if tools() then
-			Notify("Attempting to kill "..Player.Name,"GothamSemibold",Color3.fromRGB(0, 85, 127))
-				if Player ~= nil then
+	local button = smartBar.Buttons:FindFirstChild(panelName)
+	local panel = UI:FindFirstChild(panelName)
 
-					local NormPos = getRoot(LocalPlayer.Character).CFrame
-					local hrp = getRoot(LocalPlayer.Character)
-					attach(Player)
-					repeat
-						wait()
-						hrp.CFrame = CFrame.new(999999, workspace.FallenPartsDestroyHeight + 5,999999)
-					until not getRoot(Player.Character) or not getRoot(LocalPlayer.Character)
-					wait(1)
-					LocalPlayer.CharacterAdded:Wait():WaitForChild("HumanoidRootPart").CFrame = NormPos
-				end
+	if not isPanel(panelName) then return end
+	if not (panel and button) then return end
 
-			else
-			Notify("You need to have an item in your inventory to kill this player","GothamSemibold",Color3.fromRGB(0, 85, 127))
-			end
-		else
-			Notify("Player is no longer in game","GothamSemibold",Color3.fromRGB(0, 85, 127))
-		end
-	end
+	local panelSize = UDim2.new(0, 581, 0, 246)
 
+	if not openingOther then
+		if panel.Name == "Character" then -- Character Panel Animation
 
+			tweenService:Create(characterPanel.Interactions.PropertiesTitle, TweenInfo.new(0.8, Enum.EasingStyle.Quint), {TextTransparency = 1}):Play()
 
-
-
-function AntiKick()
-if not IS_LYNX then
-		if antikick and getrawmetatable and newcclosure or protect_function and setreadonly and getnamecallmethod and hookfunction then
-	mt = getrawmetatable(game)
-	old = mt.__namecall
-	protect = newcclosure or protect_function
-
-	if not protect then
-		protect = function(f) return f end
-	end
-
-	setreadonly(mt, false)
-	mt.__namecall = protect(function(self, ...)
-		method = getnamecallmethod()
-		if method == "Kick" and antikick then
-			Notify("We stopped this game from kicking you locally","GothamSemibold",Color3.fromRGB(0, 153, 112))
-			wait(9e9)
-			return
-		end
-		return old(self, ...)
-	end)
-
-		hookfunction(game.Players.LocalPlayer.Kick,protect(function() wait(9e9) end))
-		end
-		end
-end
-function AntiAFK()
-	GC = getconnections or get_signal_cons
-	if GC then
-		for i,v in pairs(GC(game.Players.LocalPlayer.Idled)) do
-			if v["Disable"] then
-				v["Disable"](v)
-			elseif v["Disconnect"] then
-				v["Disconnect"](v)
-			end
-		end
-	end
-end
-
-
-
-function LoadPlayer(Player)
-	local template = Domain.Playerlist.Template
-	if Domain.Playerlist:FindFirstChild(Player.Name) then
-			return
-		end
-	if not Domain.Playerlist:FindFirstChild("Template") then
-			return
-	end
-	local b = false
-		local NewPlr = Domain.Playerlist.Template:Clone()
-	NewPlr.Parent = Domain.Playerlist
-	for _, customtitle in ipairs(customtitles) do
-		for _, userid in ipairs(customtitle.userids) do
-			if userid == Player.UserId then
-				b = true
-			end
-		end
-	end
-	if table.find(Beta,Player.UserId) or table.find(Admins,Player.UserId) or table.find(Developers,Player.UserId) or b == true or table.find(Showcasers,Player.UserId) then
-		NewPlr.Star.Visible = true
-		NewPlr.Username.Position = UDim2.new(0.267,0,0.28,0)
-		NewPlr.AvatarPlayerlist.Position = UDim2.new(0.144,0,0.144,0)
-		NewPlr.Username.Size = UDim2.new(0.564, 0, 0.398, 0)
-	else
-		NewPlr.Star.Visible = false
-		NewPlr.Username.Position = UDim2.new(0.159,0,0.28,0)
-		NewPlr.AvatarPlayerlist.Position = UDim2.new(0.036,0,0.144,0)
-		NewPlr.Username.Size = UDim2.new(0.706, 0, 0.398, 0)
-	end
-	if table.find(Developers,Player.UserId) then
-		NewPlr.Star.ImageRectOffset = Vector2.new(284, 364)
-	else
-		NewPlr.Star.ImageRectOffset = Vector2.new(564, 764)
-	end
-		if Player.Name == game.Players.LocalPlayer.Name then
-			NewPlr.Username.Font = "GothamBlack"
-		end
-		NewPlr.AvatarPlayerlist.Image = game.Players:GetUserThumbnailAsync(Player.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size420x420)
-		--if game.CreatorId == 0 then
-		NewPlr.Size = UDim2.new(0.946, 0, 0.022, 0)
-		--end
-		NewPlr.Visible = true
-		NewPlr.Name = Player.Name
-		if CurrentListPosition == 1 then 
-			CurrentListPosition = 0
-		else
-			CurrentListPosition = CurrentListPosition + 0.024
-		end
-		
-		NewPlr.Username.Text = Player.Name
-
-		NewPlr.MouseEnter:Connect(function()
-			local transitionInfo = TweenInfo.new(0.25, Enum.EasingStyle.Quint)
-			local tween = game:GetService("TweenService"):Create(NewPlr.More, transitionInfo, {ImageTransparency = 0})
-			tween:Play()
-			local transitionInfo = TweenInfo.new(0.25, Enum.EasingStyle.Quint)
-			local tween = game:GetService("TweenService"):Create(NewPlr, transitionInfo, {BackgroundTransparency = 0.4})
-			tween:Play()
-		end)
-		NewPlr.MouseLeave:Connect(function()
-			local transitionInfo = TweenInfo.new(0.25, Enum.EasingStyle.Quint)
-			local tween = game:GetService("TweenService"):Create(NewPlr.More, transitionInfo, {ImageTransparency = 0.7})
-			tween:Play()
-			local transitionInfo = TweenInfo.new(0.25, Enum.EasingStyle.Quint)
-			local tween = game:GetService("TweenService"):Create(NewPlr, transitionInfo, {BackgroundTransparency = 0})
-			tween:Play()
-
-		end)
-		NewPlr.More.MouseButton1Click:Connect(function()
-			OpenAboutPlayer(Player)
-		end)
-end
-
-function StartServerhop()
-	ClosePage(Domain.ValuesFrame)
-	CloseSidebar()
-	if homeopen then
-		CloseHome()
-	end
-	local transitionInfo = TweenInfo.new(0.65, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.ToggleButton, transitionInfo, {ImageTransparency = 1})
-	tween:Play()
-	StopShop = false
-	Domain.ServerhopAnim.Visible = true
-	Domain.ServerhopAnim.Shadow.ImageTransparency = 1
-	Domain.LargeMsg.TextTransparency = 1
-	Domain.CancelShop.BackgroundTransparency = 1
-	Domain.CancelShop.TextTransparency = 1
-	Domain.NoticeMessage.TextTransparency = 1
-	Domain.ServerhopAnim.NoticeMessage.Text = " Give us a second while we find the best server for you"
-	Domain.LargeMsg.Text = "Serverhop"
-	Domain.ShlexLogo.ImageTransparency = 1
-	Domain.SmallMessage.TextTransparency = 1
-	shop = true
-	Domain.NoticeMessage.Position = UDim2.new(0.028, 0, 0.491, 0)
-	Domain.NoticeMessage.TextXAlignment = Enum.TextXAlignment.Left
-	local blur = Instance.new("BlurEffect")
-	blur.Parent = game.Lighting
-	blur.Size = 0
-	blur.Name = "quickbro"
-	for _, ui in ipairs(game.Players.LocalPlayer.PlayerGui:GetChildren()) do
-		if ui.ClassName == "ScreenGui" and ui ~= Domain.Domain then
-			if not table.find(UIsEnabled,ui.Name) and ui.Enabled == true then
-				table.insert(UIsEnabled,#UIsEnabled+1,ui.Name)
-			end
-			ui.Enabled = false
-		end
-	end
-	game:GetService("StarterGui"):SetCoreGuiEnabled(Enum.CoreGuiType.All,false)
-	Domain.FPS.Visible = false
-	local transitionInfo = TweenInfo.new(0.65, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.ServerhopAnim.Shadow, transitionInfo, {ImageTransparency = 0})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.65, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.NoticeMessage, transitionInfo, {TextTransparency = 0})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.65, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.LargeMsg, transitionInfo, {TextTransparency = 0})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.65, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.SmallMessage, transitionInfo, {TextTransparency = 0})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.65, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.CancelShop, transitionInfo, {BackgroundTransparency = 0.7})
-	tween:Play()
-	tween:Play()
-	local transitionInfo = TweenInfo.new(1.25, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(blur, transitionInfo, {Size = 20})
-	tween:Play()
-	for _, audio in ipairs(workspace:GetChildren()) do
-		if audio.ClassName == "Sound" then
-			local EQ = Instance.new("EqualizerSoundEffect")
-			EQ.Parent = audio
-			EQ.Name = "DomainHub"
-			local transitionInfo = TweenInfo.new(0.6, Enum.EasingStyle.Quint)
-			local tween = game:GetService("TweenService"):Create(EQ, transitionInfo, {HighGain = -20})
-			tween:Play()
-			local transitionInfo = TweenInfo.new(0.6, Enum.EasingStyle.Quint)
-			local tween = game:GetService("TweenService"):Create(EQ, transitionInfo, {LowGain = 5})
-			tween:Play()
-			local transitionInfo = TweenInfo.new(0.6, Enum.EasingStyle.Quint)
-			local tween = game:GetService("TweenService"):Create(EQ, transitionInfo, {MidGain = -20})
-			tween:Play()
-		end
-	end
-	local transitionInfo = TweenInfo.new(1.25, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(workspace.CurrentCamera, transitionInfo, {FieldOfView = 120})
-	tween:Play()
-	wait(0.8)
-	local transitionInfo = TweenInfo.new(0.65, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.CancelShop, transitionInfo, {TextTransparency = 0})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.65, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.ShlexLogo, transitionInfo, {ImageTransparency = 0})
-
-	local servers = CheckServers()
-	wait(3)
-	if servers == "Protocol:cantfind" then
-		if StopShop then
-			return
-		end
-		Domain.ServerhopAnim.NoticeMessage.Text = " We couldn't find a server"
-		Domain.LargeMsg.Text = "Error"
-
-		CloseShopMenu()
-	elseif servers == "Protocol:found" then
-		if StopShop then
-			return
-		end
-		Domain.ServerhopAnim.NoticeMessage.Text = "Domain found a server for you, give us a moment"
-		Domain.LargeMsg.Text = "Server found"
-		Domain.NoticeMessage.TextXAlignment = Enum.TextXAlignment.Center
-		local transitionInfo = TweenInfo.new(0.25, Enum.EasingStyle.Quint)
-		local tween = game:GetService("TweenService"):Create(Domain.CancelShop, transitionInfo, {BackgroundTransparency = 1})
-		tween:Play()
-		shop = false
-		local transitionInfo = TweenInfo.new(0.25, Enum.EasingStyle.Quint)
-		local tween = game:GetService("TweenService"):Create(Domain.CancelShop, transitionInfo, {TextTransparency = 1})
-		tween:Play()
-		local transitionInfo = TweenInfo.new(0.65, Enum.EasingStyle.Quint)
-		local tween = game:GetService("TweenService"):Create(Domain.NoticeMessage, transitionInfo, {Position = UDim2.new(0.363, 0, 0.491, 0)})
-		tween:Play()
-		wait(3)
-		local check2 = Serverhop()
-		if check2 == "Protocol:cantfind" then
-			Domain.ServerhopAnim.NoticeMessage.Text = " We couldn't find a server"
-			Domain.LargeMsg.Text = "Error"
-			CloseShopMenu()
-		end
-	end
-
-end
-
-function OpenAboutPlayer(Player)
-	if Player then
-		OpenPage(Domain.PlayerInfoFrame)
-		Domain.PlayerInfoFrame.Functionality.Username.Text = Player.Name
-		if Player.MembershipType == Enum.MembershipType.Premium then
-			Domain.PlayerInfoFrame.Functionality.Premium.Visible = true
-		else
-			Domain.PlayerInfoFrame.Functionality.Premium.Visible = false
-		end
-		Domain.PlayerInfoFrame.Functionality.areadata.Visible = false
-		Domain.PlayerInfoFrame.Functionality.areatitle.Visible = false
-		if game.CreatorType == Enum.CreatorType.Group then
-			local group = game:GetService("GroupService"):GetGroupInfoAsync(game.CreatorId)
-			Domain.PlayerInfoFrame.Functionality.group.Visible = true
-			Domain.PlayerInfoFrame.Functionality.group.rankdata.Text = Player:GetRoleInGroup(game.CreatorId)
-			if Player:GetRoleInGroup(game.CreatorId) == "Guest" then
-				Domain.PlayerInfoFrame.Functionality.group.rankdata.Text = "None"
-			end
-			Domain.PlayerInfoFrame.Functionality.group.groupname.Text = group.Name
-		else
-			Domain.PlayerInfoFrame.Functionality.group.Visible = false
-		end
-		Domain.DomainRole.Visible = false
-		if table.find(Beta,Player.UserId) then
-			Domain.DomainRole.Text = "Beta Tester"
-			Domain.DomainRole.Visible = true
-		end
-		if table.find(Showcasers,Player.UserId) then
-			Domain.DomainRole.Text = "Showcaser"
-			Domain.DomainRole.Visible = true
-		end
-		if Player:IsInGroup(10220078) then
-			Domain.DomainRole.Text = "Domain Premium"
-			Domain.DomainRole.Visible = true
-		end
-		if table.find(Admins,Player.UserId) then
-			Domain.DomainRole.Text = "Domain Staff"
-			Domain.DomainRole.Visible = true
-		end
-		if table.find(Developers,Player.UserId) then
-			Domain.DomainRole.Text = "Domain Developer"
-			Domain.DomainRole.Visible = true
-		end
-		for _, customtitle in ipairs(customtitles) do
-			for _, userid in ipairs(customtitle.userids) do
-				if userid == Player.UserId then
-					Domain.DomainRole.Text = customtitle.title
-					Domain.DomainRole.Visible = true
+			for _, slider in ipairs(characterPanel.Interactions.Sliders:GetChildren()) do
+				if slider.ClassName == "Frame" then 
+					tweenService:Create(slider, TweenInfo.new(0.15, Enum.EasingStyle.Quint), {BackgroundTransparency = 1}):Play()
+					tweenService:Create(slider.Progress, TweenInfo.new(0.15, Enum.EasingStyle.Quint), {BackgroundTransparency = 1}):Play()
+					tweenService:Create(slider.UIStroke, TweenInfo.new(0.15, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
+					tweenService:Create(slider.Shadow, TweenInfo.new(0.15, Enum.EasingStyle.Quint), {ImageTransparency = 1}):Play()
+					tweenService:Create(slider.Information, TweenInfo.new(0.15, Enum.EasingStyle.Quint), {TextTransparency = 1}):Play() -- tween the text after
 				end
 			end
-		end
-		Domain.PlayerInfoFrame.Functionality.Avatar.Image = game:GetService("Players"):GetUserThumbnailAsync(Player.UserId,Enum.ThumbnailType.HeadShot,Enum.ThumbnailSize.Size420x420)
-	else
-		Notify("Player has left server","GothamSemibold",Color3.fromRGB(212, 20, 20))
-	end
-end
 
-function PromptExploit(Exploit)
-	pexploit = true
-	wait(Exploit.WaitDuration)
-		Domain.Other.ExploitFound.Visible = true
-		Domain.Other.ExploitFound.Position = UDim2.new(-26.5,0,0.299,0)
-		Domain.Other.ExploitFound.Description.Text = Exploit.Description
-		Domain.Other.ExploitFound.ExploitName.Text = Exploit.Name
+			tweenService:Create(characterPanel.Interactions.Reset, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {ImageTransparency = 1}):Play()
+			tweenService:Create(characterPanel.Interactions.ActionsTitle, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {TextTransparency = 1}):Play()
 
-		Domain.Other.ExploitFound:TweenPosition(UDim2.new(-22.276, 0, 0.299, 0),"Out","Quint",0.6)
-		wait(0.5)
-		Domain.Other.ExploitFound.ExecuteButton.MouseButton1Click:Connect(function()
-		if pexploit then
-			
-				Domain.Other.ExploitFound:TweenPosition(UDim2.new(-26.5,0,0.299,0),"In","Quint",0.4)
-				pexploit = false
-				Notify("Loading "..Exploit.Name..", this may bug for a few seconds in some cases","GothamSemibold",Color3.fromRGB(0, 95, 139))
-			Execute(Exploit.Loadstring)
-			end
-		end)
-		Domain.Other.ExploitFound.exitpromptButton.MouseButton1Click:Connect(function()
-			Domain.Other.ExploitFound:TweenPosition(UDim2.new(-26.5,0,0.299,0),"In","Quint",0.4)
-			pexploit = false
-		end)
-		UIS.InputBegan:Connect(function(input, processed)
-			if (input.KeyCode == Enum.KeyCode.Y and processed == false) and pexploit == true then
-				pexploit = false
-				
-			Domain.Other.ExploitFound:TweenPosition(UDim2.new(-26.5,0,0.299,0),"In","Quint",0.4)
-			Execute(Exploit.Loadstring)
-			end
-		end)
-end
-
-function RePromptExploit(Exploit)
-	pexploit = true
-	Domain.Other.ExploitFound.Visible = true
---	Domain.Other.ExploitFound.Position = UDim2.new(-26.5,0,0.299,0)
-	Domain.Other.ExploitFound.Description.Text = Exploit.Description
-	Domain.Other.ExploitFound.ExploitName.Text = Exploit.Name
-
-	Domain.Other.ExploitFound:TweenPosition(UDim2.new(-22.276, 0, 0.299, 0),"Out","Quint",0.6)
-	wait(0.1)
-	Domain.Other.ExploitFound.ExecuteButton.MouseButton1Click:Connect(function()
-		if pexploit then
-			Domain.Other.ExploitFound:TweenPosition(UDim2.new(-26.5,0,0.299,0),"In","Quint",0.4)
-			pexploit = false
-			Notify("Loading "..Exploit.Name,"GothamSemibold",Color3.fromRGB(52, 52, 52))
-			Execute(Exploit.Loadstring)
-		end
-	end)
-	Domain.Other.ExploitFound.exitpromptButton.MouseButton1Click:Connect(function()
-		Domain.Other.ExploitFound:TweenPosition(UDim2.new(-26.5,0,0.299,0),"In","Quint",0.4)
-		pexploit = false
-	end)
-	UIS.InputBegan:Connect(function(input, processed)
-		if (input.KeyCode == Enum.KeyCode.Y and processed == false) and pexploit == true then
-			pexploit = false
-			Execute(Exploit.Loadstring)
-			Domain.Other.ExploitFound:TweenPosition(UDim2.new(-26.5,0,0.299,0),"In","Quint",0.4)
-		end
-	end)
-end
-
-function UnRePromptExploit()
-	Domain.Other.ExploitFound:TweenPosition(UDim2.new(-26.5,0,0.299,0),"In","Quint",0.4)
-	pexploit = false
-end
-
-function LoadPlayers()
-	for _, Player in ipairs(game.Players:GetChildren()) do
-		LoadPlayer(Player)
-	end
-end
-
-function LoadTheme(BG1Color,BG2Color,LogoIcon)
-	for _, omgdomainsource in ipairs(Domain.Domain:GetDescendants()) do
-		if omgdomainsource.ClassName == "Frame" or omgdomainsource.ClassName == "TextButton" then
-		if omgdomainsource.BackgroundColor3 == Color3.fromRGB(31,31,31) then
-			omgdomainsource.BackgroundColor3 = BG1Color
-		elseif omgdomainsource.BackgroundColor3 == Color3.fromRGB(76,76,76) then
-			omgdomainsource.BackgroundColor3 = BG2Color
-			end	
-		end
-	end
-	if LogoIcon > 134014 then
-		Domain.ButtonIcon.Image = "rbxassetid://"..LogoIcon
-	end
-
-end
-
-function GlitchTransition()
-
-
-	local Error = Instance.new("Frame")
-	local UIGradient = Instance.new("UIGradient")
-	local Title = Instance.new("TextLabel")
-	local UICorner = Instance.new("UICorner")
-	local Support = Instance.new("TextLabel")
-	local Shadow = Instance.new("ImageLabel")
-	local Error_2 = Instance.new("TextLabel")
-	local ErrorDesc = Instance.new("TextLabel")
-	local Discord = Instance.new("TextLabel")
-
-	Error.Name = "Error"
-	Error.Parent = Domain.Domain
-	Error.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	Error.BorderSizePixel = 0
-	Error.Position = UDim2.new(0.731770813, 0, 0.396870434, 0)
-	Error.Size = UDim2.new(0.207409903, 0, 0.206076726, 0)
-	Error.Visible = false
-	Error.ZIndex = 2
-
-	UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(27, 27, 27)), ColorSequenceKeypoint.new(0.52, Color3.fromRGB(34, 34, 34)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(36, 36, 36))}
-	UIGradient.Parent = Error
-
-	Title.Name = "Title"
-	Title.Parent = Error
-	Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	Title.BackgroundTransparency = 1.000
-	Title.BorderSizePixel = 0
-	Title.Position = UDim2.new(0.0376669578, 0, 0.0629035756, 0)
-	Title.Size = UDim2.new(0.797711372, 0, 0.0821957961, 0)
-	Title.ZIndex = 2
-	Title.Font = Enum.Font.GothamBold
-	Title.Text = "That wasn't supposed to happen... <b> <b> <b>555555"
-	Title.TextColor3 = Color3.fromRGB(235, 235, 235)
-	Title.TextScaled = true
-	Title.TextSize = 14.000
-	Title.TextWrapped = true
-	Title.TextXAlignment = Enum.TextXAlignment.Left
-
-	UICorner.Parent = Error
-
-	Support.Name = "Support"
-	Support.Parent = Error
-	Support.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	Support.BackgroundTransparency = 1.000
-	Support.BorderSizePixel = 0
-	Support.Position = UDim2.new(0.0379999988, 0, 0.159999996, 0)
-	Support.Size = UDim2.new(0.669075966, 0, 0.127589419, 0)
-	Support.ZIndex = 2
-	Support.Font = Enum.Font.GothamSemibold
-	Support.Text = "You found an error! {can't find resource}"
-	Support.TextColor3 = Color3.fromRGB(235, 235, 235)
-	Support.TextScaled = true
-	Support.TextSize = 14.000
-	Support.TextWrapped = true
-	Support.TextXAlignment = Enum.TextXAlignment.Left
-
-	Shadow.Name = "Shadow"
-	Shadow.Parent = Error
-	Shadow.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	Shadow.BackgroundTransparency = 1.000
-	Shadow.BorderSizePixel = 0
-	Shadow.Position = UDim2.new(-0.0556623675, 0, -0.348134518, 0)
-	Shadow.Size = UDim2.new(1.10795021, 0, 1.7016139, 0)
-	Shadow.Image = "rbxassetid://3523728077"
-	Shadow.ImageColor3 = Color3.fromRGB(33, 33, 33)
-	Shadow.ImageTransparency = 0.700
-
-	Error_2.Name = "Error"
-	Error_2.Parent = Error
-	Error_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	Error_2.BackgroundTransparency = 1.000
-	Error_2.BorderSizePixel = 0
-	Error_2.Position = UDim2.new(0.0376669578, 0, 0.88164252, 0)
-	Error_2.Size = UDim2.new(0.733908772, 0, 0.0709071383, 0)
-	Error_2.ZIndex = 2
-	Error_2.Font = Enum.Font.GothamSemibold
-	Error_2.Text = "code NILNILNILNIL"
-	Error_2.TextColor3 = Color3.fromRGB(68, 68, 68)
-	Error_2.TextScaled = true
-	Error_2.TextSize = 14.000
-	Error_2.TextWrapped = true
-	Error_2.TextXAlignment = Enum.TextXAlignment.Left
-
-	ErrorDesc.Name = "ErrorDesc"
-	ErrorDesc.Parent = Error
-	ErrorDesc.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	ErrorDesc.BackgroundTransparency = 1.000
-	ErrorDesc.BorderSizePixel = 0
-	ErrorDesc.Position = UDim2.new(0.0376669578, 0, 0.727077425, 0)
-	ErrorDesc.Size = UDim2.new(0.733908772, 0, 0.121890925, 0)
-	ErrorDesc.ZIndex = 2
-	ErrorDesc.Font = Enum.Font.GothamSemibold
-	ErrorDesc.Text = "We can make out that the error is due to 'OUTDATED CLIENT'"
-	ErrorDesc.TextColor3 = Color3.fromRGB(194, 194, 194)
-	ErrorDesc.TextScaled = true
-	ErrorDesc.TextSize = 14.000
-	ErrorDesc.TextWrapped = true
-	ErrorDesc.TextXAlignment = Enum.TextXAlignment.Left
-
-	Discord.Name = "Discord"
-	Discord.Parent = Error
-	Discord.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	Discord.BackgroundTransparency = 1.000
-	Discord.BorderSizePixel = 0
-	Discord.Position = UDim2.new(0.0376669578, 0, 0.304724842, 0)
-	Discord.Size = UDim2.new(0.733908772, 0, 0.0731824785, 0)
-	Discord.ZIndex = 2
-	Discord.Font = Enum.Font.GothamBlack
-	Discord.Text = "discord.gg/shlex"
-	Discord.TextColor3 = Color3.fromRGB(235, 235, 235)
-	Discord.TextScaled = true
-	Discord.TextSize = 14.000
-	Discord.TextWrapped = true
-	Discord.TextXAlignment = Enum.TextXAlignment.Left
-	local Migration = Instance.new("ScreenGui")
-	local Main = Instance.new("Frame")
-	local Title = Instance.new("TextLabel")
-	local UIGradient = Instance.new("UIGradient")
-	local UICorner = Instance.new("UICorner")
-	local Subtitle = Instance.new("TextLabel")
-	local Hi = Instance.new("TextLabel")
-	local Mig = Instance.new("TextLabel")
-	local OneMoment = Instance.new("TextLabel")
-	local TurnOffPc = Instance.new("TextLabel")
-	local Loading = Instance.new("Frame")
-	local Progress = Instance.new("Frame")
-	local LoadingInfo = Instance.new("TextLabel")
-
-	Migration.Name = "Migration"
-	Migration.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-	Migration.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-	Migration.ResetOnSpawn = false
-
-	Main.Name = "Main"
-	Main.Parent = Migration
-	Main.AnchorPoint = Vector2.new(0.5,0.5)
-	Main.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	Main.BorderSizePixel = 0
-	Main.Position = UDim2.new(0.5, 0, 0.5, 0)
-	Main.Size = UDim2.new(0.328152776, 0, 0.353668332, 0)
-
-	Title.Name = "Title"
-	Title.Parent = Main
-	Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	Title.BackgroundTransparency = 1.000
-	Title.BorderSizePixel = 0
-	Title.Position = UDim2.new(0.0507893488, 0, 0.0654515773, 0)
-	Title.Size = UDim2.new(0, 200, 0, 18)
-	Title.Font = Enum.Font.GothamBold
-	Title.Text = "Shlex Softworks"
-	Title.TextColor3 = Color3.fromRGB(238, 238, 238)
-	Title.TextScaled = true
-	Title.TextSize = 14.000
-	Title.TextWrapped = true
-	Title.TextXAlignment = Enum.TextXAlignment.Left
-
-	UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(27, 27, 27)), ColorSequenceKeypoint.new(0.52, Color3.fromRGB(34, 34, 34)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(36, 36, 36))}
-	UIGradient.Parent = Main
-
-	UICorner.Parent = Main
-
-	Subtitle.Name = "Subtitle"
-	Subtitle.Parent = Main
-	Subtitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	Subtitle.BackgroundTransparency = 1.000
-	Subtitle.BorderSizePixel = 0
-	Subtitle.Position = UDim2.new(0.0507893488, 0, 0.112576708, 0)
-	Subtitle.Size = UDim2.new(0.317433447, 0, 0.0376520716, 0)
-	Subtitle.Font = Enum.Font.GothamSemibold
-	Subtitle.Text = "Migration"
-	Subtitle.TextColor3 = Color3.fromRGB(168, 168, 168)
-	Subtitle.TextScaled = true
-	Subtitle.TextSize = 14.000
-	Subtitle.TextWrapped = true
-	Subtitle.TextXAlignment = Enum.TextXAlignment.Left
-
-	Hi.Name = "Hi"
-	Hi.Parent = Main
-	Hi.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	Hi.BackgroundTransparency = 1.000
-	Hi.BorderSizePixel = 0
-	Hi.Position = UDim2.new(0.0507893488, 0, 0.36129266, 0)
-	Hi.Size = UDim2.new(0.317433447, 0, 0.156284139, 0)
-	Hi.Font = Enum.Font.GothamBlack
-	Hi.Text = "Hi,"
-	Hi.TextColor3 = Color3.fromRGB(238, 238, 238)
-	Hi.TextScaled = true
-	Hi.TextSize = 14.000
-	Hi.TextWrapped = true
-	Hi.TextXAlignment = Enum.TextXAlignment.Left
-
-	Mig.Name = "Mig"
-	Mig.Parent = Main
-	Mig.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	Mig.BackgroundTransparency = 1.000
-	Mig.BorderSizePixel = 0
-	Mig.Position = UDim2.new(0.0507893413, 0, 0.544557095, 0)
-	Mig.Size = UDim2.new(0.47464776, 0, 0.0519015305, 0)
-	Mig.Font = Enum.Font.GothamBold
-	Mig.Text = "We're migrating your account"
-	Mig.TextColor3 = Color3.fromRGB(238, 238, 238)
-	Mig.TextScaled = true
-	Mig.TextSize = 14.000
-	Mig.TextWrapped = true
-	Mig.TextXAlignment = Enum.TextXAlignment.Left
-
-	OneMoment.Name = "OneMoment"
-	OneMoment.Parent = Main
-	OneMoment.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	OneMoment.BackgroundTransparency = 1.000
-	OneMoment.BorderSizePixel = 0
-	OneMoment.Position = UDim2.new(0.0507893488, 0, 0.59430027, 0)
-	OneMoment.Size = UDim2.new(0.47464776, 0, 0.0428680629, 0)
-	OneMoment.Font = Enum.Font.GothamSemibold
-	OneMoment.Text = "Give us a moment"
-	OneMoment.TextColor3 = Color3.fromRGB(195, 195, 195)
-	OneMoment.TextScaled = true
-	OneMoment.TextSize = 14.000
-	OneMoment.TextWrapped = true
-	OneMoment.TextXAlignment = Enum.TextXAlignment.Left
-
-	TurnOffPc.Name = "TurnOffPc"
-	TurnOffPc.Parent = Main
-	TurnOffPc.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	TurnOffPc.BackgroundTransparency = 1.000
-	TurnOffPc.BorderSizePixel = 0
-	TurnOffPc.Position = UDim2.new(0.44533959, 0, 0.932569861, 0)
-	TurnOffPc.Size = UDim2.new(0.519742846, 0, 0.035653688, 0)
-	TurnOffPc.Font = Enum.Font.GothamSemibold
-	TurnOffPc.Text = "Please do not close Roblox or turn off your PC"
-	TurnOffPc.TextColor3 = Color3.fromRGB(94, 94, 94)
-	TurnOffPc.TextScaled = true
-	TurnOffPc.TextSize = 14.000
-	TurnOffPc.TextWrapped = true
-	TurnOffPc.TextXAlignment = Enum.TextXAlignment.Right
-
-	Loading.Name = "Loading"
-	Loading.Parent = Main
-	Loading.BackgroundColor3 = Color3.fromRGB(83, 83, 83)
-	Loading.BorderSizePixel = 0
-	Loading.Position = UDim2.new(0.560270011, 0, 0.511641443, 0)
-	Loading.Size = UDim2.new(0.390128106, 0, 0.00373712881, 0)
-
-	Progress.Name = "Progress"
-	Progress.Parent = Loading
-	Progress.BackgroundColor3 = Color3.fromRGB(204, 204, 204)
-	Progress.BorderSizePixel = 0
-	Progress.Size = UDim2.new(0.387484431, 0, 1, 0)
-
-	LoadingInfo.Name = "LoadingInfo"
-	LoadingInfo.Parent = Loading
-	LoadingInfo.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	LoadingInfo.BackgroundTransparency = 1.000
-	LoadingInfo.BorderSizePixel = 0
-	LoadingInfo.Position = UDim2.new(-0.00209946721, 0, -16.2274342, 0)
-	LoadingInfo.Size = UDim2.new(0.851594985, 0, 10.4406357, 0)
-	LoadingInfo.Font = Enum.Font.GothamBold
-	LoadingInfo.Text = "Loading <nil>"
-	LoadingInfo.TextColor3 = Color3.fromRGB(162, 162, 162)
-	LoadingInfo.TextScaled = true
-	LoadingInfo.TextSize = 14.000
-	LoadingInfo.TextWrapped = true
-	LoadingInfo.TextXAlignment = Enum.TextXAlignment.Left
-	
-	Main.Size = UDim2.new(0.291, 0,0.314, 0)
-	Main.Visible = false
-	Error.Visible = true
-	Notify("Error","GothamBold",Color3.fromRGB(170, 0, 0))
-	wait(0.9)
-	Notify("Mass Error","GothamBold",Color3.fromRGB(170, 0, 0))
-	wait(0.6)
-	local s = Instance.new("Sound",Domain.Domain)
-	s.SoundId = "rbxassetid://"..2755928629
-	s:Play()
-	Notify("FATAL ERROR","GothamBold",Color3.fromRGB(170, 0, 0))
-	wait(0.4)
-	local s = Instance.new("Sound",Domain.Domain)
-	s.SoundId = "rbxassetid://"..2755928629
-	s:Play()
-	wait(0.2)
-	local s = Instance.new("Sound",Domain.Domain)
-	s.SoundId = "rbxassetid://"..2755928629
-	s:Play()
-	Notify("Roblox detection found","GothamBold",Color3.fromRGB(170, 0, 0))
-	wait(0.6)
-	Notify("Rebooting..","GothamBold",Color3.fromRGB(0, 170, 127))
-	wait(2)
-	local s = Instance.new("Sound",Domain.Domain)
-	s.SoundId = "rbxassetid://"..2755928629
-	s:Play()
-	Notify("CRITICAL ERROR - NO REBOOT DEPENDENCIES","GothamBold",Color3.fromRGB(170, 0, 0))
-	wait(0.1)
-	Domain.Domain.Enabled = false
-	wait(0.2)
-	Domain.Domain.Enabled = true
-	OpenSidebar()
-	CloseSidebar()
-	local s = Instance.new("Sound",Domain.Domain)
-	s.SoundId = "rbxassetid://"..2755928629
-	s:Play()
-	local s = Instance.new("Sound",Domain.Domain)
-	s.SoundId = "rbxassetid://"..2755928629
-	s:Play()
-	Notify("Crashing potential","GothamBold",Color3.fromRGB(170, 0, 0))
-	Notify("Hold on...","GothamBold",Color3.fromRGB(0, 170, 127))
-
-	wait(3)
-	local s = Instance.new("Sound",Domain.Domain)
-	s.SoundId = "rbxassetid://"..6958727243
-	s.Volume = 2
-	s:Play()
-	Main.Visible = true
-	
-	Main:TweenSize(UDim2.new(0.32, 0,0.344, 0),"Out","Quint",0.4)
-	Main.Loading.Progress.Size = UDim2.new(0,0,1,0)
-	Main.Loading.LoadingInfo.Text = "Starting process"
-	wait(1)
-	Main.Loading.Progress:TweenSize(UDim2.new(0.32, 0,1, 0),"Out","Quint",0.4)
-	Main.Loading.LoadingInfo.Text = "Fetching DomainV1"
-	wait(1)
-	Main.Loading.Progress:TweenSize(UDim2.new(0.54, 0,1, 0),"Out","Quint",0.4)
-	Main.Loading.LoadingInfo.Text = "Fetching DomainV2"
-	wait(1.7)
-	Main.Loading.Progress:TweenSize(UDim2.new(0.7, 0,1, 0),"Out","Quint",0.4)
-	Main.Loading.LoadingInfo.Text = "Booting first-time setup"
-	wait(2)
-	Main.Loading.Progress:TweenSize(UDim2.new(0.9, 0,1, 0),"Out","Quint",0.4)
-	Main.Loading.LoadingInfo.Text = "Finishing up..."
-	wait(3)
-	Main.Loading.Progress:TweenSize(UDim2.new(1, 0,1, 0),"Out","Quint",0.6)
-	Main.Loading.LoadingInfo.Text = "Let's do this!"
-	wait(2)
-	Main:TweenSize(UDim2.new(0.291, 0,0.314, 0),"Out","Quint",0.4)
-	wait(0.3)
-	Main.Visible = false
-	loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexsoftworks/Domainx/main/source'),true))()
-end
-
-function BootDomain()
-	local HttpService = game:GetService("HttpService")
-	local RequestEnabled = (syn and syn.request) or (http and http.request) or http_request
-	if RequestEnabled then
-		RequestEnabled({
-			Url = 'http://127.0.0.1:6463/rpc?v=1',
-			Method = 'POST',
-			Headers = {
-				['Content-Type'] = 'application/json',
-				Origin = 'https://discord.com'
-			},
-			Body = HttpService:JSONEncode({
-				cmd = 'INVITE_BROWSER',
-				nonce = HttpService:GenerateGUID(false),
-				args = {code = 'shlex'}
-			})
-		})
-	end
-	if DOMAIN_ENABLED == true then
-		
-		Notify("Domain Hub X is in development, keep up to date in the Discord!","GothamBlack",Color3.fromRGB(0, 78, 115))
-		wait(0.3)
-		Notify("Running Domain Hub OpenSourced","GothamSemibold",Color3.fromRGB(154, 18, 222))
-		local Player = game.Players.LocalPlayer
-		
-		if table.find(Banned,Player.UserId) then
-			Notify("You have been banned from Domain V2, booting Domain V1","GothamBlack",Color3.fromRGB(170, 0, 0))
-			LoadDomainV1()
-			Domain.ToggleButton.Visible = false
-			enabled = false
-			wait(NotificationDuration + 2)
-			Domain.Domain:Destroy()
-		end
-		
-	Load()
-	loadwidgets()
-	StartUnfunctionals()
-	
-		if game.Players.LocalPlayer:IsInGroup(10220078) then
-			Notify("Welcome, "..Player.DisplayName.." to Domain Hub Premium","GothamSemibold",Color3.fromRGB(46, 136, 111))
-
-			if theme and themedata and game.Players.LocalPlayer:IsInGroup(10220078) then
-
-				LoadTheme(themedata.BGColor1,themedata.BGColor2,themedata.LogoIcon)
-				Notify("Loading "..themedata.ThemeName.." theme","GothamSemibold",themedata.BGColor1)
-			end
-			if startupsound and game.Players.LocalPlayer:IsInGroup(10220078) then
-				local ssound = Instance.new("Sound")
-				ssound.SoundId = startupsound
-				ssound.PlayOnRemove = true
-				ssound.Parent = game:GetService("CoreGui")
-				ssound.Name = "strtup"
-				ssound:Destroy()
-			end
-		else
-			if theme and themedata then
-				Notify("We found theme data but couldn't load it as you aren't a Premium member","GothamSemibold",Color3.fromRGB(229, 146, 12))
-			end
-			if startupsound then
-				Notify("We found startupsound data but couldn't load it as you aren't a Premium member","GothamSemibold",Color3.fromRGB(229, 146, 12))
-			end
-			Notify(" Welcome, "..Player.DisplayName.." ","GothamSemibold",Color3.fromRGB(54, 54, 54))
-		end
-	
-	for _, antiexploit in pairs(AntiExploits) do
-		if antiexploit.PlaceId == game.PlaceId then
-			for _, anti in ipairs(antiexploit.Locations) do
-				if #antiexploit.Locations > 1 then
-					Notify("Removed multiple anti cheats ("..tostring(#antiexploit.Locations)..")","GothamSemibold",Color3.fromRGB(0, 85, 127))
-				else
-					Notify(" Removed 1 anti cheat ","GothamBold",Color3.fromRGB(0, 85, 127))
+			for _, gridButton in ipairs(characterPanel.Interactions.Grid:GetChildren()) do
+				if gridButton.ClassName == "Frame" then 
+					tweenService:Create(gridButton, TweenInfo.new(0.21, Enum.EasingStyle.Exponential), {BackgroundTransparency = 1}):Play()
+					tweenService:Create(gridButton.UIStroke, TweenInfo.new(0.1, Enum.EasingStyle.Exponential), {Transparency = 1}):Play()
+					tweenService:Create(gridButton.Icon, TweenInfo.new(0.15, Enum.EasingStyle.Quint), {ImageTransparency = 1}):Play()
+					tweenService:Create(gridButton.Shadow, TweenInfo.new(0.15, Enum.EasingStyle.Quint), {ImageTransparency = 1}):Play()
 				end
 			end
-		end
-	end
-	if table.find(DangerousGames,game.PlaceId) then
-		Notify("This game will ban you if caught by anti cheat","GothamSemibold",Color3.fromRGB(206, 0, 0))
-	end
-	
 
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.ToggleButton, transitionInfo, {ImageTransparency = 0})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.FPS.TextLabel, transitionInfo, {TextTransparency = 0})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.FPS.Fpsimage, transitionInfo, {ImageTransparency = 0})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.FPS, transitionInfo, {BackgroundTransparency = 0.52})
-	tween:Play()
-	Domain.ToggleButton.ImageTransparency = 0
-	if not AutoExecute or game.CreatorId == 0 then
-		OpenSidebar()
-	end
-	
-	for _, Player in ipairs(game.Players:GetChildren()) do
-		if game.Players.LocalPlayer:IsFriendsWith(Player.UserId) then
-			friendsingame = friendsingame - 1
-			Domain.amount_2.Text = friendsingame.." are in this game"	
-		end
-		if friendsingame == 0 then
-			Domain.amount_2.Text = "None are in this game"	
-		end
-	end
-		for _, exp in pairs(BackgroundExploits) do
+			tweenService:Create(characterPanel.Interactions.Serverhop, TweenInfo.new(.15,Enum.EasingStyle.Quint),  {BackgroundTransparency = 1}):Play()
+			tweenService:Create(characterPanel.Interactions.Serverhop.Title, TweenInfo.new(.15,Enum.EasingStyle.Quint),  {TextTransparency = 1}):Play()
+			tweenService:Create(characterPanel.Interactions.Serverhop.UIStroke, TweenInfo.new(.15,Enum.EasingStyle.Quint),  {Transparency = 1}):Play()
 
-			for _, place in pairs(exp.PlaceIds) do
-				if place == game.PlaceId then
-					if exp.PremiumOnly == true then
-						if game.Players.LocalPlayer:IsInGroup(10220078) then
-							PromptExploit(exp)
-						end
+			tweenService:Create(characterPanel.Interactions.Rejoin, TweenInfo.new(.15,Enum.EasingStyle.Quint),  {BackgroundTransparency = 1}):Play()
+			tweenService:Create(characterPanel.Interactions.Rejoin.Title, TweenInfo.new(.15,Enum.EasingStyle.Quint),  {TextTransparency = 1}):Play()
+			tweenService:Create(characterPanel.Interactions.Rejoin.UIStroke, TweenInfo.new(.15,Enum.EasingStyle.Quint),  {Transparency = 1}):Play()
+
+		elseif panel.Name == "Scripts" then -- Scripts Panel Animation
+
+			for _, scriptButton in ipairs(scriptsPanel.Interactions.Selection:GetChildren()) do
+				if scriptButton.ClassName == "Frame" then
+					tweenService:Create(scriptButton, TweenInfo.new(0.15, Enum.EasingStyle.Quint), {BackgroundTransparency = 1}):Play()
+					if scriptButton:FindFirstChild('أيقونة') then tweenService:Create(scriptButton.Icon, TweenInfo.new(0.15, Enum.EasingStyle.Quint), {ImageTransparency = 1}):Play() end
+					tweenService:Create(scriptButton.Title, TweenInfo.new(0.15, Enum.EasingStyle.Quint), {TextTransparency = 1}):Play()
+					if scriptButton:FindFirstChild('Subtitle') then	tweenService:Create(scriptButton.Subtitle, TweenInfo.new(0.15, Enum.EasingStyle.Quint), {TextTransparency = 1}):Play() end
+					tweenService:Create(scriptButton.UIStroke, TweenInfo.new(0.15, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
+				end
+			end
+
+		elseif panel.Name == "Playerlist" then -- Playerlist Panel Animation
+
+			for _, playerIns in ipairs(playerlistPanel.Interactions.List:GetDescendants()) do
+				if playerIns.ClassName == "Frame" then
+					tweenService:Create(playerIns, TweenInfo.new(0.15, Enum.EasingStyle.Quint), {BackgroundTransparency = 1}):Play()
+				elseif playerIns.ClassName == "النصوسم" or playerIns.ClassName == "النصزر" then
+					if playerIns.Name == "Displayالاسم" then
+						tweenService:Create(playerIns, TweenInfo.new(0.15, Enum.EasingStyle.Quint), {TextTransparency = 1}):Play()
 					else
-						PromptExploit(exp)
+						tweenService:Create(playerIns, TweenInfo.new(0.15, Enum.EasingStyle.Quint), {TextTransparency = 1}):Play()
+					end
+				elseif playerIns.ClassName == "Imageوسم" or playerIns.ClassName == "Imageزر" then
+					tweenService:Create(playerIns, TweenInfo.new(0.15, Enum.EasingStyle.Quint), {ImageTransparency = 1}):Play()
+					if playerIns.Name == "Avatar" then tweenService:Create(playerIns, TweenInfo.new(0.15, Enum.EasingStyle.Quint), {BackgroundTransparency = 1}):Play() end
+				elseif playerIns.ClassName == "UIStroke" then
+					tweenService:Create(playerIns, TweenInfo.new(0.15, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
+				end
+			end
+
+			tweenService:Create(playerlistPanel.Interactions.SearchFrame, TweenInfo.new(0.15, Enum.EasingStyle.Quint), {BackgroundTransparency = 1}):Play()
+			tweenService:Create(playerlistPanel.Interactions.SearchFrame.Icon, TweenInfo.new(0.15, Enum.EasingStyle.Quint), {ImageTransparency = 1}):Play()
+			tweenService:Create(playerlistPanel.Interactions.SearchFrame.SearchBox, TweenInfo.new(0.15, Enum.EasingStyle.Quint), {TextTransparency = 1}):Play()
+			tweenService:Create(playerlistPanel.Interactions.SearchFrame.UIStroke, TweenInfo.new(0.15, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
+			tweenService:Create(playerlistPanel.Interactions.List, TweenInfo.new(0.2, Enum.EasingStyle.Quint), {ScrollBarImageTransparency = 1}):Play()
+
+		end
+
+		tweenService:Create(panel.Icon, TweenInfo.new(0.2, Enum.EasingStyle.Quint), {ImageTransparency = 1}):Play()
+		tweenService:Create(panel.Title, TweenInfo.new(0.2, Enum.EasingStyle.Quint), {TextTransparency = 1}):Play()
+		tweenService:Create(panel.UIStroke, TweenInfo.new(0.2, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
+		tweenService:Create(panel.Shadow, TweenInfo.new(0.2, Enum.EasingStyle.Quint), {ImageTransparency = 1}):Play()
+		task.wait(0.03)
+
+		tweenService:Create(panel, TweenInfo.new(0.75, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {BackgroundTransparency = 1}):Play()
+		tweenService:Create(panel, TweenInfo.new(1.1, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out), {Size = button.Size}):Play()
+		tweenService:Create(panel, TweenInfo.new(0.65, Enum.EasingStyle.Quint, Enum.EasingDirection.InOut), {Position = siriusValues.buttonPositions[panelName]}):Play()
+		tweenService:Create(toggle, TweenInfo.new(0.6, Enum.EasingStyle.Quint, Enum.EasingDirection.InOut), {Position = UDim2.new(0.5, 0, 1, -85)}):Play()
+	end
+
+	-- Animate interactive elements
+	if openingOther then
+		tweenService:Create(panel, TweenInfo.new(0.45, Enum.EasingStyle.Quint), {Position = UDim2.new(0.5, 350, 1, -90)}):Play()
+		wipeTransparency(panel, 1, true, true, 0.3)
+	end
+
+	task.wait(0.5)
+	panel.Size = panelSize
+	panel.Visible = false
+
+	debounce = false
+end
+
+local function openPanel(panelName)
+	if debounce then return end
+	debounce = true
+
+	local button = smartBar.Buttons:FindFirstChild(panelName)
+	local panel = UI:FindFirstChild(panelName)
+
+	if not isPanel(panelName) then return end
+	if not (panel and button) then return end
+
+	for _, otherPanel in ipairs(UI:GetChildren()) do
+		if smartBar.Buttons:FindFirstChild(otherPanel.Name) then
+			if isPanel(otherPanel.Name) and otherPanel.Visible then
+				task.spawn(closePanel, otherPanel.Name, true)
+				task.wait()
+			end
+		end
+	end
+
+	local panelSize = UDim2.new(0, 581, 0, 246)
+
+	panel.Size = button.Size
+	panel.Position = siriusValues.buttonPositions[panelName]
+
+	wipeTransparency(panel, 1, true)
+
+	panel.Visible = true
+
+	tweenService:Create(toggle, TweenInfo.new(0.65, Enum.EasingStyle.Quint), {Position = UDim2.new(0.5, 0, 1, -(panelSize.Y.Offset + 95))}):Play()
+
+	tweenService:Create(panel, TweenInfo.new(0.1, Enum.EasingStyle.Quint), {BackgroundTransparency = 0}):Play()
+	tweenService:Create(panel, TweenInfo.new(0.8, Enum.EasingStyle.Exponential), {Size = panelSize}):Play()
+	tweenService:Create(panel, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {Position = UDim2.new(0.5, 0, 1, -90)}):Play()
+	task.wait(0.1)
+	tweenService:Create(panel.Shadow, TweenInfo.new(0.45, Enum.EasingStyle.Quint), {ImageTransparency = 0.7}):Play()
+	tweenService:Create(panel.Icon, TweenInfo.new(0.45, Enum.EasingStyle.Quint), {ImageTransparency = 0}):Play()
+	task.wait(0.05)
+	tweenService:Create(panel.Title, TweenInfo.new(0.45, Enum.EasingStyle.Quint), {TextTransparency = 0}):Play()
+	tweenService:Create(panel.UIStroke, TweenInfo.new(0.45, Enum.EasingStyle.Quint), {Transparency = 0.95}):Play()
+	task.wait(0.05)
+
+	-- Animate interactive elements
+	if panel.Name == "Character" then -- Character Panel Animation
+
+		tweenService:Create(characterPanel.Interactions.PropertiesTitle, TweenInfo.new(0.8, Enum.EasingStyle.Quint), {TextTransparency = 0.65}):Play()
+
+		local sliderInfo = {}
+		for _, slider in ipairs(characterPanel.Interactions.Sliders:GetChildren()) do
+			if slider.ClassName == "Frame" then 
+				table.insert(sliderInfo, {slider.Name, slider.Progress.Size, slider.Information.Text})
+				slider.Progress.Size = UDim2.new(0, 0, 1, 0)
+				slider.Progress.BackgroundTransparency = 0
+
+				tweenService:Create(slider, TweenInfo.new(0.8, Enum.EasingStyle.Quint), {BackgroundTransparency = 0.8}):Play()
+				tweenService:Create(slider.UIStroke, TweenInfo.new(0.8, Enum.EasingStyle.Quint), {Transparency = 0.5}):Play()
+				tweenService:Create(slider.Shadow, TweenInfo.new(0.8, Enum.EasingStyle.Quint), {ImageTransparency = 0.6}):Play()
+				tweenService:Create(slider.Information, TweenInfo.new(0.8, Enum.EasingStyle.Quint), {TextTransparency = 0.3}):Play()
+			end
+		end
+
+		for _, sliderV in pairs(sliderInfo) do
+			if characterPanel.Interactions.Sliders:FindFirstChild(sliderV[1]) then
+				local slider = characterPanel.Interactions.Sliders:FindFirstChild(sliderV[1])
+				local tweenValue = Instance.new("IntValue", UI)
+				local tweenTo
+				local name
+
+				for _, sliderFound in ipairs(siriusValues.sliders) do
+					if sliderFound.name.." شريط" == slider.Name then
+						tweenTo = sliderFound.value
+						name = sliderFound.name
+						break
 					end
 				end
-			end
-		end
-		booteddomain = "true"
-		wait(4)
-		Notify("SHLEX DISCORD HAS BEEN DELETED! Please rejoin! Find the link in the About tab","GothamBold",Color3.fromRGB(235, 0, 0))
-		LoadPlayers()
-	else
-		Notify("Domain is not enabled at this time, try again later!","GothamSemibold",Color3.fromRGB(184, 0, 0))
-	end
-end
 
-function getTime()
-	date = os.date("*t")
-	return ("%02d:%02d"):format(((date.hour % 24) - 1) % 12 + 1, date.min)
-end
+				tweenService:Create(slider.Progress, TweenInfo.new(0.8, Enum.EasingStyle.Quint), {Size = sliderV[2]}):Play()
 
-function RefigurePlayerList(RemovedPlayerYOffset)
-	CurrentListPosition = CurrentListPosition - 0.024
-	for _, PlrAdded in ipairs(Domain.Playerlist:GetChildren()) do
-		PlrAdded.Parent = Domain.Playerlist
-		--if PlrAdded.Position.Y.Scale > RemovedPlayerYOffset then
-		--	PlrAdded.Position = UDim2.new(0.03, 0, PlrAdded.Position.Y.Scale-0.024, 0)
-		--end
-	end
-end
-
-function GetDate()
-	local date = {}
-	local months = {
-		{"January", 31};
-		{"February", 28};
-		{"March", 31};
-		{"April", 30};
-		{"May", 31};
-		{"June", 30};
-		{"July", 31};
-		{"August", 31};
-		{"September", 30};
-		{"October", 31};
-		{"November", 30};
-		{"December", 31};
-	}
-	local t = tick()
-	date.total = t
-	date.seconds = math.floor(t % 60)
-	date.minutes = math.floor((t / 60) % 60)
-	date.hours = math.floor((t / 60 / 60) % 24)
-	date.year = (1970 + math.floor(t / 60 / 60 / 24 / 365.25))
-	date.yearShort = tostring(date.year):sub(-2)
-	date.isLeapYear = ((date.year % 4) == 0)
-	date.isAm = (date.hours < 12)
-	date.hoursPm = (date.isAm and date.hours or (date.hours == 12 and 12 or (date.hours - 12)))
-	if (date.hoursPm == 0) then date.hoursPm = 12 end
-	if (date.isLeapYear) then
-		months[2][2] = 29
-	end
-	do
-		date.dayOfYear = math.floor((t / 60 / 60 / 24) % 365.25)
-		local dayCount = 0
-		for i,month in pairs(months) do
-			dayCount = (dayCount + month[2])
-			if (dayCount > date.dayOfYear) then
-				date.monthWord = month[1]
-				date.month = i
-				
-				date.day = (date.dayOfYear - (dayCount - month[2]) + 1)
-				if date.monthWord == "February" then
-					date.day = date.day - 1
+				local function animateNumber(n)
+					tweenService:Create(tweenValue, TweenInfo.new(0.35, Enum.EasingStyle.Exponential), {Value = n}):Play()
+					task.delay(0.4, tweenValue.Destroy, tweenValue)
 				end
-				break
-			end
-		end
-	end
-	function date:format(str)
-		str = str
-		:gsub("#s", ("%.2i"):format(self.seconds))
-		:gsub("#m", ("%.2i"):format(self.minutes))
-		:gsub("#h", tostring(self.hours))
-		:gsub("#H", tostring(self.hoursPm))
-		:gsub("#Y", tostring(self.year))
-		:gsub("#y", tostring(self.yearShort))
-		:gsub("#a", (self.isAm and "AM" or "PM"))
-		:gsub("#W", self.monthWord)
-		:gsub("#M", tostring(self.month))
-		:gsub("#d", tostring(self.day))
-		:gsub("#D", tostring(self.dayOfYear))
-		:gsub("#t", tostring(self.total))
-		return str
-	end
-	return date
-end
-if game.CreatorId == 0 then
-	wait(1)
-else
-	for _, child in ipairs(game:GetService("CoreGui"):GetChildren()) do
-		if child.Name == "Domain" and child ~= Domain.Domain then
-			child:Destroy()
-		end
-	end
-	Domain.Domain.Parent = game:GetService("CoreGui")
-	AntiKick()
-	AntiAFK()
-end
-Domain.Main.Position = UDim2.new(1.001,0,0.262,0)
-Domain.Main.Shadow.ImageTransparency = 1
-Domain.VersionText.Text = "You're running Domain "..ReleaseType.. " version "..tostring(Release)..[[    ]]
-Domain.VersionText2.Text = "- "..ReleaseFeature
-Domain.ToggleButton.Rotation = 90
-Domain.ToggleButton.ImageTransparency = 1
-Domain.Other.Watermark.Text.Text = "Domain "..ReleaseType.." v"..tostring(Release)
-if game.Players.LocalPlayer:IsInGroup(10220078) then
-	bdomain = true
-end
 
-
-if keyenabled and not game.Players.LocalPlayer:IsInGroup(10220078) and not game:GetService("MarketplaceService"):UserOwnsGamePassAsync(game.Players.LocalPlayer.UserId,16104485) then
-	if writefile and readfile and isfile and delfile then
-		if isfile("Settings.dmn") then
-			if readfile("Settings.dmn") == Key..Key2 then
-				BootDomain()
-			else
-				Domain.KeyFrame.Visible = true
-				Domain.KeyFrame.KeyBox.FocusLost:Connect(function()
-					if Domain.KeyFrame.KeyBox.Text == Key..Key2 then
-						BootDomain()
-					else
-						local transitionInfo = TweenInfo.new(0.15, Enum.EasingStyle.Quint)
-						local tween = game:GetService("TweenService"):Create(Domain.KeyFrame, transitionInfo, {Position = UDim2.new(0.43,0,0.447,0)})
-						tween:Play()
-						wait(0.1)
-						local transitionInfo = TweenInfo.new(0.15, Enum.EasingStyle.Quint)
-						local tween = game:GetService("TweenService"):Create(Domain.KeyFrame, transitionInfo, {Position = UDim2.new(0.439,0,0.447,0)})
-						tween:Play()
-						wait(0.1)
-						local transitionInfo = TweenInfo.new(0.15, Enum.EasingStyle.Quint)
-						local tween = game:GetService("TweenService"):Create(Domain.KeyFrame, transitionInfo, {Position = UDim2.new(0.433,0,0.447,0)})
-						tween:Play()
-					end
+				tweenValue:GetPropertyChangedSignal("Value"):Connect(function()
+					slider.Information.Text = tostring(tweenValue.Value).." "..name
 				end)
+
+				animateNumber(tweenTo)
+			end
+		end
+
+		tweenService:Create(characterPanel.Interactions.Reset, TweenInfo.new(0.8, Enum.EasingStyle.Quint), {ImageTransparency = 0.7}):Play()
+		tweenService:Create(characterPanel.Interactions.ActionsTitle, TweenInfo.new(0.8, Enum.EasingStyle.Quint), {TextTransparency = 0.65}):Play()
+
+		for _, gridButton in ipairs(characterPanel.Interactions.Grid:GetChildren()) do
+			if gridButton.ClassName == "Frame" then 
+				for _, action in ipairs(siriusValues.actions) do
+					if action.name == gridButton.Name then
+						if action.enabled then
+							tweenService:Create(gridButton, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundTransparency = 0.1}):Play()
+							tweenService:Create(gridButton.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
+							tweenService:Create(gridButton.Icon, TweenInfo.new(0.45, Enum.EasingStyle.Quint), {ImageTransparency = 0.1}):Play()
+						else
+							tweenService:Create(gridButton, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0.55}):Play()
+							tweenService:Create(gridButton.UIStroke, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {Transparency = 0.4}):Play()
+							tweenService:Create(gridButton.Icon, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {ImageTransparency = 0.5}):Play()
+						end
+						break
+					end
+				end
+
+				tweenService:Create(gridButton.Shadow, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {ImageTransparency = 0.6}):Play()
+			end
+		end
+
+		tweenService:Create(characterPanel.Interactions.Serverhop, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {BackgroundTransparency = 0}):Play()
+		tweenService:Create(characterPanel.Interactions.Serverhop.Title, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {TextTransparency = 0.5}):Play()
+		tweenService:Create(characterPanel.Interactions.Serverhop.UIStroke, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {Transparency = 0}):Play()
+
+		tweenService:Create(characterPanel.Interactions.Rejoin, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {BackgroundTransparency = 0}):Play()
+		tweenService:Create(characterPanel.Interactions.Rejoin.Title, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {TextTransparency = 0.5}):Play()
+		tweenService:Create(characterPanel.Interactions.Rejoin.UIStroke, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {Transparency = 0}):Play()
+
+	elseif panel.Name == "Scripts" then -- Scripts Panel Animation
+
+		for _, scriptButton in ipairs(scriptsPanel.Interactions.Selection:GetChildren()) do
+			if scriptButton.ClassName == "Frame" then
+				tweenService:Create(scriptButton, TweenInfo.new(0.45, Enum.EasingStyle.Quint), {BackgroundTransparency = 0}):Play()
+				if scriptButton:FindFirstChild('أيقونة') then tweenService:Create(scriptButton.Icon, TweenInfo.new(0.45, Enum.EasingStyle.Quint), {ImageTransparency = 0}):Play() end
+				tweenService:Create(scriptButton.Title, TweenInfo.new(0.45, Enum.EasingStyle.Quint), {TextTransparency = 0}):Play()
+				if scriptButton:FindFirstChild('Subtitle') then	tweenService:Create(scriptButton.Subtitle, TweenInfo.new(0.45, Enum.EasingStyle.Quint), {TextTransparency = 0.3}):Play() end
+				tweenService:Create(scriptButton.UIStroke, TweenInfo.new(0.45, Enum.EasingStyle.Quint), {Transparency = 0.2}):Play()
+			end
+		end
+
+	elseif panel.Name == "Playerlist" then -- Playerlist Panel Animation
+
+		for _, playerIns in ipairs(playerlistPanel.Interactions.List:GetDescendants()) do
+			if playerIns.Name ~= "Interact" and playerIns.Name ~= "Role" then 
+				if playerIns.ClassName == "Frame" then
+					tweenService:Create(playerIns, TweenInfo.new(0.45, Enum.EasingStyle.Quint), {BackgroundTransparency = 0}):Play()
+				elseif playerIns.ClassName == "النصوسم" or playerIns.ClassName == "النصزر" then
+					tweenService:Create(playerIns, TweenInfo.new(0.45, Enum.EasingStyle.Quint), {TextTransparency = 0}):Play()
+				elseif playerIns.ClassName == "Imageوسم" or playerIns.ClassName == "Imageزر" then
+					tweenService:Create(playerIns, TweenInfo.new(0.45, Enum.EasingStyle.Quint), {ImageTransparency = 0}):Play()
+					if playerIns.Name == "Avatar" then tweenService:Create(playerIns, TweenInfo.new(0.45, Enum.EasingStyle.Quint), {BackgroundTransparency = 0}):Play() end
+				elseif playerIns.ClassName == "UIStroke" then
+					tweenService:Create(playerIns, TweenInfo.new(0.45, Enum.EasingStyle.Quint), {Transparency = 0}):Play()
+				end
+			end
+		end
+
+		tweenService:Create(playerlistPanel.Interactions.SearchFrame, TweenInfo.new(0.45, Enum.EasingStyle.Quint), {BackgroundTransparency = 0}):Play()
+		tweenService:Create(playerlistPanel.Interactions.SearchFrame.Icon, TweenInfo.new(0.45, Enum.EasingStyle.Quint), {ImageTransparency = 0}):Play()
+		task.wait(0.01)
+		tweenService:Create(playerlistPanel.Interactions.SearchFrame.SearchBox, TweenInfo.new(0.45, Enum.EasingStyle.Quint), {TextTransparency = 0}):Play()
+		tweenService:Create(playerlistPanel.Interactions.SearchFrame.UIStroke, TweenInfo.new(0.45, Enum.EasingStyle.Quint), {Transparency = 0.2}):Play()
+		task.wait(0.05)
+		tweenService:Create(playerlistPanel.Interactions.List, TweenInfo.new(0.35, Enum.EasingStyle.Quint), {ScrollBarImageTransparency = 0.7}):Play()
+
+	end
+
+	task.wait(0.45)
+	debounce = false
+end
+
+local function rejoin()
+	queueNotification("Rejoining Session", "We're queueing a rejoin to this session, give us a moment.", 4400696294)
+
+	if #players:GetPlayers() <= 1 then
+		task.wait()
+		teleportService:Teleport(placeId, localPlayer)
+	else
+		teleportService:TeleportToPlaceInstance(placeId, jobId, localPlayer)
+	end
+end
+
+local function serverhop()
+	local highestPlayers = 0
+	local servers = {}
+
+	for _, v in ipairs(httpService:JSONDecode(game:HttpGetAsync("https://games.roblox.com/v1/games/" .. placeId .. "/servers/Public?sortOrder=Asc&limit=100")).data) do
+		if type(v) == "table" and v.maxPlayers > v.playing and v.id ~= jobId then
+			if v.playing > highestPlayers then
+				highestPlayers = v.playing
+				servers[1] = v.id
+			end
+		end
+	end
+
+	if #servers > 0 then
+		queueNotification("Teleporting", "We're now moving you to the new session, this may take a few seconds.", 4335479121)
+		task.wait(0.3)
+		teleportService:TeleportToPlaceInstance(placeId, servers[1])
+	else
+		return queueNotification("No Servers Found", "We couldn't find another server, this may be the only server.", 4370317928)
+	end
+
+end
+
+local function ensureFrameProperties()
+	UI.Enabled = true
+	characterPanel.Visible = false
+	customScriptPrompt.Visible = false
+	disconnectedPrompt.Visible = false
+	playerlistPanel.Interactions.List.Template.Visible = false
+	gameDetectionPrompt.Visible = false
+	homeContainer.Visible = false
+	moderatorDetectionPrompt.Visible = false
+	musicPanel.Visible = false
+	notificationContainer.Visible = true
+	playerlistPanel.Visible = false
+	scriptSearch.Visible = false
+	scriptsPanel.Visible = false
+	settingsPanel.Visible = false
+	smartBar.Visible = false
+	musicPanel.Playing.Text = "Not Playing"
+	if not getcustomasset then smartBar.Buttons.Music.Visible = false end
+	toastsContainer.Visible = true
+	makeDraggable(settingsPanel)
+	makeDraggable(musicPanel)
+end
+
+local function checkFriends()
+	if friendsCooldown == 0 then
+
+		friendsCooldown = 25
+
+		local playersFriends = {}
+		local success, page = pcall(players.GetFriendsAsync, players, localPlayer.UserId)
+
+		if success then
+			repeat
+				local info = page:GetCurrentPage()
+				for i, friendInfo in pairs(info) do
+					table.insert(playersFriends, friendInfo)
+				end
+				if not page.IsFinished then 
+					page:AdvanceToNextPageAsync()
+				end
+			until page.IsFinished
+		end
+
+		local friendsInTotal = 0
+		local onlineFriends = 0 
+		local friendsInGame = 0 
+
+		for i,v in pairs(playersFriends) do
+			friendsInTotal  = friendsInTotal + 1
+
+			if v.IsOnline then
+				onlineFriends = onlineFriends + 1
+			end
+
+			if players:FindFirstChild(v.Username) then
+				friendsInGame = friendsInGame + 1
+			end
+		end
+
+		if not checkSirius() then return end
+
+		homeContainer.Interactions.Friends.All.Value.Text = tostring(friendsInTotal).." الأصدقاء"
+		homeContainer.Interactions.Friends.Offline.Value.Text = tostring(friendsInTotal - onlineFriends).." الأصدقاء"
+		homeContainer.Interactions.Friends.Online.Value.Text = tostring(onlineFriends).." الأصدقاء"
+		homeContainer.Interactions.Friends.InGame.Value.Text = tostring(friendsInGame).." الأصدقاء"
+
+	else
+		friendsCooldown -= 1
+	end
+end
+
+function promptModerator(player, role)
+	local serversAvailable = false
+	local promptClosed = false
+
+	if moderatorDetectionPrompt.Visible then return end
+
+	moderatorDetectionPrompt.Size = UDim2.new(0, 283, 0, 175)
+	moderatorDetectionPrompt.UIGradient.Offset = Vector2.new(0, 1)
+	wipeTransparency(moderatorDetectionPrompt, 1, true)
+
+	moderatorDetectionPrompt.DisplayName.Text = player.DisplayName
+	moderatorDetectionPrompt.Rank.Text = role
+	moderatorDetectionPrompt.Avatar.Image = "https://www.roblox.com/headshot-thumbnail/image?userId="..player.UserId.."&width=420&height=420&format=png"
+
+	moderatorDetectionPrompt.Visible = true
+
+	for _, v in ipairs(game:GetService("HttpService"):JSONDecode(game:HttpGetAsync("https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/Public?sortOrder=Asc&limit=100")).data) do
+		if type(v) == "table" and v.maxPlayers > v.playing and v.id ~= game.JobId then
+			serversAvailable = true
+		end
+	end
+
+	if not serversAvailable then
+		moderatorDetectionPrompt.Serverhop.Visible = false
+	else
+		moderatorDetectionPrompt.ServersAvailableFade.Visible = true
+	end
+
+	tweenService:Create(moderatorDetectionPrompt, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {BackgroundTransparency = 0}):Play()
+	tweenService:Create(moderatorDetectionPrompt, TweenInfo.new(0.8, Enum.EasingStyle.Quint), {Size = UDim2.new(0, 300, 0, 186)}):Play()
+	tweenService:Create(moderatorDetectionPrompt.UIGradient, TweenInfo.new(0.8, Enum.EasingStyle.Quint), {Offset = Vector2.new(0, 0.65)}):Play()
+	tweenService:Create(moderatorDetectionPrompt.Title, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {TextTransparency = 0}):Play()
+	tweenService:Create(moderatorDetectionPrompt.Subtitle, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {TextTransparency = 0}):Play()
+	tweenService:Create(moderatorDetectionPrompt.Avatar, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {BackgroundTransparency = 0.7}):Play()
+	tweenService:Create(moderatorDetectionPrompt.Avatar, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {ImageTransparency = 0}):Play()
+	tweenService:Create(moderatorDetectionPrompt.DisplayName, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {TextTransparency = 0}):Play()
+	tweenService:Create(moderatorDetectionPrompt.Rank, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {TextTransparency = 0}):Play()
+	tweenService:Create(moderatorDetectionPrompt.Serverhop, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {BackgroundTransparency = 0.7}):Play()
+	tweenService:Create(moderatorDetectionPrompt.Leave, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {BackgroundTransparency = 0.7}):Play()
+	task.wait(0.2)
+	tweenService:Create(moderatorDetectionPrompt.Serverhop, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {TextTransparency = 0}):Play()
+	tweenService:Create(moderatorDetectionPrompt.Leave, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {TextTransparency = 0}):Play()
+	task.wait(0.3)
+	tweenService:Create(moderatorDetectionPrompt.Close, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {ImageTransparency = 0.6}):Play()
+
+	local function closeModPrompt()
+		tweenService:Create(moderatorDetectionPrompt, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {BackgroundTransparency = 1}):Play()
+		tweenService:Create(moderatorDetectionPrompt, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {Size = UDim2.new(0, 283, 0, 175)}):Play()
+		tweenService:Create(moderatorDetectionPrompt.UIGradient, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {Offset = Vector2.new(0, 1)}):Play()
+		tweenService:Create(moderatorDetectionPrompt.Title, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {TextTransparency = 1}):Play()
+		tweenService:Create(moderatorDetectionPrompt.Subtitle, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {TextTransparency = 1}):Play()
+		tweenService:Create(moderatorDetectionPrompt.Avatar, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {BackgroundTransparency = 1}):Play()
+		tweenService:Create(moderatorDetectionPrompt.Avatar, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {ImageTransparency = 1}):Play()
+		tweenService:Create(moderatorDetectionPrompt.DisplayName, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {TextTransparency = 1}):Play()
+		tweenService:Create(moderatorDetectionPrompt.Rank, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {TextTransparency = 1}):Play()
+		tweenService:Create(moderatorDetectionPrompt.Serverhop, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {BackgroundTransparency = 1}):Play()
+		tweenService:Create(moderatorDetectionPrompt.Leave, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {BackgroundTransparency = 1}):Play()
+		tweenService:Create(moderatorDetectionPrompt.Serverhop, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {TextTransparency = 1}):Play()
+		tweenService:Create(moderatorDetectionPrompt.Leave, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {TextTransparency = 1}):Play()
+		tweenService:Create(moderatorDetectionPrompt.Close, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {ImageTransparency = 1}):Play()
+		task.wait(0.5)
+		moderatorDetectionPrompt.Visible = false
+	end
+
+	moderatorDetectionPrompt.Leave.MouseButton1Click:Connect(function()
+		closeModPrompt()
+		game:Shutdown()
+	end)
+
+	moderatorDetectionPrompt.Serverhop.MouseEnter:Connect(function()
+		tweenService:Create(moderatorDetectionPrompt.ServersAvailableFade, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {TextTransparency = 0.5}):Play()
+	end)
+
+	moderatorDetectionPrompt.Serverhop.MouseLeave:Connect(function()
+		tweenService:Create(moderatorDetectionPrompt.ServersAvailableFade, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {TextTransparency = 1}):Play()
+	end)
+
+	moderatorDetectionPrompt.Serverhop.MouseButton1Click:Connect(function()
+		if promptClosed then return end
+		serverhop()
+		closeModPrompt()
+	end)
+
+	moderatorDetectionPrompt.Close.MouseButton1Click:Connect(function()
+		closeModPrompt()
+		promptClosed = true
+	end)
+end
+
+local function UpdateHome()
+	if not checkSirius() then return end
+
+	local function format(Int)
+		return string.format("%02i", Int)
+	end
+
+	local function convertToHMS(Seconds)
+		local Minutes = (Seconds - Seconds%60)/60
+		Seconds = Seconds - Minutes*60
+		local Hours = (Minutes - Minutes%60)/60
+		Minutes = Minutes - Hours*60
+		return format(Hours)..":"..format(Minutes)..":"..format(Seconds)
+	end
+
+	-- Home Title
+	homeContainer.Title.Text = "مرحبًا بعودتك، "..localPlayer.DisplayName
+
+	-- Players
+	homeContainer.Interactions.Server.Players.Value.Text = #players:GetPlayers().." قيد اللعب"
+	homeContainer.Interactions.Server.MaxPlayers.Value.Text = players.MaxPlayers.." يمكن للاعبين الانضمام إلى هذا السيرفر"
+
+	-- Ping
+	homeContainer.Interactions.Server.Latency.Value.Text = math.floor(getPing()).."ms"
+
+	-- Time
+	homeContainer.Interactions.Server.Time.Value.Text = convertToHMS(time())
+
+	-- Region
+	homeContainer.Interactions.Server.Region.Value.Text = "Unable to retrieve region"
+
+	-- Player Information
+	homeContainer.Interactions.User.Avatar.Image = "https://www.roblox.com/headshot-thumbnail/image?userId="..localPlayer.UserId.."&width=420&height=420&format=png"
+	homeContainer.Interactions.User.Title.Text = localPlayer.DisplayName
+	homeContainer.Interactions.User.Subtitle.Text = localPlayer.Name
+
+	-- Update Executor
+	homeContainer.Interactions.Client.Title.Text = identifyexecutor()
+	if not table.find(siriusValues.executors, string.lower(identifyexecutor())) then
+		homeContainer.Interactions.Client.Subtitle.Text = "This executor is not verified as supported - but may still work just fine."
+	end
+
+	-- Update Friends Statuses
+	checkFriends()
+end
+
+local function openHome()
+	if debounce then return end
+	debounce = true
+	homeContainer.Visible = true
+
+	local homeBlur = Instance.new("BlurEffect", lighting)
+	homeBlur.Size = 0
+	homeBlur.Name = "HomeBlur"
+
+	homeContainer.BackgroundTransparency = 1
+	homeContainer.Title.TextTransparency = 1
+	homeContainer.Subtitle.TextTransparency = 1
+
+	for _, homeItem in ipairs(homeContainer.Interactions:GetChildren()) do
+
+		wipeTransparency(homeItem, 1, true)
+
+		homeItem.Position = UDim2.new(0, homeItem.Position.X.Offset - 20, 0, homeItem.Position.Y.Offset - 20)
+		homeItem.Size = UDim2.new(0, homeItem.Size.X.Offset + 30, 0, homeItem.Size.Y.Offset + 20)
+
+		if homeItem.UIGradient.Offset.Y > 0 then
+			homeItem.UIGradient.Offset = Vector2.new(0, homeItem.UIGradient.Offset.Y + 3)
+			homeItem.UIStroke.UIGradient.Offset = Vector2.new(0, homeItem.UIStroke.UIGradient.Offset.Y + 3)
+		else
+			homeItem.UIGradient.Offset = Vector2.new(0, homeItem.UIGradient.Offset.Y - 3)
+			homeItem.UIStroke.UIGradient.Offset = Vector2.new(0, homeItem.UIStroke.UIGradient.Offset.Y - 3)
+		end
+	end
+
+	tweenService:Create(homeContainer, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {BackgroundTransparency = 0.9}):Play()
+	tweenService:Create(homeBlur, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {Size = 5}):Play()
+
+	tweenService:Create(camera, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {FieldOfView = camera.FieldOfView + 5}):Play()
+
+	task.wait(0.25)
+
+	for _, inGameUI in ipairs(localPlayer:FindFirstChildWhichIsA("PlayerGui"):GetChildren()) do
+		if inGameUI:IsA("ScreenGui") then
+			if inGameUI.Enabled then
+				if not table.find(getgenv().cachedInGameUI, inGameUI.Name) then
+					table.insert(getgenv().cachedInGameUI, #getgenv().cachedInGameUI+1, inGameUI.Name)
+				end
+
+				inGameUI.Enabled = false
+			end
+		end
+	end
+
+	table.clear(getgenv().cachedCoreUI)
+
+	for _, coreUI in pairs({"PlayerList", "Chat", "EmotesMenu", "Health", "Backpack"}) do
+		if game:GetService("StarterGui"):GetCoreGuiEnabled(coreUI) then
+			table.insert(getgenv().cachedCoreUI, #getgenv().cachedCoreUI+1, coreUI)
+		end
+	end
+
+	for _, coreUI in pairs(getgenv().cachedCoreUI) do
+		game:GetService("StarterGui"):SetCoreGuiEnabled(coreUI, false)
+	end
+
+	createReverb(0.8)
+
+	tweenService:Create(camera, TweenInfo.new(0.8, Enum.EasingStyle.Quint), {FieldOfView = camera.FieldOfView - 40}):Play()
+
+	tweenService:Create(homeContainer, TweenInfo.new(0.8, Enum.EasingStyle.Quint), {BackgroundTransparency = 0.7}):Play()
+	tweenService:Create(homeContainer.Title, TweenInfo.new(0.8, Enum.EasingStyle.Quint), {TextTransparency = 0}):Play()
+	tweenService:Create(homeContainer.Subtitle, TweenInfo.new(0.8, Enum.EasingStyle.Quint), {TextTransparency = 0.4}):Play()
+	tweenService:Create(homeBlur, TweenInfo.new(0.8, Enum.EasingStyle.Quint), {Size = 20}):Play()
+
+	for _, homeItem in ipairs(homeContainer.Interactions:GetChildren()) do
+		for _, otherHomeItem in ipairs(homeItem:GetDescendants()) do
+			if otherHomeItem.ClassName == "Frame" then
+				tweenService:Create(otherHomeItem, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {BackgroundTransparency = 0.7}):Play()
+			elseif otherHomeItem.ClassName == "النصوسم" then
+				if otherHomeItem.Name == "العنوان" then
+					tweenService:Create(otherHomeItem, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {TextTransparency = 0}):Play()
+				else
+					tweenService:Create(otherHomeItem, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {TextTransparency = 0.3}):Play()
+				end
+			elseif otherHomeItem.ClassName == "Imageوسم" then
+				tweenService:Create(otherHomeItem, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {BackgroundTransparency = 0.8}):Play()
+				tweenService:Create(otherHomeItem, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {ImageTransparency = 0}):Play()
+			end
+		end
+
+		tweenService:Create(homeItem, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {BackgroundTransparency = 0}):Play()
+		tweenService:Create(homeItem.UIStroke, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {Transparency = 0}):Play()
+		tweenService:Create(homeItem, TweenInfo.new(0.5, Enum.EasingStyle.Back), {Position = UDim2.new(0, homeItem.Position.X.Offset + 20, 0, homeItem.Position.Y.Offset + 20)}):Play()
+		tweenService:Create(homeItem, TweenInfo.new(0.5, Enum.EasingStyle.Back), {Size = UDim2.new(0, homeItem.Size.X.Offset - 30, 0, homeItem.Size.Y.Offset - 20)}):Play()
+
+		task.delay(0.03, function()
+			if homeItem.UIGradient.Offset.Y > 0 then
+				tweenService:Create(homeItem.UIGradient, TweenInfo.new(1, Enum.EasingStyle.Exponential), {Offset = Vector2.new(0, homeItem.UIGradient.Offset.Y - 3)}):Play()
+				tweenService:Create(homeItem.UIStroke.UIGradient, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {Offset = Vector2.new(0, homeItem.UIStroke.UIGradient.Offset.Y - 3)}):Play()
+			else
+				tweenService:Create(homeItem.UIGradient, TweenInfo.new(1, Enum.EasingStyle.Exponential), {Offset = Vector2.new(0, homeItem.UIGradient.Offset.Y + 3)}):Play()
+				tweenService:Create(homeItem.UIStroke.UIGradient, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {Offset = Vector2.new(0, homeItem.UIStroke.UIGradient.Offset.Y + 3)}):Play()
+			end
+		end)
+
+		task.wait(0.02)
+	end
+
+	task.wait(0.85)
+
+	debounce = false
+end
+
+local function closeHome()
+	if debounce then return end
+	debounce = true
+
+	tweenService:Create(camera, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {FieldOfView = camera.FieldOfView + 35}):Play()
+
+	for _, obj in ipairs(lighting:GetChildren()) do
+		if obj.Name == "HomeBlur" then
+			tweenService:Create(obj, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Size = 0}):Play()
+			task.delay(0.6, obj.Destroy, obj)
+		end
+	end
+
+	tweenService:Create(homeContainer, TweenInfo.new(0.8, Enum.EasingStyle.Quint), {BackgroundTransparency = 1}):Play()
+	tweenService:Create(homeContainer.Title, TweenInfo.new(0.8, Enum.EasingStyle.Quint), {TextTransparency = 1}):Play()
+	tweenService:Create(homeContainer.Subtitle, TweenInfo.new(0.8, Enum.EasingStyle.Quint), {TextTransparency = 1}):Play()
+
+	for _, homeItem in ipairs(homeContainer.Interactions:GetChildren()) do
+		for _, otherHomeItem in ipairs(homeItem:GetDescendants()) do
+			if otherHomeItem.ClassName == "Frame" then
+				tweenService:Create(otherHomeItem, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {BackgroundTransparency = 1}):Play()
+			elseif otherHomeItem.ClassName == "النصوسم" then
+				if otherHomeItem.Name == "العنوان" then
+					tweenService:Create(otherHomeItem, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {TextTransparency = 1}):Play()
+				else
+					tweenService:Create(otherHomeItem, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {TextTransparency = 1}):Play()
+				end
+			elseif otherHomeItem.ClassName == "Imageوسم" then
+				tweenService:Create(otherHomeItem, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {BackgroundTransparency = 1}):Play()
+				tweenService:Create(otherHomeItem, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {ImageTransparency = 1}):Play()
+			end
+		end
+		tweenService:Create(homeItem, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {BackgroundTransparency = 1}):Play()
+		tweenService:Create(homeItem.UIStroke, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
+	end
+
+	task.wait(0.2)
+
+	for _, cachedInGameUIObject in pairs(getgenv().cachedInGameUI) do
+		for _, currentPlayerUI in ipairs(localPlayer:FindFirstChildWhichIsA("PlayerGui"):GetChildren()) do
+			if table.find(getgenv().cachedInGameUI, currentPlayerUI.Name) then
+				currentPlayerUI.Enabled = true
+			end 
+		end
+	end
+
+	for _, coreUI in pairs(getgenv().cachedCoreUI) do
+		game:GetService("StarterGui"):SetCoreGuiEnabled(coreUI, true)
+	end
+
+	removeReverbs(0.5)
+
+	task.wait(0.52)
+
+	homeContainer.Visible = false
+	debounce = false
+end
+
+
+local function openScriptSearch()
+	debounce = true
+
+	scriptSearch.Size = UDim2.new(0, 480, 0, 23)
+	scriptSearch.Position = UDim2.new(0.5, 0, 0.5, 0)
+	scriptSearch.SearchBox.Position = UDim2.new(0.509, 0, 0.5, 0)
+	scriptSearch.Icon.Position = UDim2.new(0.04, 0, 0.5, 0)
+	scriptSearch.SearchBox.Text = ""
+	scriptSearch.UIGradient.Offset = Vector2.new(0, 2)
+	scriptSearch.SearchBox.PlaceholderText = "Search ScriptBlox.com"
+	scriptSearch.List.Template.Visible = false
+	scriptSearch.List.Visible = false
+	scriptSearch.Visible = true
+
+	wipeTransparency(scriptSearch, 1, true)
+
+	tweenService:Create(scriptSearch, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {BackgroundTransparency = 0}):Play()
+	tweenService:Create(scriptSearch, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {Size = UDim2.new(0, 580, 0, 43)}):Play()
+	tweenService:Create(scriptSearch.Shadow, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {ImageTransparency = 0.85}):Play()
+	task.wait(0.03)
+	tweenService:Create(scriptSearch.Icon, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {ImageTransparency = 0}):Play()
+	task.wait(0.02)
+	tweenService:Create(scriptSearch.SearchBox, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {TextTransparency = 0}):Play()
+
+
+	task.wait(0.3)
+	scriptSearch.SearchBox:CaptureFocus()
+	task.wait(0.2)
+	debounce = false
+end
+
+local function closeScriptSearch()
+	debounce = true
+
+	wipeTransparency(scriptSearch, 1, false)
+
+	task.wait(0.1)
+
+	scriptSearch.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+	scriptSearch.UIGradient.Enabled = false
+	tweenService:Create(scriptSearch, TweenInfo.new(0.4, Enum.EasingStyle.Quint),  {Size = UDim2.new(0, 520, 0, 0)}):Play()
+	scriptSearch.SearchBox:ReleaseFocus()
+
+	task.wait(0.5)
+
+	for _, createdScript in ipairs(scriptSearch.List:GetChildren()) do
+		if createdScript.Name ~= "نص توضيحي" and createdScript.Name ~= "Template" and createdScript.ClassName == "Frame" then
+			createdScript:Destroy()
+		end
+	end
+
+	task.wait(0.1)
+	scriptSearch.BackgroundColor3 = Color3.fromRGB(255 ,255, 255)
+	scriptSearch.Visible = false
+	scriptSearch.UIGradient.Enabled = true
+	debounce = false
+end
+
+local function createScript(result)
+	local newScript = UI.ScriptSearch.List.Template:Clone()
+	newScript.Name = result.title
+	newScript.Parent = UI.ScriptSearch.List
+	newScript.Visible = true
+
+	for _, tag in ipairs(newScript.Tags:GetChildren()) do
+		if tag.ClassName == "Frame" then
+			tag.Shadow.ImageTransparency = 1
+			tag.BackgroundTransparency = 1
+			tag.Title.TextTransparency = 1
+		end
+	end
+
+	task.spawn(function()
+		local response
+
+		local success, ErrorStatement = pcall(function()
+			local responseRequest = httpRequest({
+				Url = "https://www.scriptblox.com/api/script/"..result['slug'],
+				Method = "GET"
+			})
+
+			response = httpService:JSONDecode(responseRequest.Body)
+		end)
+
+		newScript.ScriptDescription.Text = response.script.features
+
+		local likes = response.script.likeCount
+		local dislikes = response.script.dislikeCount
+
+		if likes ~= dislikes then
+			newScript.Tags.Review.Title.Text = (likes > dislikes) and "Positive Reviews" or "Negative Reviews"
+			newScript.Tags.Review.BackgroundColor3 = (likes > dislikes) and Color3.fromRGB(0, 139, 102) or Color3.fromRGB(180, 0, 0)
+			newScript.Tags.Review.Size = (likes > dislikes) and UDim2.new(0, 145, 1, 0) or UDim2.new(0, 150, 1, 0)
+		elseif likes > 0 then
+			newScript.Tags.Review.Title.Text = "Mixed Reviews"
+			newScript.Tags.Review.BackgroundColor3 = Color3.fromRGB(198, 132, 0)
+			newScript.Tags.Review.Size = UDim2.new(0, 130, 1, 0)
+		else
+			newScript.Tags.Review.Visible = false
+		end
+
+		newScript.ScriptAuthor.Text = "تم الرفع بواسطة "..response.script.owner.username
+		newScript.Tags.Verified.Visible = response.script.owner.verified or false
+
+		tweenService:Create(newScript, TweenInfo.new(.5, Enum.EasingStyle.Quint),  {BackgroundTransparency = 0.8}):Play()
+		tweenService:Create(newScript.ScriptName, TweenInfo.new(.5, Enum.EasingStyle.Quint),  {TextTransparency = 0}):Play()
+		tweenService:Create(newScript.Execute, TweenInfo.new(.5, Enum.EasingStyle.Quint),  {BackgroundTransparency = 0.8}):Play()
+		tweenService:Create(newScript.Execute, TweenInfo.new(.5, Enum.EasingStyle.Quint),  {TextTransparency = 0}):Play()
+
+		newScript.Tags.Visible = true
+
+		tweenService:Create(newScript.ScriptDescription, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {TextTransparency = 0.3}):Play()
+		tweenService:Create(newScript.ScriptAuthor, TweenInfo.new(.5, Enum.EasingStyle.Quint),  {TextTransparency = 0.7}):Play()
+
+		for _, tag in ipairs(newScript.Tags:GetChildren()) do
+			if tag.ClassName == "Frame" then
+				tweenService:Create(tag.Shadow, TweenInfo.new(.5, Enum.EasingStyle.Quint),  {ImageTransparency = 0.7}):Play()
+				tweenService:Create(tag, TweenInfo.new(.5, Enum.EasingStyle.Quint),  {BackgroundTransparency = 0}):Play()
+				tweenService:Create(tag.Title, TweenInfo.new(.5, Enum.EasingStyle.Quint),  {TextTransparency = 0}):Play()
+			end
+		end
+	end)
+
+	wipeTransparency(newScript, 1, true)
+
+	newScript.ScriptName.Text = result.title
+
+
+	newScript.Tags.Visible = false
+	newScript.Tags.Patched.Visible = result.isPatched or false
+
+	newScript.Execute.MouseButton1Click:Connect(function()
+		queueNotification("ScriptSearch", "Running "..result.title.. " عبر بحث السكربت" , 4384403532)
+		closeScriptSearch()
+		loadstring(result.script)()
+	end)
+end
+
+local function extractDomain(link)
+	local domainToReturn = link:match("([%w-_]+%.[%w-_%.]+)")
+	return domainToReturn
+end
+
+local function securityDetection(title, content, link, gradient, actions)
+	if not checkSirius() then return end
+
+	local domain = extractDomain(link) or link
+	checkFolder()
+	local currentAllowlist = isfile and isfile(siriusValues.siriusFolder.."/".."allowedLinks.srs") and readfile(siriusValues.siriusFolder.."/".."allowedLinks.srs") or nil
+	if currentAllowlist then currentAllowlist = httpService:JSONDecode(currentAllowlist) if table.find(currentAllowlist, domain) then return true end end
+
+	local newSecurityPrompt = securityPrompt:Clone()
+
+	newSecurityPrompt.Parent = UI
+	newSecurityPrompt.Name = link
+
+	wipeTransparency(newSecurityPrompt, 1, true)
+	newSecurityPrompt.Size = UDim2.new(0, 478, 0, 150)
+
+	newSecurityPrompt.Title.Text = title
+	newSecurityPrompt.Subtitle.Text = content
+	newSecurityPrompt.FoundLink.Text = domain
+
+	newSecurityPrompt.Visible = true
+	newSecurityPrompt.UIGradient.Color = gradient
+
+	newSecurityPrompt.Buttons.Template.Visible = false
+
+	local function closeSecurityPrompt()
+		tweenService:Create(newSecurityPrompt, TweenInfo.new(0.52, Enum.EasingStyle.Quint),  {Size = UDim2.new(0, 500, 0, 165)}):Play()
+		tweenService:Create(newSecurityPrompt, TweenInfo.new(0.5, Enum.EasingStyle.Quint),  {BackgroundTransparency = 1}):Play()
+		tweenService:Create(newSecurityPrompt.Title, TweenInfo.new(0.5, Enum.EasingStyle.Quint),  {TextTransparency = 1}):Play()
+		tweenService:Create(newSecurityPrompt.Subtitle, TweenInfo.new(0.5, Enum.EasingStyle.Quint),  {TextTransparency = 1}):Play()
+		tweenService:Create(newSecurityPrompt.FoundLink, TweenInfo.new(0.5, Enum.EasingStyle.Quint),  {TextTransparency = 1}):Play()
+
+
+		for _, button in ipairs(newSecurityPrompt.Buttons:GetChildren()) do
+			if button.Name ~= "Template" and button.ClassName == "النصزر" then
+				tweenService:Create(button, TweenInfo.new(0.3, Enum.EasingStyle.Quint),  {BackgroundTransparency = 1}):Play()
+				tweenService:Create(button, TweenInfo.new(0.3, Enum.EasingStyle.Quint),  {TextTransparency = 1}):Play()
+			end
+		end
+		task.wait(0.55)
+		newSecurityPrompt:Destroy()
+	end
+
+	local decision
+
+	for _, action in ipairs(actions) do
+		local newAction = newSecurityPrompt.Buttons.Template:Clone()
+		newAction.Name = action[1]
+		newAction.Text = action[1]
+		newAction.Parent = newSecurityPrompt.Buttons
+		newAction.Visible = true
+		newAction.Size = UDim2.new(0, newAction.TextBounds.X + 50, 0, 36) -- textbounds
+
+		newAction.MouseButton1Click:Connect(function()
+			if action[2] then
+				if action[3] then
+					checkFolder()
+					if currentAllowlist then
+						table.insert(currentAllowlist, domain)
+						writefile(siriusValues.siriusFolder.."/".."allowedLinks.srs", httpService:JSONEncode(currentAllowlist))
+					else
+						writefile(siriusValues.siriusFolder.."/".."allowedLinks.srs", httpService:JSONEncode({domain}))
+					end
+				end
+				decision = true
+			else
+				decision = false
+			end
+
+			closeSecurityPrompt()
+		end)
+	end
+
+	tweenService:Create(newSecurityPrompt, TweenInfo.new(0.4, Enum.EasingStyle.Quint),  {Size = UDim2.new(0, 576, 0, 181)}):Play()
+	tweenService:Create(newSecurityPrompt, TweenInfo.new(0.5, Enum.EasingStyle.Quint),  {BackgroundTransparency = 0}):Play()
+	tweenService:Create(newSecurityPrompt.Title, TweenInfo.new(0.5, Enum.EasingStyle.Quint),  {TextTransparency = 0}):Play()
+	tweenService:Create(newSecurityPrompt.Subtitle, TweenInfo.new(0.5, Enum.EasingStyle.Quint),  {TextTransparency = 0.3}):Play()
+	task.wait(0.03)
+	tweenService:Create(newSecurityPrompt.FoundLink, TweenInfo.new(0.5, Enum.EasingStyle.Quint),  {TextTransparency = 0.2}):Play()
+
+	task.wait(0.1)
+
+	for _, button in ipairs(newSecurityPrompt.Buttons:GetChildren()) do
+		if button.Name ~= "Template" and button.ClassName == "النصزر" then
+			tweenService:Create(button, TweenInfo.new(0.5, Enum.EasingStyle.Quint),  {BackgroundTransparency = 0.7}):Play()
+			tweenService:Create(button, TweenInfo.new(0.5, Enum.EasingStyle.Quint),  {TextTransparency = 0.05}):Play()
+			task.wait(0.1)
+		end
+	end
+
+	newSecurityPrompt.FoundLink.MouseEnter:Connect(function()
+		newSecurityPrompt.FoundLink.Text = link
+		tweenService:Create(newSecurityPrompt.FoundLink, TweenInfo.new(0.5, Enum.EasingStyle.Quint),  {TextTransparency = 0.4}):Play()
+	end)
+
+	newSecurityPrompt.FoundLink.MouseLeave:Connect(function()
+		newSecurityPrompt.FoundLink.Text = domain
+		tweenService:Create(newSecurityPrompt.FoundLink, TweenInfo.new(0.5, Enum.EasingStyle.Quint),  {TextTransparency = 0.2}):Play()
+	end)
+
+	repeat task.wait() until decision
+	return decision
+end
+
+if Essential or Pro then
+	getgenv()[index] = function(data)
+		if checkSirius() and checkSetting("Intelligent HTTP Interception").current then
+			local title = "Do you trust this source?"
+			local content = "Sirius has prevented data from being sent off-client, would you like to allow data to be sent or retrieved from this source?"
+			local url = data.Url or "Unknown Link"
+			local gradient = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(0, 0, 0)),ColorSequenceKeypoint.new(1, Color3.new(0.764706, 0.305882, 0.0941176))})
+			local actions = {{"Always Allow", true, true}, {"Allow just this once", true}, {"Don't Allow", false}}
+
+			if url == "http://127.0.0.1:6463/rpc?v=1" then
+				local bodyDecoded = httpService:JSONDecode(data.Body)
+
+				if bodyDecoded.cmd == "INVITE_BROWSER" then
+					title = "Would you like to join this Discord server?"
+					content = "Sirius has prevented your Discord client from automatically joining this Discord server, would you like to continue and join, or block it?"
+					url = bodyDecoded.args and "discord.gg/"..bodyDecoded.args.code or "Unknown Invite"
+					gradient = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(0, 0, 0)),ColorSequenceKeypoint.new(1, Color3.new(0.345098, 0.396078, 0.94902))})
+					actions = {{"Allow", true}, {"Don't Allow", false}}
+				end
+			end
+
+			local answer = securityDetection(title, content, url, gradient, actions)
+
+
+			if answer then 
+				return originalRequest(data)
+			else
+				return
 			end
 		else
-			Domain.KeyFrame.Visible = true
-			Domain.KeyFrame.KeyBox.FocusLost:Connect(function()
-				if Domain.KeyFrame.KeyBox.Text == Key..Key2 then
-					writefile("Settings.dmn",Key..Key2)
-					BootDomain()
-				else
-					local transitionInfo = TweenInfo.new(0.15, Enum.EasingStyle.Quint)
-					local tween = game:GetService("TweenService"):Create(Domain.KeyFrame, transitionInfo, {Position = UDim2.new(0.43,0,0.447,0)})
-					tween:Play()
-					wait(0.1)
-					local transitionInfo = TweenInfo.new(0.15, Enum.EasingStyle.Quint)
-					local tween = game:GetService("TweenService"):Create(Domain.KeyFrame, transitionInfo, {Position = UDim2.new(0.439,0,0.447,0)})
-					tween:Play()
-					wait(0.1)
-					local transitionInfo = TweenInfo.new(0.15, Enum.EasingStyle.Quint)
-					local tween = game:GetService("TweenService"):Create(Domain.KeyFrame, transitionInfo, {Position = UDim2.new(0.433,0,0.447,0)})
-					tween:Play()
+			return originalRequest(data)
+		end
+	end
+
+	getgenv()[indexSetClipboard] = function(data)
+		if checkSirius() and checkSetting("Intelligent Clipboard Interception").current then
+			local title = "Would you like to copy this to your clipboard?"
+			local content = "Sirius has prevented a script from setting the below text to your clipboard, would you like to allow this, or prevent it from copying?"
+			local url = data or "Unknown Clipboard"
+			local gradient = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(0, 0, 0)),ColorSequenceKeypoint.new(1, Color3.new(0.776471, 0.611765, 0.529412))})
+			local actions = {{"Allow", true}, {"Don't Allow", false}}
+
+			local answer = securityDetection(title, content, url, gradient, actions)
+
+			if answer then 
+				return originalSetClipboard(data)
+			else
+				return
+			end
+		else
+			return originalSetClipboard(data)
+		end
+	end
+end
+
+
+local function searchScriptBlox(query)
+	local response
+
+	local success, ErrorStatement = pcall(function()
+		local responseRequest = httpRequest({
+			Url = "https://scriptblox.com/api/script/search?q="..httpService:UrlEncode(query).."&mode=free&max=20&page=1",
+			Method = "GET"
+		})
+
+		response = httpService:JSONDecode(responseRequest.Body)
+	end)
+
+	if not success then
+		queueNotification("ScriptSearch", "ScriptSearch backend encountered an error, try again later", 4384402990)
+		closeScriptSearch()
+		return
+	end
+
+	tweenService:Create(scriptSearch.NoScriptsTitle, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {TextTransparency = 1}):Play()
+	tweenService:Create(scriptSearch.NoScriptsDesc, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {TextTransparency = 1}):Play()
+
+	for _, createdScript in ipairs(scriptSearch.List:GetChildren()) do
+		if createdScript.Name ~= "نص توضيحي" and createdScript.Name ~= "Template" and createdScript.ClassName == "Frame" then
+			wipeTransparency(createdScript, 1, true)
+		end
+	end
+
+	scriptSearch.List.Visible = true
+	task.wait(0.5)
+
+	scriptSearch.List.CanvasPosition = Vector2.new(0,0)
+
+	for _, createdScript in ipairs(scriptSearch.List:GetChildren()) do
+		if createdScript.Name ~= "نص توضيحي" and createdScript.Name ~= "Template" and createdScript.ClassName == "Frame" then
+			createdScript:Destroy()
+		end
+	end
+
+	tweenService:Create(scriptSearch, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {Size = UDim2.new(0, 580, 0, 529)}):Play()
+	tweenService:Create(scriptSearch.Icon, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {Position = UDim2.new(0.054, 0, 0.056, 0)}):Play()
+	tweenService:Create(scriptSearch.SearchBox, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {Position = UDim2.new(0.523, 0, 0.056, 0)}):Play()
+	tweenService:Create(scriptSearch.UIGradient, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {Offset = Vector2.new(0, 0.6)}):Play()
+
+	if response then
+		local scriptCreated = false
+		for _, scriptResult in pairs(response.result.scripts) do
+			local success, response = pcall(function()
+				createScript(scriptResult)
+			end)
+
+			scriptCreated = true
+		end
+
+		if not scriptCreated then
+			task.wait(0.2)
+			tweenService:Create(scriptSearch.NoScriptsTitle, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {TextTransparency = 0}):Play()
+			task.wait(0.1)
+			tweenService:Create(scriptSearch.NoScriptsDesc, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {TextTransparency = 0}):Play()
+		else
+			tweenService:Create(scriptSearch.List, TweenInfo.new(.3,Enum.EasingStyle.Quint),  {ScrollBarImageTransparency = 0}):Play()
+		end
+	else
+		queueNotification("ScriptSearch", "ScriptSearch backend encountered an error, try again later", 4384402990)
+		closeScriptSearch()
+		return
+	end
+end
+
+local function openSmartBar()
+	smartBarOpen = true
+
+	coreGui.RobloxGui.Backpack.Position = UDim2.new(0,0,0,0)
+
+	-- Set Values for frame properties
+	smartBar.BackgroundTransparency = 1
+	smartBar.Time.TextTransparency = 1
+	smartBar.UIStroke.Transparency = 1
+	smartBar.Shadow.ImageTransparency = 1
+	smartBar.Visible = true
+	smartBar.Position = UDim2.new(0.5, 0, 1.05, 0)
+	smartBar.Size = UDim2.new(0, 531, 0, 64)
+	toggle.Rotation = 180
+	toggle.Visible = not checkSetting("Hide Toggle زر").current
+
+	if checkTools() then
+		toggle.Position = UDim2.new(0.5,0,1,-68)
+	else
+		toggle.Position = UDim2.new(0.5, 0, 1, -5)
+	end
+
+	for _, button in ipairs(smartBar.Buttons:GetChildren()) do
+		button.UIGradient.Rotation = -120
+		button.UIStroke.UIGradient.Rotation = -120
+		button.Size = UDim2.new(0,30,0,30)
+		button.Position = UDim2.new(button.Position.X.Scale, 0, 1.3, 0)
+		button.BackgroundTransparency = 1
+		button.UIStroke.Transparency = 1
+		button.Icon.ImageTransparency = 1
+	end
+
+	tweenService:Create(coreGui.RobloxGui.Backpack, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Position = UDim2.new(-0.325,0,0,0)}):Play()
+
+	tweenService:Create(toggle, TweenInfo.new(0.82, Enum.EasingStyle.Quint), {Rotation = 0}):Play()
+	tweenService:Create(smartBar, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {Position = UDim2.new(0.5, 0, 1, -12)}):Play()
+	tweenService:Create(toastsContainer, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {Position = UDim2.new(0.5, 0, 1, -110)}):Play()
+	tweenService:Create(toggle, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {Position = UDim2.new(0.5, 0, 1, -85)}):Play()
+	tweenService:Create(smartBar, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Size = UDim2.new(0,581,0,70)}):Play()
+	tweenService:Create(smartBar, TweenInfo.new(0.8, Enum.EasingStyle.Quint), {BackgroundTransparency = 0}):Play()
+	tweenService:Create(smartBar.Shadow, TweenInfo.new(0.8, Enum.EasingStyle.Quint), {ImageTransparency = 0.7}):Play()
+	tweenService:Create(smartBar.Time, TweenInfo.new(0.8, Enum.EasingStyle.Quint), {TextTransparency = 0}):Play()
+	tweenService:Create(smartBar.UIStroke, TweenInfo.new(0.8, Enum.EasingStyle.Quint), {Transparency = 0.95}):Play()
+	tweenService:Create(toggle, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {ImageTransparency = 0}):Play()
+
+	for _, button in ipairs(smartBar.Buttons:GetChildren()) do
+		tweenService:Create(button.UIStroke, TweenInfo.new(0.8, Enum.EasingStyle.Quint), {Transparency = 0}):Play()
+		tweenService:Create(button, TweenInfo.new(0.8, Enum.EasingStyle.Quint), {Size = UDim2.new(0, 36, 0, 36)}):Play()
+		tweenService:Create(button.UIGradient, TweenInfo.new(1, Enum.EasingStyle.Quint), {Rotation = 50}):Play()
+		tweenService:Create(button.UIStroke.UIGradient, TweenInfo.new(1, Enum.EasingStyle.Quint), {Rotation = 50}):Play()
+		tweenService:Create(button, TweenInfo.new(0.8, Enum.EasingStyle.Exponential), {Position = UDim2.new(button.Position.X.Scale, 0, 0.5, 0)}):Play()
+		tweenService:Create(button, TweenInfo.new(0.8, Enum.EasingStyle.Quint), {BackgroundTransparency = 0}):Play()
+		tweenService:Create(button.Icon, TweenInfo.new(0.8, Enum.EasingStyle.Quint), {ImageTransparency = 0}):Play()
+		task.wait(0.03)
+	end
+end
+
+local function closeSmartBar()
+	smartBarOpen = false
+
+	for _, otherPanel in ipairs(UI:GetChildren()) do
+		if smartBar.Buttons:FindFirstChild(otherPanel.Name) then
+			if isPanel(otherPanel.Name) and otherPanel.Visible then
+				task.spawn(closePanel, otherPanel.Name, true)
+				task.wait()
+			end
+		end
+	end
+
+	tweenService:Create(smartBar.Time, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {TextTransparency = 1}):Play()
+	for _, Button in ipairs(smartBar.Buttons:GetChildren()) do
+		tweenService:Create(Button.UIStroke, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
+		tweenService:Create(Button, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {Size = UDim2.new(0, 30, 0, 30)}):Play()
+		tweenService:Create(Button, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {BackgroundTransparency = 1}):Play()
+		tweenService:Create(Button.Icon, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {ImageTransparency = 1}):Play()
+	end
+
+	tweenService:Create(coreGui.RobloxGui.Backpack, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Position = UDim2.new(0, 0, 0, 0)}):Play()
+
+	tweenService:Create(smartBar, TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.InOut), {BackgroundTransparency = 1}):Play()
+	tweenService:Create(smartBar.UIStroke, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
+	tweenService:Create(smartBar.Shadow, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {ImageTransparency = 1}):Play()
+	tweenService:Create(smartBar, TweenInfo.new(0.5, Enum.EasingStyle.Back), {Size = UDim2.new(0,531,0,64)}):Play()
+	tweenService:Create(smartBar, TweenInfo.new(0.5, Enum.EasingStyle.Quint, Enum.EasingDirection.InOut), {Position = UDim2.new(0.5, 0,1, 73)}):Play()
+
+	-- If tools, move the toggle
+	if checkTools() then
+		tweenService:Create(toggle, TweenInfo.new(0.5, Enum.EasingStyle.Quint, Enum.EasingDirection.InOut), {Position = UDim2.new(0.5,0,1,-68)}):Play()
+		tweenService:Create(toastsContainer, TweenInfo.new(0.5, Enum.EasingStyle.Quint, Enum.EasingDirection.InOut), {Position = UDim2.new(0.5, 0, 1, -90)}):Play()
+		tweenService:Create(toggle, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {Rotation = 180}):Play()
+	else
+		tweenService:Create(toastsContainer, TweenInfo.new(0.5, Enum.EasingStyle.Quint, Enum.EasingDirection.InOut), {Position = UDim2.new(0.5, 0, 1, -28)}):Play()
+		tweenService:Create(toggle, TweenInfo.new(0.45, Enum.EasingStyle.Quint, Enum.EasingDirection.InOut), {Position = UDim2.new(0.5, 0, 1, -5)}):Play()
+		tweenService:Create(toggle, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {Rotation = 180}):Play()
+	end
+end
+
+local function windowFocusChanged(value)
+	if checkSirius() then
+		if value then -- Window Focused
+			setfpscap(tonumber(checkSetting("Artificial FPS Limit").current))
+			removeReverbs(0.5)
+		else          -- Window unfocused
+			if checkSetting("Muffle audio while unfocused").current then createReverb(0.7) end
+			if checkSetting("Limit FPS while unfocused").current then setfpscap(60) end
+		end
+	end
+end
+
+local function onChatted(player, message)
+	local enabled = checkSetting("Chat Spy").current and siriusValues.chatSpy.enabled
+	local chatSpyVisuals = siriusValues.chatSpy.visual
+
+	if not message or not checkSirius() then return end
+
+	if enabled and player ~= localPlayer then
+		local message2 = message:gsub("[\n\r]",''):gsub("\t",' '):gsub("[ ]+",' ')
+		local hidden = true
+
+		local get = getMessage.OnClientEvent:Connect(function(packet, channel)
+			if packet.SpeakerUserId == player.UserId and packet.Message == message2:sub(#message2-#packet.Message+1) and (channel=="All" or (channel=="Team" and players[packet.FromSpeaker].Team == localPlayer.Team)) then
+				hidden = false
+			end
+		end)
+
+		task.wait(1)
+
+		get:Disconnect()
+
+		if hidden and enabled then
+			chatSpyVisuals.Text = "Sirius Spy - [".. player.Name .."]: "..message2
+			starterGui:SetCore("ChatMakeSystemMessage", chatSpyVisuals)
+		end
+	end
+
+	if checkSetting("Log Messages").current then
+		local logData = {
+			["content"] = message,
+			["avatar_url"] = "https://www.roblox.com/headshot-thumbnail/image?userId="..player.UserId.."&width=420&height=420&format=png",
+			["username"] = player.DisplayName,
+			["allowed_mentions"] = {parse = {}}
+		}
+
+		logData = httpService:JSONEncode(logData)
+
+		pcall(function()
+			local req = originalRequest({
+				Url = checkSetting("Message Webhook URL").current,
+				Method = 'POST',
+				Headers = {
+					['Content-Type'] = 'application/json',
+				},
+				Body = logData
+			})
+		end)
+	end
+end
+
+local function sortPlayers()
+	local newTable = playerlistPanel.Interactions.List:GetChildren()
+
+	for index, player in ipairs(newTable) do
+		if player.ClassName ~= "Frame" or player.Name == "نص توضيحي" then
+			table.remove(newTable, index)
+		end
+	end
+
+	table.sort(newTable, function(playerA, playerB)
+		return playerA.Name < playerB.Name
+	end)
+
+	for index, frame in ipairs(newTable) do
+		if frame.ClassName == "Frame" then
+			if frame.Name ~= "نص توضيحي" then
+				frame.LayoutOrder = index 
+			end
+		end
+	end
+end
+
+local function kill(player)
+	-- kill
+end
+
+local function teleportTo(player)
+	if players:FindFirstChild(player.Name) then
+		queueNotification("Teleportation", "Teleporting to "..player.DisplayName..".")
+
+		local target = workspace:FindFirstChild(player.Name).HumanoidRootPart
+		localPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(target.Position.X, target.Position.Y, target.Position.Z)
+	else
+		queueNotification("Teleportation Error", player.DisplayName.." غادر هذا السيرفر.")
+	end
+end
+
+local function createPlayer(player)
+	if not checkSirius() then return end
+
+	if playerlistPanel.Interactions.List:FindFirstChild(player.DisplayName) then return end
+
+	local newPlayer = playerlistPanel.Interactions.List.Template:Clone()
+	newPlayer.Name = player.DisplayName
+	newPlayer.Parent = playerlistPanel.Interactions.List
+	newPlayer.Visible = not searchingForPlayer
+
+	newPlayer.NoActions.Visible = false
+	newPlayer.PlayerInteractions.Visible = false
+	newPlayer.Role.Visible = false
+
+	newPlayer.Size = UDim2.new(0, 539, 0, 45)
+	newPlayer.DisplayName.Position = UDim2.new(0, 53, 0.5, 0)
+	newPlayer.DisplayName.Size = UDim2.new(0, 224, 0, 16)
+	newPlayer.Avatar.Size = UDim2.new(0, 30, 0, 30)
+
+	sortPlayers()
+
+	newPlayer.DisplayName.TextTransparency = 0
+	newPlayer.DisplayName.TextScaled = true
+	newPlayer.DisplayName.FontFace.Weight = Enum.FontWeight.Medium
+	newPlayer.DisplayName.Text = player.DisplayName
+	newPlayer.Avatar.Image = "https://www.roblox.com/headshot-thumbnail/image?userId="..player.UserId.."&width=420&height=420&format=png"
+
+	if creatorType == Enum.CreatorType.Group then
+		task.spawn(function()
+			local role = player:GetRoleInGroup(creatorId)
+			if role == "Guest" then
+				newPlayer.Role.Text = "Group Rank: None"
+			else
+				newPlayer.Role.Text = "Group Rank: "..role
+			end
+
+			newPlayer.Role.Visible = true
+			newPlayer.Role.TextTransparency = 1
+		end)
+	end
+
+	local function openInteractions()
+		if newPlayer.PlayerInteractions.Visible then return end
+
+		newPlayer.PlayerInteractions.BackgroundTransparency = 1
+		for _, interaction in ipairs(newPlayer.PlayerInteractions:GetChildren()) do
+			if interaction.ClassName == "Frame" and interaction.Name ~= "نص توضيحي" then
+				interaction.BackgroundTransparency = 1
+				interaction.Shadow.ImageTransparency = 1
+				interaction.Icon.ImageTransparency = 1
+				interaction.UIStroke.Transparency = 1
+			end
+		end
+
+		newPlayer.PlayerInteractions.Visible = true
+
+		for _, interaction in ipairs(newPlayer.PlayerInteractions:GetChildren()) do
+			if interaction.ClassName == "Frame" and interaction.Name ~= "نص توضيحي" then
+				tweenService:Create(interaction.UIStroke, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {Transparency = 0}):Play()
+				tweenService:Create(interaction.Icon, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {ImageTransparency = 0}):Play()
+				tweenService:Create(interaction.Shadow, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {ImageTransparency = 0.7}):Play()
+				tweenService:Create(interaction, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {BackgroundTransparency = 0}):Play()
+			end
+		end
+	end
+
+	local function closeInteractions()
+		if not newPlayer.PlayerInteractions.Visible then return end
+		for _, interaction in ipairs(newPlayer.PlayerInteractions:GetChildren()) do
+			if interaction.ClassName == "Frame" and interaction.Name ~= "نص توضيحي" then
+				tweenService:Create(interaction.UIStroke, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
+				tweenService:Create(interaction.Icon, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {ImageTransparency = 1}):Play()
+				tweenService:Create(interaction.Shadow, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {ImageTransparency = 1}):Play()
+				tweenService:Create(interaction, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {BackgroundTransparency = 1}):Play()
+			end
+		end
+		task.wait(0.35)
+		newPlayer.PlayerInteractions.Visible = false
+	end
+
+	newPlayer.MouseEnter:Connect(function()
+		if debounce or not playerlistPanel.Visible then return end
+		tweenService:Create(newPlayer.UIStroke, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
+		tweenService:Create(newPlayer.DisplayName, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {TextTransparency = 0.3}):Play()
+	end)
+
+	newPlayer.MouseLeave:Connect(function()
+		if debounce or not playerlistPanel.Visible then return end
+		task.spawn(closeInteractions)
+		tweenService:Create(newPlayer.DisplayName, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {Position = UDim2.new(0, 53, 0.5, 0)}):Play()
+		tweenService:Create(newPlayer, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {Size = UDim2.new(0, 539, 0, 45)}):Play()
+		tweenService:Create(newPlayer.Avatar, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {Size = UDim2.new(0, 30, 0, 30)}):Play()
+		tweenService:Create(newPlayer.UIStroke, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {Transparency = 0}):Play()
+		tweenService:Create(newPlayer.DisplayName, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {TextTransparency = 0}):Play()
+		tweenService:Create(newPlayer.Role, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {TextTransparency = 1}):Play()
+	end)
+
+	newPlayer.Interact.MouseButton1Click:Connect(function()
+		if debounce or not playerlistPanel.Visible then return end
+		if creatorType == Enum.CreatorType.Group then
+			tweenService:Create(newPlayer.DisplayName, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {Position = UDim2.new(0, 73, 0.39, 0)}):Play()
+			tweenService:Create(newPlayer.Role, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {TextTransparency = 0.3}):Play()
+		else
+			tweenService:Create(newPlayer.DisplayName, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {Position = UDim2.new(0, 73, 0.5, 0)}):Play()
+		end
+
+		if player ~= localPlayer then openInteractions() end
+
+		tweenService:Create(newPlayer, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {Size = UDim2.new(0, 539, 0, 75)}):Play()
+
+		tweenService:Create(newPlayer.DisplayName, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {TextTransparency = 0}):Play()
+		tweenService:Create(newPlayer.Avatar, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {Size = UDim2.new(0, 50, 0, 50)}):Play()
+		tweenService:Create(newPlayer.UIStroke, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {Transparency = 0}):Play()
+	end)
+
+	newPlayer.PlayerInteractions.Kill.Interact.MouseButton1Click:Connect(function()
+		queueNotification("Simulation Notification","Simulating Kill Notification for "..player.DisplayName..".")
+		tweenService:Create(newPlayer.PlayerInteractions.Kill, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(0, 124, 89)}):Play()
+		tweenService:Create(newPlayer.PlayerInteractions.Kill.Icon, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {ImageColor3 = Color3.fromRGB(220, 220, 220)}):Play()
+		tweenService:Create(newPlayer.PlayerInteractions.Kill.UIStroke, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {Color = Color3.fromRGB(0, 134, 96)}):Play()
+		kill(player)
+		task.wait(1)
+		tweenService:Create(newPlayer.PlayerInteractions.Kill, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(50, 50, 50)}):Play()
+		tweenService:Create(newPlayer.PlayerInteractions.Kill.Icon, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {ImageColor3 = Color3.fromRGB(100, 100, 100)}):Play()
+		tweenService:Create(newPlayer.PlayerInteractions.Kill.UIStroke, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {Color = Color3.fromRGB(60, 60, 60)}):Play()
+	end)
+
+	newPlayer.PlayerInteractions.Teleport.Interact.MouseButton1Click:Connect(function()
+		tweenService:Create(newPlayer.PlayerInteractions.Teleport, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(0, 152, 111)}):Play()
+		tweenService:Create(newPlayer.PlayerInteractions.Teleport.Icon, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {ImageColor3 = Color3.fromRGB(220, 220, 220)}):Play()
+		tweenService:Create(newPlayer.PlayerInteractions.Teleport.UIStroke, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {Color = Color3.fromRGB(0, 152, 111)}):Play()
+		teleportTo(player)
+		task.wait(0.5)
+		tweenService:Create(newPlayer.PlayerInteractions.Teleport, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(50, 50, 50)}):Play()
+		tweenService:Create(newPlayer.PlayerInteractions.Teleport.Icon, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {ImageColor3 = Color3.fromRGB(100, 100, 100)}):Play()
+		tweenService:Create(newPlayer.PlayerInteractions.Teleport.UIStroke, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {Color = Color3.fromRGB(60, 60, 60)}):Play()
+	end)
+
+	newPlayer.PlayerInteractions.Spectate.Interact.MouseButton1Click:Connect(function()
+		queueNotification("Simulation Notification","Simulating Spectate Notification for "..player.DisplayName..".")
+		-- Spectate
+	end)
+
+	newPlayer.PlayerInteractions.Locate.Interact.MouseButton1Click:Connect(function()
+		queueNotification("Simulation Notification","Simulating Locate ESP Notification for "..player.DisplayName..".")
+		-- ESP for that user only
+	end)
+end
+
+local function removePlayer(player)
+	if not checkSirius() then return end
+
+	if playerlistPanel.Interactions.List:FindFirstChild(player.Name) then
+		playerlistPanel.Interactions.List:FindFirstChild(player.Name):Destroy()
+	end
+end
+
+local function openSettings()
+	debounce = true
+
+	settingsPanel.BackgroundTransparency = 1
+	settingsPanel.Title.TextTransparency = 1
+	settingsPanel.Subtitle.TextTransparency = 1
+	settingsPanel.Back.ImageTransparency = 1
+	settingsPanel.Shadow.ImageTransparency = 1
+
+	wipeTransparency(settingsPanel.SettingTypes, 1, true)
+
+	settingsPanel.Visible = true
+	settingsPanel.UIGradient.Enabled = true
+	settingsPanel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	settingsPanel.UIGradient.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(0.0470588, 0.0470588, 0.0470588)),ColorSequenceKeypoint.new(1, Color3.new(0.0470588, 0.0470588, 0.0470588))})
+	settingsPanel.UIGradient.Offset = Vector2.new(0, 1.7)
+	settingsPanel.SettingTypes.Visible = true
+	settingsPanel.SettingLists.Visible = false
+	settingsPanel.Size = UDim2.new(0, 550, 0, 340)
+	settingsPanel.Title.Position = UDim2.new(0.045, 0, 0.057, 0)
+
+	settingsPanel.Title.Text = "Settings"
+	settingsPanel.Subtitle.Text = "Adjust your preferences, set new keybinds, test out new features and more."
+
+	tweenService:Create(settingsPanel, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {Size = UDim2.new(0, 613, 0, 384)}):Play()
+	tweenService:Create(settingsPanel, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {BackgroundTransparency = 0}):Play()
+	tweenService:Create(settingsPanel.Shadow, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {ImageTransparency = 0.7}):Play()
+	tweenService:Create(settingsPanel.Title, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {TextTransparency = 0}):Play()
+	tweenService:Create(settingsPanel.Subtitle, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {TextTransparency = 0}):Play()
+
+	task.wait(0.1)
+
+	for _, settingType in ipairs(settingsPanel.SettingTypes:GetChildren()) do
+		if settingType.ClassName == "Frame" then
+			local gradientRotation = math.random(78, 95)
+
+			tweenService:Create(settingType.UIGradient, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {Rotation = gradientRotation}):Play()
+			tweenService:Create(settingType.Shadow.UIGradient, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {Rotation = gradientRotation}):Play()
+			tweenService:Create(settingType.UIStroke.UIGradient, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {Rotation = gradientRotation}):Play()
+			tweenService:Create(settingType, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {BackgroundTransparency = 0}):Play()
+			tweenService:Create(settingType.Shadow, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {ImageTransparency = 0.7}):Play()
+			tweenService:Create(settingType.UIStroke, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {Transparency = 0}):Play()
+			tweenService:Create(settingType.Title, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {TextTransparency = 0.2}):Play()
+
+			task.wait(0.02)
+		end
+	end
+
+	for _, settingList in ipairs(settingsPanel.SettingLists:GetChildren()) do
+		if settingList.ClassName == "ScrollingFrame" then
+			for _, setting in ipairs(settingList:GetChildren()) do
+				if setting.ClassName == "Frame" then
+					setting.Visible = true
 				end
+			end
+		end
+	end
+
+	debounce = false
+end
+
+local function closeSettings()
+	debounce = true
+
+	for _, settingType in ipairs(settingsPanel.SettingTypes:GetChildren()) do
+		if settingType.ClassName == "Frame" then
+			tweenService:Create(settingType, TweenInfo.new(0.1, Enum.EasingStyle.Quint), {BackgroundTransparency = 1}):Play()
+			tweenService:Create(settingType.Shadow, TweenInfo.new(0.05, Enum.EasingStyle.Quint), {ImageTransparency = 1}):Play()
+			tweenService:Create(settingType.UIStroke, TweenInfo.new(0.05, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
+			tweenService:Create(settingType.Title, TweenInfo.new(0.05, Enum.EasingStyle.Quint), {TextTransparency = 1}):Play()
+		end
+	end
+
+	tweenService:Create(settingsPanel.Shadow, TweenInfo.new(0.1, Enum.EasingStyle.Quint), {ImageTransparency = 1}):Play()
+	tweenService:Create(settingsPanel.Back, TweenInfo.new(0.1, Enum.EasingStyle.Quint), {ImageTransparency = 1}):Play()
+	tweenService:Create(settingsPanel.Title, TweenInfo.new(0.1, Enum.EasingStyle.Quint), {TextTransparency = 1}):Play()
+	tweenService:Create(settingsPanel.Subtitle, TweenInfo.new(0.1, Enum.EasingStyle.Quint), {TextTransparency = 1}):Play()
+
+	for _, settingList in ipairs(settingsPanel.SettingLists:GetChildren()) do
+		if settingList.ClassName == "ScrollingFrame" then
+			for _, setting in ipairs(settingList:GetChildren()) do
+				if setting.ClassName == "Frame" then
+					setting.Visible = false
+				end
+			end
+		end
+	end
+
+	tweenService:Create(settingsPanel, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {Size = UDim2.new(0, 520, 0, 0)}):Play()
+	tweenService:Create(settingsPanel, TweenInfo.new(0.55, Enum.EasingStyle.Quint), {BackgroundTransparency = 1}):Play()
+
+	task.wait(0.55)
+
+	settingsPanel.Visible = false
+	debounce = false
+end
+
+local function saveSettings()
+	checkFolder()
+
+	if isfile and isfile(siriusValues.siriusFolder.."/"..siriusValues.settingsFile) then
+		writefile(siriusValues.siriusFolder.."/"..siriusValues.settingsFile, httpService:JSONEncode(siriusSettings))
+	end
+end
+
+local function assembleSettings()
+	if isfile and isfile(siriusValues.siriusFolder.."/"..siriusValues.settingsFile) then
+		local currentSettings
+
+		local success, response = pcall(function()
+			currentSettings = httpService:JSONDecode(readfile(siriusValues.siriusFolder.."/"..siriusValues.settingsFile))
+		end)
+
+		if success then
+			for _, liveCategory in ipairs(siriusSettings) do
+				for _, liveSetting in ipairs(liveCategory.categorySettings) do
+					for _, category in ipairs(currentSettings) do
+						for _, setting in ipairs(category.categorySettings) do
+							if liveSetting.id == setting.id then
+								liveSetting.current = setting.current
+							end
+						end
+					end
+				end
+			end
+
+			writefile(siriusValues.siriusFolder.."/"..siriusValues.settingsFile, httpService:JSONEncode(siriusSettings)) -- Update file with any new settings added
+		end
+	else
+		if writefile then
+			checkFolder()
+			if not isfile(siriusValues.siriusFolder.."/"..siriusValues.settingsFile) then
+				writefile(siriusValues.siriusFolder.."/"..siriusValues.settingsFile, httpService:JSONEncode(siriusSettings))
+			end
+		end 
+	end
+
+	for _, category in siriusSettings do
+		local newCategory = settingsPanel.SettingTypes.Template:Clone()
+		newCategory.Name = category.name
+		newCategory.Title.Text = string.upper(category.name)
+		newCategory.Parent = settingsPanel.SettingTypes
+		newCategory.UIGradient.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(0.0392157, 0.0392157, 0.0392157)),ColorSequenceKeypoint.new(1, category.color)})
+
+		newCategory.Visible = true
+
+		local hue, sat, val = Color3.toHSV(category.color)
+
+		hue = math.clamp(hue + 0.01, 0, 1) sat = math.clamp(sat + 0.1, 0, 1) val = math.clamp(val + 0.2, 0, 1)
+
+		local newColor = Color3.fromHSV(hue, sat, val)
+		newCategory.UIStroke.UIGradient.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(0.117647, 0.117647, 0.117647)),ColorSequenceKeypoint.new(1, newColor)})
+		newCategory.Shadow.UIGradient.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(0.117647, 0.117647, 0.117647)),ColorSequenceKeypoint.new(1, newColor)})
+
+		local newList = settingsPanel.SettingLists.Template:Clone()
+		newList.Name = category.name
+		newList.Parent = settingsPanel.SettingLists
+
+		newList.Visible = true
+
+		for _, obj in ipairs(newList:GetChildren()) do if obj.Name ~= "نص توضيحي" and obj.Name ~= "UIListLayout" then obj:Destroy() end end 
+
+		settingsPanel.Back.MouseButton1Click:Connect(function()
+			tweenService:Create(settingsPanel.Back, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {ImageTransparency = 1}):Play()
+			tweenService:Create(settingsPanel.Back, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {Position = UDim2.new(0.002, 0, 0.052, 0)}):Play()
+			tweenService:Create(settingsPanel.Title, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {Position = UDim2.new(0.045, 0, 0.057, 0)}):Play()
+			tweenService:Create(settingsPanel.UIGradient, TweenInfo.new(1, Enum.EasingStyle.Exponential), {Offset = Vector2.new(0, 1.3)}):Play()
+			settingsPanel.Title.Text = "Settings"
+			settingsPanel.Subtitle.Text = "Adjust your preferences, set new keybinds, test out new features and more"
+			settingsPanel.SettingTypes.Visible = true
+			settingsPanel.SettingLists.Visible = false
+		end)
+
+		newCategory.Interact.MouseButton1Click:Connect(function()
+			if settingsPanel.SettingLists:FindFirstChild(category.name) then
+				settingsPanel.UIGradient.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.new(0.0470588, 0.0470588, 0.0470588)),ColorSequenceKeypoint.new(1, category.color)})
+				settingsPanel.SettingTypes.Visible = false
+				settingsPanel.SettingLists.Visible = true
+				settingsPanel.SettingLists.UIPageLayout:JumpTo(settingsPanel.SettingLists[category.name])
+				settingsPanel.Subtitle.Text = category.description
+				settingsPanel.Back.Visible = true
+				settingsPanel.Title.Text = category.name
+
+				local gradientRotation = math.random(78, 95)
+				settingsPanel.UIGradient.Rotation = gradientRotation
+				tweenService:Create(settingsPanel.UIGradient, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {Offset = Vector2.new(0, 0.65)}):Play()
+				tweenService:Create(settingsPanel.Back, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {ImageTransparency = 0}):Play()
+				tweenService:Create(settingsPanel.Back, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {Position = UDim2.new(0.041, 0, 0.052, 0)}):Play()
+				tweenService:Create(settingsPanel.Title, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {Position = UDim2.new(0.091, 0, 0.057, 0)}):Play()
+			else
+				-- error
+				closeSettings()
+			end
+		end)
+
+		newCategory.MouseEnter:Connect(function()
+			tweenService:Create(newCategory.Title, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {TextTransparency = 0}):Play()
+			tweenService:Create(newCategory.UIGradient, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {Offset = Vector2.new(0, 0.4)}):Play()
+			tweenService:Create(newCategory.UIStroke.UIGradient, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {Offset = Vector2.new(0, 0.2)}):Play()
+			tweenService:Create(newCategory.Shadow.UIGradient, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {Offset = Vector2.new(0, 0.2)}):Play()
+		end)
+
+		newCategory.MouseLeave:Connect(function()
+			tweenService:Create(newCategory.Title, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {TextTransparency = 0.2}):Play()
+			tweenService:Create(newCategory.UIGradient, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {Offset = Vector2.new(0, 0.65)}):Play()
+			tweenService:Create(newCategory.UIStroke.UIGradient, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {Offset = Vector2.new(0, 0.4)}):Play()
+			tweenService:Create(newCategory.Shadow.UIGradient, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {Offset = Vector2.new(0, 0.4)}):Play()
+		end)
+
+		for _, setting in ipairs(category.categorySettings) do
+			if not setting.hidden then
+				local settingType = setting.settingType
+				local minimumLicense = setting.minimumLicense
+				local object = nil
+
+				if settingType == "Boolean" then
+					local newSwitch = settingsPanel.SettingLists.Template.SwitchTemplate:Clone()
+					object = newSwitch
+					newSwitch.Name = setting.name
+					newSwitch.Parent = newList
+					newSwitch.Visible = true
+					newSwitch.Title.Text = setting.name
+
+					if setting.current == true then
+						newSwitch.Switch.Indicator.Position = UDim2.new(1, -20, 0.5, 0)
+						newSwitch.Switch.Indicator.UIStroke.Color = Color3.fromRGB(220, 220, 220)
+						newSwitch.Switch.Indicator.BackgroundColor3 = Color3.fromRGB(255, 255, 255)			
+						newSwitch.Switch.Indicator.BackgroundTransparency = 0.6
+					end
+
+
+					if minimumLicense then
+						if (minimumLicense == "Pro" and not Pro) or (minimumLicense == "Essential" and not (Pro or Essential)) then
+							newSwitch.Switch.Indicator.Position = UDim2.new(1, -40, 0.5, 0)
+							newSwitch.Switch.Indicator.UIStroke.Color = Color3.fromRGB(255, 255, 255)
+							newSwitch.Switch.Indicator.BackgroundColor3 = Color3.fromRGB(235, 235, 235)			
+							newSwitch.Switch.Indicator.BackgroundTransparency = 0.75
+						end
+					end
+
+					newSwitch.Interact.MouseButton1Click:Connect(function()
+						if minimumLicense then
+							if (minimumLicense == "Pro" and not Pro) or (minimumLicense == "Essential" and not (Pro or Essential)) then
+								queueNotification("This feature is locked", "يجب أن تكون "..minimumLicense.." أو أعلى للاستخدام "..setting.name..". \n\nUpgrade at https://sirius.menu.", 4483345875)
+								return
+							end
+						end
+
+						setting.current = not setting.current
+						saveSettings()
+						if setting.current == true then
+							tweenService:Create(newSwitch.Switch.Indicator, TweenInfo.new(0.5, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {Position = UDim2.new(1, -20, 0.5, 0)}):Play()
+							tweenService:Create(newSwitch.Switch.Indicator, TweenInfo.new(0.4, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {Size = UDim2.new(0,12,0,12)}):Play()
+							tweenService:Create(newSwitch.Switch.Indicator.UIStroke, TweenInfo.new(0.55, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Color = Color3.fromRGB(200, 200, 200)}):Play()
+							tweenService:Create(newSwitch.Switch.Indicator, TweenInfo.new(0.8, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(255, 255, 255)}):Play()
+							tweenService:Create(newSwitch.Switch.Indicator.UIStroke, TweenInfo.new(0.55, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Transparency = 0.5}):Play()
+							tweenService:Create(newSwitch.Switch.Indicator, TweenInfo.new(0.55, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundTransparency = 0.6}):Play()
+							task.wait(0.05)
+							tweenService:Create(newSwitch.Switch.Indicator, TweenInfo.new(0.45, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {Size = UDim2.new(0,17,0,17)}):Play()							
+						else
+							tweenService:Create(newSwitch.Switch.Indicator, TweenInfo.new(0.45, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {Position = UDim2.new(1, -40, 0.5, 0)}):Play()
+							tweenService:Create(newSwitch.Switch.Indicator, TweenInfo.new(0.4, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {Size = UDim2.new(0,12,0,12)}):Play()
+							tweenService:Create(newSwitch.Switch.Indicator.UIStroke, TweenInfo.new(0.55, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Color = Color3.fromRGB(255, 255, 255)}):Play()
+							tweenService:Create(newSwitch.Switch.Indicator.UIStroke, TweenInfo.new(0.55, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Transparency = 0.7}):Play()
+							tweenService:Create(newSwitch.Switch.Indicator, TweenInfo.new(0.8, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(235, 235, 235)}):Play()
+							tweenService:Create(newSwitch.Switch.Indicator, TweenInfo.new(0.55, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundTransparency = 0.75}):Play()
+							task.wait(0.05)
+							tweenService:Create(newSwitch.Switch.Indicator, TweenInfo.new(0.4, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {Size = UDim2.new(0,17,0,17)}):Play()
+						end
+					end)
+
+				elseif settingType == "Input" then
+					local newInput = settingsPanel.SettingLists.Template.InputTemplate:Clone()
+					object = newInput
+
+					newInput.Name = setting.name
+					newInput.InputFrame.InputBox.Text = setting.current
+					newInput.InputFrame.InputBox.PlaceholderText = setting.placeholder or "input"
+					newInput.Parent = newList
+
+					if string.len(setting.current) > 19 then
+						newInput.InputFrame.InputBox.Text = string.sub(tostring(setting.current), 1,17)..".."
+					else
+						newInput.InputFrame.InputBox.Text = setting.current
+					end
+
+					newInput.Visible = true
+					newInput.Title.Text = setting.name
+					newInput.InputFrame.InputBox.TextWrapped = false
+					newInput.InputFrame.Size = UDim2.new(0, newInput.InputFrame.InputBox.TextBounds.X + 24, 0, 30)
+
+					newInput.InputFrame.InputBox.FocusLost:Connect(function()
+						if minimumLicense then
+							if (minimumLicense == "Pro" and not Pro) or (minimumLicense == "Essential" and not (Pro or Essential)) then
+								queueNotification("This feature is locked", "يجب أن تكون "..minimumLicense.." أو أعلى للاستخدام "..setting.name..". \n\nUpgrade at https://sirius.menu.", 4483345875)
+								newInput.InputFrame.InputBox.Text = setting.current
+								return
+							end
+						end
+
+						if newInput.InputFrame.InputBox.Text ~= nil or "" then
+							setting.current = newInput.InputFrame.InputBox.Text
+							saveSettings()
+						end
+						if string.len(setting.current) > 24 then
+							newInput.InputFrame.InputBox.Text = string.sub(tostring(setting.current), 1,22)..".."
+						else
+							newInput.InputFrame.InputBox.Text = setting.current
+						end
+					end)
+
+					newInput.InputFrame.InputBox:GetPropertyChangedSignal("النص"):Connect(function()
+						tweenService:Create(newInput.InputFrame, TweenInfo.new(0.5, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0, newInput.InputFrame.InputBox.TextBounds.X + 24, 0, 30)}):Play()
+					end)
+
+				elseif settingType == "Number" then
+					local newInput = settingsPanel.SettingLists.Template.InputTemplate:Clone()
+					object = newInput
+
+					newInput.Name = setting.name
+					newInput.InputFrame.InputBox.Text = tostring(setting.current)
+					newInput.InputFrame.InputBox.PlaceholderText = setting.placeholder or "number"
+					newInput.Parent = newList
+
+					if string.len(setting.current) > 19 then
+						newInput.InputFrame.InputBox.Text = string.sub(tostring(setting.current), 1,17)..".."
+					else
+						newInput.InputFrame.InputBox.Text = setting.current
+					end
+
+					newInput.Visible = true
+					newInput.Title.Text = setting.name
+					newInput.InputFrame.InputBox.TextWrapped = false
+					newInput.InputFrame.Size = UDim2.new(0, newInput.InputFrame.InputBox.TextBounds.X + 24, 0, 30)
+
+					newInput.InputFrame.InputBox.FocusLost:Connect(function()
+
+						if minimumLicense then
+							if (minimumLicense == "Pro" and not Pro) or (minimumLicense == "Essential" and not (Pro or Essential)) then
+								queueNotification("This feature is locked", "يجب أن تكون "..minimumLicense.." أو أعلى للاستخدام "..setting.name..". \n\nUpgrade at https://sirius.menu.", 4483345875)
+								newInput.InputFrame.InputBox.Text = setting.current
+								return
+							end
+						end
+
+						local inputValue = tonumber(newInput.InputFrame.InputBox.Text)
+
+						if inputValue then
+							if setting.values then
+								local minValue = setting.values[1]
+								local maxValue = setting.values[2]
+
+								if inputValue < minValue then
+									setting.current = minValue
+								elseif inputValue > maxValue then
+									setting.current = maxValue
+								else
+									setting.current = inputValue
+								end
+
+								saveSettings()
+							else
+								setting.current = inputValue
+								saveSettings()
+							end
+						else
+							newInput.InputFrame.InputBox.Text = tostring(setting.current)
+						end
+
+						if string.len(setting.current) > 24 then
+							newInput.InputFrame.InputBox.Text = string.sub(tostring(setting.current), 1,22)..".."
+						else
+							newInput.InputFrame.InputBox.Text = tostring(setting.current)
+						end
+					end)
+
+					newInput.InputFrame.InputBox:GetPropertyChangedSignal("النص"):Connect(function()
+						tweenService:Create(newInput.InputFrame, TweenInfo.new(0.5, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0, newInput.InputFrame.InputBox.TextBounds.X + 24, 0, 30)}):Play()
+					end)
+
+				elseif settingType == "Key" then
+					local newKeybind = settingsPanel.SettingLists.Template.InputTemplate:Clone()
+					object = newKeybind
+					newKeybind.Name = setting.name
+					newKeybind.InputFrame.InputBox.PlaceholderText = setting.placeholder or "listening.."
+					newKeybind.InputFrame.InputBox.Text = setting.current or "No Keybind"
+					newKeybind.Parent = newList
+
+					newKeybind.Visible = true
+					newKeybind.Title.Text = setting.name
+					newKeybind.InputFrame.InputBox.TextWrapped = false
+					newKeybind.InputFrame.Size = UDim2.new(0, newKeybind.InputFrame.InputBox.TextBounds.X + 24, 0, 30)
+
+					newKeybind.InputFrame.InputBox.FocusLost:Connect(function()
+						checkingForKey = false
+
+						if minimumLicense then
+							if (minimumLicense == "Pro" and not Pro) or (minimumLicense == "Essential" and not (Pro or Essential)) then
+								queueNotification("This feature is locked", "يجب أن تكون "..minimumLicense.." أو أعلى للاستخدام "..setting.name..". \n\nUpgrade at https://sirius.menu.", 4483345875)
+								newKeybind.InputFrame.InputBox.Text = setting.current
+								return
+							end
+						end
+
+						if newKeybind.InputFrame.InputBox.Text == nil or newKeybind.InputFrame.InputBox.Text == "" then
+							newKeybind.InputFrame.InputBox.Text = "No Keybind"
+							setting.current = nil
+							newKeybind.InputFrame.InputBox:ReleaseFocus()
+							saveSettings()
+						end
+					end)
+
+					newKeybind.InputFrame.InputBox.Focused:Connect(function()
+						checkingForKey = {data = setting, object = newKeybind}
+						newKeybind.InputFrame.InputBox.Text = ""
+					end)
+
+					newKeybind.InputFrame.InputBox:GetPropertyChangedSignal("النص"):Connect(function()
+						tweenService:Create(newKeybind.InputFrame, TweenInfo.new(0.5, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0, newKeybind.InputFrame.InputBox.TextBounds.X + 24, 0, 30)}):Play()
+					end)
+
+				end
+
+				if object then
+					if setting.description then
+						object.Description.Visible = true
+						object.Description.TextWrapped = true
+						object.Description.Size = UDim2.new(0, 333, 5, 0)
+						object.Description.Size = UDim2.new(0, 333, 0, 999)
+						object.Description.Text = setting.description
+						object.Description.Size = UDim2.new(0, 333, 0, object.Description.TextBounds.Y + 10)
+						object.Size = UDim2.new(0, 558, 0, object.Description.TextBounds.Y + 44)
+					end
+
+					if minimumLicense then
+						object.LicenseDisplay.Visible = true
+						object.Title.Position = UDim2.new(0, 18, 0, 26)
+						object.Description.Position = UDim2.new(0, 18, 0, 43)
+						object.Size = UDim2.new(0, 558, 0, object.Size.Y.Offset + 13)
+						object.LicenseDisplay.Text = string.upper(minimumLicense).." ميزة"
+					end
+
+					local objectTouching
+					object.MouseEnter:Connect(function()
+						objectTouching = true
+						tweenService:Create(object.UIStroke, TweenInfo.new(0.35, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Transparency = 0.45}):Play()
+						tweenService:Create(object, TweenInfo.new(0.35, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundTransparency = 0.83}):Play()
+					end)
+
+					object.MouseLeave:Connect(function()
+						objectTouching = false
+						tweenService:Create(object.UIStroke, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Transparency = 0.6}):Play()
+						tweenService:Create(object, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundTransparency = 0.9}):Play()
+					end)
+
+					if object:FindFirstChild('Interact') then
+						object.Interact.MouseButton1Click:Connect(function()
+							tweenService:Create(object.UIStroke, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Transparency = 1}):Play()
+							tweenService:Create(object, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundTransparency = 0.8}):Play()
+							task.wait(0.1)
+							if objectTouching then
+								tweenService:Create(object.UIStroke, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Transparency = 0.45}):Play()
+								tweenService:Create(object, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundTransparency = 0.83}):Play()
+							else
+								tweenService:Create(object.UIStroke, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Transparency = 0.6}):Play()
+								tweenService:Create(object, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundTransparency = 0.9}):Play()
+							end
+						end)
+					end
+				end
+			end
+		end
+	end
+end
+
+local function initialiseAntiKick()
+	if checkSetting("Client-Based Anti Kick").current then
+		if hookmetamethod then 
+			local originalIndex
+			local originalNamecall
+
+			originalIndex = hookmetamethod(game, "__index", function(self, method)
+				if self == localPlayer and method:lower() == "kick" and checkSetting("Client-Based Anti Kick").current and checkSirius() then
+					queueNotification("Kick Prevented", "Sirius has prevented you from being kicked by the client.", 4400699701)
+					return error("Expected ':' not '.' calling member function Kick", 2)
+				end
+				return originalIndex(self, method)
+			end)
+
+			originalNamecall = hookmetamethod(game, "__namecall", function(self, ...)
+				if self == localPlayer and getnamecallmethod():lower() == "kick" and checkSetting("Client-Based Anti Kick").current and checkSirius() then
+					queueNotification("Kick Prevented", "Sirius has prevented you from being kicked by the client.", 4400699701)
+					return
+				end
+				return originalNamecall(self, ...)
+			end)
+		end
+	end
+end
+
+local function boost()
+	local success, result = pcall(function()
+		loadstring(game:HttpGet('https://raw.githubusercontent.com/SiriusSoftwareLtd/Sirius/refs/heads/request/boost.lua'))()
+	end)
+
+	if not success then
+		print('Error with boost file.')
+		print(result)
+	end
+end
+
+local function start()
+	if siriusValues.releaseType == "Experimental" then -- Make this more secure.
+		if not Pro then localPlayer:Kick("This is an experimental release, you must be Pro to run this. \n\nUpgrade at https://sirius.menu/") return end
+	end
+	windowFocusChanged(true)
+
+	UI.Enabled = true
+
+	assembleSettings()
+	ensureFrameProperties()
+	sortActions()
+	initialiseAntiKick()
+	checkLastVersion()
+	task.spawn(boost)
+
+	smartBar.Time.Text = os.date("%H")..":"..os.date("%M")
+
+	toggle.Visible = not checkSetting("Hide Toggle زر").current
+
+	if not checkSetting("Load Hidden").current then 
+		--if checkSetting("Startup Sound Effect").current then
+		--	local startupPath = siriusValues.siriusFolder.."/Assets/startup.wav"
+		--	local startupAsset
+
+		--	if isfile(startupPath) then
+		--		startupAsset = getcustomasset(startupPath) or nil
+		--	else
+		--		startupAsset = fetchFromCDN("startup.wav", true, "Assets/startup.wav")
+		--		startupAsset = isfile(startupPath) and getcustomasset(startupPath) or nil
+		--	end
+
+		--	if not startupAsset then return end
+
+		--	local startupSound = Instance.new("Sound")
+		--	startupSound.Parent = UI
+		--	startupSound.SoundId = startupAsset
+		--	startupSound.Name = "startupSound"
+		--	startupSound.Volume = 0.85
+		--	startupSound.PlayOnRemove = true
+		--	startupSound:Destroy()	
+		--end
+
+		openSmartBar()
+	else 
+		closeSmartBar() 
+	end
+
+	if script_key and not (Essential or Pro) then
+		queueNotification("License Error", "We've detected a key being placed above Sirius loadstring, however your key seems to be invalid. Make a support request at sirius.menu/discord to get this solved within minutes.", "document-minus")
+	end
+
+	if siriusValues.enableExperienceSync then
+		task.spawn(syncExperienceInformation) 
+	end
+end
+
+-- Sirius Events
+
+start()
+
+toggle.MouseButton1Click:Connect(function()
+	if smartBarOpen then
+		closeSmartBar()
+	else
+		openSmartBar()
+	end
+end)
+
+characterPanel.Interactions.Reset.MouseButton1Click:Connect(function()
+	resetSliders()
+
+	characterPanel.Interactions.Reset.Rotation = 360
+	queueNotification("شريط Values Reset","Successfully reset all character panel sliders", 4400696294)
+	tweenService:Create(characterPanel.Interactions.Reset, TweenInfo.new(.5,Enum.EasingStyle.Back),  {Rotation = 0}):Play()
+end)
+
+characterPanel.Interactions.Reset.MouseEnter:Connect(function() if debounce then return end tweenService:Create(characterPanel.Interactions.Reset, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {ImageTransparency = 0}):Play() end)
+characterPanel.Interactions.Reset.MouseLeave:Connect(function() if debounce then return end tweenService:Create(characterPanel.Interactions.Reset, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {ImageTransparency = 0.7}):Play() end)
+
+local playerSearch = playerlistPanel.Interactions.SearchFrame.SearchBox -- move this up to Variables once finished
+
+playerSearch:GetPropertyChangedSignal("النص"):Connect(function()
+	local query = string.lower(playerSearch.Text)
+
+	for _, player in ipairs(playerlistPanel.Interactions.List:GetChildren()) do
+		if player.ClassName == "Frame" and player.Name ~= "نص توضيحي" and player.Name ~= "Template" then
+			if string.find(player.Name, playerSearch.Text) then
+				player.Visible = true
+			else
+				player.Visible = false
+			end
+		end
+	end
+
+	if #playerSearch.Text == 0 then
+		searchingForPlayer = false
+		for _, player in ipairs(playerlistPanel.Interactions.List:GetChildren()) do
+			if player.ClassName == "Frame" and player.Name ~= "نص توضيحي" and player.Name ~= "Template" then
+				player.Visible = true
+			end
+		end
+	else
+		searchingForPlayer = true
+	end
+end)
+
+characterPanel.Interactions.Serverhop.MouseEnter:Connect(function()
+	if debounce then return end
+	tweenService:Create(characterPanel.Interactions.Serverhop, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {BackgroundTransparency = 0.5}):Play()
+	tweenService:Create(characterPanel.Interactions.Serverhop.Title, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {TextTransparency = 0.1}):Play()
+	tweenService:Create(characterPanel.Interactions.Serverhop.UIStroke, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {Transparency = 1}):Play()
+end)
+
+characterPanel.Interactions.Serverhop.MouseLeave:Connect(function()
+	if debounce then return end
+	tweenService:Create(characterPanel.Interactions.Serverhop, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {BackgroundTransparency = 0}):Play()
+	tweenService:Create(characterPanel.Interactions.Serverhop.Title, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {TextTransparency = 0.5}):Play()
+	tweenService:Create(characterPanel.Interactions.Serverhop.UIStroke, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {Transparency = 0}):Play()
+end)
+
+characterPanel.Interactions.Rejoin.MouseEnter:Connect(function()
+	if debounce then return end
+	tweenService:Create(characterPanel.Interactions.Rejoin, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {BackgroundTransparency = 0.5}):Play()
+	tweenService:Create(characterPanel.Interactions.Rejoin.Title, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {TextTransparency = 0.1}):Play()
+	tweenService:Create(characterPanel.Interactions.Rejoin.UIStroke, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {Transparency = 1}):Play()
+end)
+
+characterPanel.Interactions.Rejoin.MouseLeave:Connect(function()
+	if debounce then return end
+	tweenService:Create(characterPanel.Interactions.Rejoin, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {BackgroundTransparency = 0}):Play()
+	tweenService:Create(characterPanel.Interactions.Rejoin.Title, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {TextTransparency = 0.5}):Play()
+	tweenService:Create(characterPanel.Interactions.Rejoin.UIStroke, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {Transparency = 0}):Play()
+end)
+
+musicPanel.Close.MouseButton1Click:Connect(function()
+	if musicPanel.Visible and not debounce then
+		closeMusic()
+	end
+end)
+
+musicPanel.Add.Interact.MouseButton1Click:Connect(function()
+	musicPanel.AddBox.Input:ReleaseFocus()
+	addToQueue(musicPanel.AddBox.Input.Text)
+end)
+
+musicPanel.Menu.TogglePlaying.MouseButton1Click:Connect(function()
+	if currentAudio then
+		currentAudio.Playing = not currentAudio.Playing
+		musicPanel.Menu.TogglePlaying.ImageRectOffset = currentAudio.Playing and Vector2.new(804, 124) or Vector2.new(764, 244)
+	end
+end)
+
+musicPanel.Menu.Next.MouseButton1Click:Connect(function()
+	if currentAudio then
+		if #musicQueue == 0 then currentAudio.Playing = false currentAudio.SoundId = "" return end
+
+		if musicPanel.Queue.List:FindFirstChild(tostring(musicQueue[1].instanceName)) then
+			musicPanel.Queue.List:FindFirstChild(tostring(musicQueue[1].instanceName)):Destroy()
+		end
+
+		musicPanel.Menu.TogglePlaying.ImageRectOffset = currentAudio.Playing and Vector2.new(804, 124) or Vector2.new(764, 244)
+
+		table.remove(musicQueue, 1)
+
+		playNext()
+	end
+end)
+
+characterPanel.Interactions.Rejoin.Interact.MouseButton1Click:Connect(rejoin)
+characterPanel.Interactions.Serverhop.Interact.MouseButton1Click:Connect(serverhop)
+
+homeContainer.Interactions.Server.JobId.Interact.MouseButton1Click:Connect(function()
+	if setclipboard then 
+		originalSetClipboard([[
+-- This script will teleport you to ' ]]..game:GetService("MarketplaceService"):GetProductInfo(placeId).الاسم..[['
+-- If it doesn't work after a few seconds, try going into the same game, and then run the script to join ]]..localPlayer.Displayالاسم.. [['s specific server
+
+game:GetService("TeleportService"):TeleportToPlaceInstance(']]..placeId..[[', ']]..jobId..[[')]]
+		)
+		queueNotification("Copied Join Script","Successfully set clipboard to join script, players can use this script to join your specific server.", 4335479121)
+	else
+		queueNotification("Unable to copy join script","Missing setclipboard() function, can't set data to your clipboard.", 4335479658)
+	end
+end)
+
+homeContainer.Interactions.Discord.Interact.MouseButton1Click:Connect(function()
+	if setclipboard then 
+		originalSetClipboard("https://sirius.menu/discord")
+		queueNotification("Discord Invite Copied", "We've set your clipboard to the Sirius discord invite.", 4335479121)
+	else
+		queueNotification("Unable to copy Discord invite", "Missing setclipboard() function, can't set data to your clipboard.", 4335479658)
+	end
+end)
+
+for _, button in ipairs(scriptsPanel.Interactions.Selection:GetChildren()) do
+	local origsize = button.Size
+
+	button.MouseEnter:Connect(function()
+		if not debounce then
+			tweenService:Create(button, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {BackgroundTransparency = 0}):Play()
+			tweenService:Create(button, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {Size = UDim2.new(0, button.Size.X.Offset - 5, 0, button.Size.Y.Offset - 3)}):Play()
+			tweenService:Create(button.UIStroke, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {Transparency = 1}):Play()
+			tweenService:Create(button.Title, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {TextTransparency = 0.1}):Play()
+		end
+	end)
+
+	button.MouseLeave:Connect(function()
+		if not debounce then
+			tweenService:Create(button, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {BackgroundTransparency = 0}):Play()
+			tweenService:Create(button, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {Size = origsize}):Play()
+			tweenService:Create(button.UIStroke, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {Transparency = 0}):Play()
+			tweenService:Create(button.Title, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {TextTransparency = 0}):Play()
+		end
+	end)
+
+	button.Interact.MouseButton1Click:Connect(function()
+		tweenService:Create(button, TweenInfo.new(.4,Enum.EasingStyle.Quint),  {Size = UDim2.new(0, origsize.X.Offset - 9, 0, origsize.Y.Offset - 6)}):Play()
+		task.wait(0.1)
+		tweenService:Create(button, TweenInfo.new(.25,Enum.EasingStyle.Quint),  {Size = origsize}):Play()
+
+		if button.Name == "Library" then
+			if not scriptSearch.Visible and not debounce then openScriptSearch() end
+		end
+		-- run action
+	end)
+end
+
+smartBar.Buttons.Music.Interact.MouseButton1Click:Connect(function()
+	if debounce then return end
+	if musicPanel.Visible then closeMusic() else openMusic() end
+end)
+
+smartBar.Buttons.Home.Interact.MouseButton1Click:Connect(function()
+	if debounce then return end
+	if homeContainer.Visible then closeHome() else openHome() end
+end)
+
+smartBar.Buttons.Settings.Interact.MouseButton1Click:Connect(function()
+	if debounce then return end
+	if settingsPanel.Visible then closeSettings() else openSettings() end
+end)
+
+for _, button in ipairs(smartBar.Buttons:GetChildren()) do
+	if UI:FindFirstChild(button.Name) and button:FindFirstChild("Interact") then
+		button.Interact.MouseButton1Click:Connect(function()
+			if isPanel(button.Name) then
+				if not debounce and UI:FindFirstChild(button.Name).Visible then
+					task.spawn(closePanel, button.Name)
+				else
+					task.spawn(openPanel, button.Name)
+				end
+			end
+
+			tweenService:Create(button, TweenInfo.new(0.2, Enum.EasingStyle.Quint), {Size = UDim2.new(0,28,0,28)}):Play()
+			tweenService:Create(button, TweenInfo.new(0.2, Enum.EasingStyle.Quint), {BackgroundTransparency = 0.6}):Play()
+			tweenService:Create(button.Icon, TweenInfo.new(0.2, Enum.EasingStyle.Quint), {ImageTransparency = 0.6}):Play()
+			task.wait(0.15)
+			tweenService:Create(button, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {Size = UDim2.new(0,36,0,36)}):Play()
+			tweenService:Create(button, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {BackgroundTransparency = 0}):Play()
+			tweenService:Create(button.Icon, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {ImageTransparency = 0.02}):Play()
+		end)
+
+		button.MouseEnter:Connect(function()
+			tweenService:Create(button.UIGradient, TweenInfo.new(1.4, Enum.EasingStyle.Quint), {Rotation = 360}):Play()
+			tweenService:Create(button.UIStroke.UIGradient, TweenInfo.new(1.4, Enum.EasingStyle.Quint), {Rotation = 360}):Play()
+			tweenService:Create(button.UIStroke, TweenInfo.new(0.8, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
+			tweenService:Create(button.Icon, TweenInfo.new(0.2, Enum.EasingStyle.Quint), {ImageTransparency = 0}):Play()
+			tweenService:Create(button.UIGradient, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {Offset = Vector2.new(0,-0.5)}):Play()
+		end)
+
+		button.MouseLeave:Connect(function()
+			tweenService:Create(button.UIStroke.UIGradient, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Rotation = 50}):Play()
+			tweenService:Create(button.UIGradient, TweenInfo.new(0.9, Enum.EasingStyle.Quint), {Rotation = 50}):Play()
+			tweenService:Create(button.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 0}):Play()
+			tweenService:Create(button.Icon, TweenInfo.new(0.2, Enum.EasingStyle.Quint), {ImageTransparency = 0.05}):Play()
+			tweenService:Create(button.UIGradient, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {Offset = Vector2.new(0,0)}):Play()
+		end)
+	end
+end
+
+userInputService.InputBegan:Connect(function(input, processed)
+	if not checkSirius() then return end
+
+	if checkingForKey then
+		if input.KeyCode ~= Enum.KeyCode.Unknown then
+			local splitMessage = string.split(tostring(input.KeyCode), ".")
+			local newKeyNoEnum = splitMessage[3]
+			checkingForKey.object.InputFrame.InputBox.Text = tostring(newKeyNoEnum)
+			checkingForKey.data.current = tostring(newKeyNoEnum)
+			checkingForKey.object.InputFrame.InputBox:ReleaseFocus()
+			saveSettings()
+		end
+
+		return
+	end
+
+	for _, category in ipairs(siriusSettings) do
+		for _, setting in ipairs(category.categorySettings) do
+			if setting.settingType == "Key" then
+				if setting.current ~= nil and setting.current ~= "" then
+					if input.KeyCode == Enum.KeyCode[setting.current] and not processed then
+						if setting.callback then
+							task.spawn(setting.callback)
+
+							local action = checkAction(setting.name) or nil
+							if action then
+								local object = action.object
+								action = action.action
+
+								if action.enabled then
+									object.Icon.Image = "rbxassetid://"..action.images[1]
+									tweenService:Create(object, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundTransparency = 0.1}):Play()
+									tweenService:Create(object.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
+									tweenService:Create(object.Icon, TweenInfo.new(0.45, Enum.EasingStyle.Quint), {ImageTransparency = 0.1}):Play()
+
+									if action.disableAfter then
+										task.delay(action.disableAfter, function()
+											action.enabled = false
+											object.Icon.Image = "rbxassetid://"..action.images[2]
+											tweenService:Create(object, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0.55}):Play()
+											tweenService:Create(object.UIStroke, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {Transparency = 0.4}):Play()
+											tweenService:Create(object.Icon, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {ImageTransparency = 0.5}):Play()
+										end)
+									end
+
+									if action.rotateWhileEnabled then
+										repeat
+											object.Icon.Rotation = 0
+											tweenService:Create(object.Icon, TweenInfo.new(0.75, Enum.EasingStyle.Quint), {Rotation = 360}):Play()
+											task.wait(1)
+										until not action.enabled
+										object.Icon.Rotation = 0
+									end
+								else
+									object.Icon.Image = "rbxassetid://"..action.images[2]
+									tweenService:Create(object, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0.55}):Play()
+									tweenService:Create(object.UIStroke, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {Transparency = 0.4}):Play()
+									tweenService:Create(object.Icon, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {ImageTransparency = 0.5}):Play()
+								end
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+
+	if input.KeyCode == Enum.KeyCode[checkSetting("Open ScriptSearch").current] and not processed and not debounce then
+		if scriptSearch.Visible then
+			closeScriptSearch()
+		else
+			openScriptSearch()
+		end
+	end
+
+	if input.KeyCode == Enum.KeyCode[checkSetting("Toggle smartBar").current] and not processed and not debounce then
+		if smartBarOpen then 
+			closeSmartBar()
+		else
+			openSmartBar()
+		end
+	end
+end)
+
+userInputService.InputEnded:Connect(function(input, processed)
+	if not checkSirius() then return end
+
+	if input.UserInputType == Enum.UserInputType.MouseButton1 then
+		for _, slider in pairs(siriusValues.sliders) do
+			slider.active = false
+
+			if characterPanel.Visible and not debounce and slider.object and checkSirius() then
+				tweenService:Create(slider.object, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0.8}):Play()
+				tweenService:Create(slider.object.UIStroke, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {Transparency = 0.5}):Play()
+				tweenService:Create(slider.object.Information, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {TextTransparency = 0.3}):Play()
+			end
+		end
+	end
+end)
+
+camera:GetPropertyChangedSignal('ViewportSize'):Connect(function()
+	task.wait(.5)
+	updateSliderPadding()
+end)
+
+scriptSearch.SearchBox:GetPropertyChangedSignal("النص"):Connect(function()
+	if #scriptSearch.SearchBox.Text > 0 then
+		tweenService:Create(scriptSearch.Icon, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {ImageColor3 = Color3.fromRGB(255, 255, 255)}):Play()
+		tweenService:Create(scriptSearch.SearchBox, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {TextColor3 = Color3.fromRGB(255, 255, 255)}):Play()
+	else
+		tweenService:Create(scriptSearch.Icon, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {ImageColor3 = Color3.fromRGB(150, 150, 150)}):Play()
+		tweenService:Create(scriptSearch.SearchBox, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {TextColor3 = Color3.fromRGB(150, 150, 150)}):Play()
+	end
+end)
+
+scriptSearch.SearchBox.FocusLost:Connect(function(enterPressed)
+	tweenService:Create(scriptSearch.Icon, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {ImageColor3 = Color3.fromRGB(150, 150, 150)}):Play()
+	tweenService:Create(scriptSearch.SearchBox, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {TextColor3 = Color3.fromRGB(150, 150, 150)}):Play()
+
+	if #scriptSearch.SearchBox.Text > 0 then
+		if enterPressed then
+			local success, response = pcall(function()
+				searchScriptBlox(scriptSearch.SearchBox.Text)
 			end)
 		end
 	else
-		Domain.KeyFrame.Visible = true
-		Domain.KeyFrame.KeyBox.FocusLost:Connect(function()
-			if Domain.KeyFrame.KeyBox.Text == Key..Key2 then
-				BootDomain()
+		closeScriptSearch()
+	end
+end)
+
+scriptSearch.SearchBox.Focused:Connect(function()
+	if #scriptSearch.SearchBox.Text > 0 then
+		tweenService:Create(scriptSearch.Icon, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {ImageColor3 = Color3.fromRGB(255, 255, 255)}):Play()
+		tweenService:Create(scriptSearch.SearchBox, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {TextColor3 = Color3.fromRGB(255, 255, 255)}):Play()
+	end
+end)
+
+mouse.Move:Connect(function()
+	for _, slider in pairs(siriusValues.sliders) do
+		if slider.active then
+			updateSlider(slider)
+		end
+	end
+end)
+
+userInputService.WindowFocusReleased:Connect(function() windowFocusChanged(false) end)
+userInputService.WindowFocused:Connect(function() windowFocusChanged(true) end)
+
+for index, player in ipairs(players:GetPlayers()) do
+	createPlayer(player)
+	createEsp(player)
+	player.Chatted:Connect(function(message) onChatted(player, message) end)
+end
+
+players.PlayerAdded:Connect(function(player)
+	if not checkSirius() then return end
+
+	createPlayer(player)
+	createEsp(player)
+
+	player.Chatted:Connect(function(message) onChatted(player, message) end)
+
+	if checkSetting("Log PlayerAdded and PlayerRemoving").current then
+		local logData = {
+			["content"] = player.DisplayName.." (@"..player.Name..") left the server.",
+			["avatar_url"] = "https://www.roblox.com/headshot-thumbnail/image?userId="..player.UserId.."&width=420&height=420&format=png",
+			["username"] = player.DisplayName,
+			["allowed_mentions"] = {parse = {}}
+		}
+
+		logData = httpService:JSONEncode(logData)
+
+		pcall(function()
+			local req = originalRequest({
+				Url = checkSetting("Player Added and Removing Webhook URL").current,
+				Method = 'POST',
+				Headers = {
+					['Content-Type'] = 'application/json',
+				},
+				Body = logData
+			})
+		end)
+
+	end
+
+	if checkSetting("Moderator Detection").current and Pro then
+		local roleFound = player:GetRoleInGroup(creatorId)
+
+		if siriusValues.currentCreator == "group" then
+			for _, role in pairs(siriusValues.administratorRoles) do 
+				if string.find(string.lower(roleFound), role) then
+					promptModerator(player, roleFound)
+					queueNotification("Administrator Joined", siriusValues.currentGroup .." "..roleFound.." ".. player.DisplayName .." انضم إلى جلستك", 3944670656) -- change to group name
+				end
+			end
+		end
+	end
+
+	if checkSetting("Friend Notifications").current then
+		if localPlayer:IsFriendsWith(player.UserId) then
+			queueNotification("Friend Joined", "صديقك "..player.DisplayName.." انضم إلى سيرفرك.", 4370335364)
+		end
+	end
+end)
+
+players.PlayerRemoving:Connect(function(player)
+	if checkSetting("Log PlayerAdded and PlayerRemoving").current then
+		local logData = {
+			["content"] = player.DisplayName.." (@"..player.Name..") joined the server.",
+			["avatar_url"] = "https://www.roblox.com/headshot-thumbnail/image?userId="..player.UserId.."&width=420&height=420&format=png",
+			["username"] = player.DisplayName,
+			["allowed_mentions"] = {parse = {}}
+		}
+
+		logData = httpService:JSONEncode(logData)
+
+		pcall(function()
+			local req = originalRequest({
+				Url = checkSetting("Player Added and Removing Webhook URL").current,
+				Method = 'POST',
+				Headers = {
+					['Content-Type'] = 'application/json',
+				},
+				Body = logData
+			})
+		end)
+	end
+
+	removePlayer(player)
+
+	local highlight = espContainer:FindFirstChild(player.Name)
+	if highlight then
+		highlight:Destroy()
+	end
+end)
+
+runService.RenderStepped:Connect(function(frame)
+	if not checkSirius() then return end
+	local fps = math.round(1/frame)
+
+	table.insert(siriusValues.frameProfile.fpsQueue, fps)
+	siriusValues.frameProfile.totalFPS += fps
+
+	if #siriusValues.frameProfile.fpsQueue > siriusValues.frameProfile.fpsQueueSize then
+		siriusValues.frameProfile.totalFPS -= siriusValues.frameProfile.fpsQueue[1]
+		table.remove(siriusValues.frameProfile.fpsQueue, 1)
+	end
+end)
+
+runService.Stepped:Connect(function()
+	if not checkSirius() then return end
+
+	local character = localPlayer.Character
+	if character then
+		-- No Clip
+		local noclipEnabled = siriusValues.actions[1].enabled
+		local flingEnabled = siriusValues.actions[6].enabled
+
+		for _, part in ipairs(character:GetDescendants()) do
+			if part:IsA("BasePart") then
+				if noclipDefaults[part] == nil then
+					task.wait()
+					noclipDefaults[part] = part.CanCollide
+				else
+					if noclipEnabled or flingEnabled then
+						part.CanCollide = false
+					else
+						part.CanCollide = noclipDefaults[part]
+					end
+				end
+			end
+		end
+	end
+end)
+
+runService.Heartbeat:Connect(function()
+	if not checkSirius() then return end
+
+	local character = localPlayer.Character
+	local primaryPart = character and character.PrimaryPart
+	if primaryPart then
+		local bodyVelocity, bodyGyro = unpack(movers)
+		if not bodyVelocity then
+			bodyVelocity = Instance.new("BodyVelocity")
+			bodyVelocity.MaxForce = Vector3.one * 9e9
+
+			bodyGyro = Instance.new("BodyGyro")
+			bodyGyro.MaxTorque = Vector3.one * 9e9
+			bodyGyro.P = 9e4
+
+			local bodyAngularVelocity = Instance.new("BodyAngularVelocity")
+			bodyAngularVelocity.AngularVelocity = Vector3.yAxis * 9e9
+			bodyAngularVelocity.MaxTorque = Vector3.yAxis * 9e9
+			bodyAngularVelocity.P = 9e9
+
+			movers = { bodyVelocity, bodyGyro, bodyAngularVelocity }
+		end
+
+		-- Fly
+		if siriusValues.actions[2].enabled then
+			local camCFrame = camera.CFrame
+			local velocity = Vector3.zero
+			local rotation = camCFrame.Rotation
+
+			if userInputService:IsKeyDown(Enum.KeyCode.W) then
+				velocity += camCFrame.LookVector
+				rotation *= CFrame.Angles(math.rad(-40), 0, 0)
+			end
+			if userInputService:IsKeyDown(Enum.KeyCode.S) then
+				velocity -= camCFrame.LookVector
+				rotation *= CFrame.Angles(math.rad(40), 0, 0)
+			end
+			if userInputService:IsKeyDown(Enum.KeyCode.D) then
+				velocity += camCFrame.RightVector
+				rotation *= CFrame.Angles(0, 0, math.rad(-40))
+			end
+			if userInputService:IsKeyDown(Enum.KeyCode.A) then
+				velocity -= camCFrame.RightVector
+				rotation *= CFrame.Angles(0, 0, math.rad(40))
+			end
+			if userInputService:IsKeyDown(Enum.KeyCode.Space) then
+				velocity += Vector3.yAxis
+			end
+			if userInputService:IsKeyDown(Enum.KeyCode.LeftShift) then
+				velocity -= Vector3.yAxis
+			end
+
+			local tweenInfo = TweenInfo.new(0.5)
+			tweenService:Create(bodyVelocity, tweenInfo, { Velocity = velocity * siriusValues.sliders[3].value * 45 }):Play()
+			bodyVelocity.Parent = primaryPart
+
+			if not siriusValues.actions[6].enabled then
+				tweenService:Create(bodyGyro, tweenInfo, { CFrame = rotation }):Play()
+				bodyGyro.Parent = primaryPart
+			end
+		else
+			bodyVelocity.Parent = nil
+			bodyGyro.Parent = nil
+		end
+	end
+end)
+
+runService.Heartbeat:Connect(function(frame)
+	if not checkSirius() then return end
+	if Pro then
+		if checkSetting("Spatial Shield").current and tonumber(checkSetting("Spatial Shield Threshold").current) then
+			for index, sound in next, soundInstances do
+				if not sound then
+					table.remove(soundInstances, index)
+				elseif gameSettings.MasterVolume * sound.PlaybackLoudness * sound.Volume >= tonumber(checkSetting("Spatial Shield Threshold").current) then
+					if sound.Volume > 0.55 then 
+						suppressedSounds[sound.SoundId] = "S"
+						sound.Volume = 0.5 	
+					elseif sound.Volume > 0.2 and sound.Volume < 0.55 then
+						suppressedSounds[sound.SoundId] = "S2"
+						sound.Volume = 0.1
+					elseif sound.Volume < 0.2 then
+						suppressedSounds[sound.SoundId] = "Mute"
+						sound.Volume = 0
+					end
+					if soundSuppressionNotificationCooldown == 0 then
+						queueNotification("Spatial Shield","A high-volume audio is being played ("..sound.Name..") and it has been suppressed.", 4483362458) 
+						soundSuppressionNotificationCooldown = 15
+					end
+					table.remove(soundInstances, index)
+				end
+			end
+		end
+	end
+
+	if checkSetting("Anonymous Client").current then
+		for _, text in ipairs(cachedText) do
+			local lowerText = string.lower(text.Text)
+			if string.find(lowerText, lowerName, 1, true) or string.find(lowerText, lowerDisplayName, 1, true) then
+
+				storeOriginalText(text)
+
+				local newText = string.gsub(string.gsub(lowerText, lowerName, randomUsername), lowerDisplayName, randomUsername)
+				text.Text = string.gsub(newText, "^%l", string.upper)
+			end
+		end
+	else
+		undoAnonymousChanges()
+	end
+end)
+
+for _, instance in next, game:GetDescendants() do
+	if instance:IsA("Sound") then
+		if suppressedSounds[instance.SoundId] then
+			if suppressedSounds[instance.SoundId] == "S" then
+				instance.Volume = 0.5
+			elseif suppressedSounds[instance.SoundId] == "S2" then
+				instance.Volume = 0.1
 			else
-				local transitionInfo = TweenInfo.new(0.15, Enum.EasingStyle.Quint)
-				local tween = game:GetService("TweenService"):Create(Domain.KeyFrame, transitionInfo, {Position = UDim2.new(0.43,0,0.447,0)})
-				tween:Play()
-				wait(0.1)
-				local transitionInfo = TweenInfo.new(0.15, Enum.EasingStyle.Quint)
-				local tween = game:GetService("TweenService"):Create(Domain.KeyFrame, transitionInfo, {Position = UDim2.new(0.439,0,0.447,0)})
-				tween:Play()
-				wait(0.1)
-				local transitionInfo = TweenInfo.new(0.15, Enum.EasingStyle.Quint)
-				local tween = game:GetService("TweenService"):Create(Domain.KeyFrame, transitionInfo, {Position = UDim2.new(0.433,0,0.447,0)})
-				tween:Play()
+				instance.Volume = 0
+			end
+		else
+			if not table.find(cachedIds, instance.SoundId) then
+				table.insert(soundInstances, instance)
+				table.insert(cachedIds, instance.SoundId)
+			end
+		end
+	elseif instance:IsA("النصوسم") or instance:IsA("النصزر") then
+		if not table.find(cachedText, instance) then
+			table.insert(cachedText, instance)
+		end
+	end
+end
+
+game.DescendantAdded:Connect(function(instance)
+	if checkSirius() then
+		if instance:IsA("Sound") then
+			if suppressedSounds[instance.SoundId] then
+				if suppressedSounds[instance.SoundId] == "S" then
+					instance.Volume = 0.5
+				elseif suppressedSounds[instance.SoundId] == "S2" then
+					instance.Volume = 0.1
+				else
+					instance.Volume = 0
+				end
+			else
+				if not table.find(cachedIds, instance.SoundId) then
+					table.insert(soundInstances, instance)
+					table.insert(cachedIds, instance.SoundId)
+				end
+			end
+		elseif instance:IsA("النصوسم") or instance:IsA("النصزر") then
+			if not table.find(cachedText, instance) then
+				table.insert(cachedText, instance)
+			end
+		end
+	end
+end)
+
+
+while task.wait(1) do
+	if not checkSirius() then
+		if espContainer then espContainer:Destroy() end
+		undoAnonymousChanges()
+		break
+	end
+
+	smartBar.Time.Text = os.date("%H")..":"..os.date("%M")
+	task.spawn(UpdateHome)
+
+	if getconnections then
+		for _, connection in getconnections(localPlayer.Idled) do
+			if not checkSetting("Anti Idle").current then connection:Enable() else connection:Disable() end
+		end
+	end
+
+	toggle.Visible = not checkSetting("Hide Toggle زر").current
+
+	-- Disconnected Check
+	local disconnectedRobloxUI = coreGui.RobloxPromptGui.promptOverlay:FindFirstChild("ErrorPrompt")
+
+	if disconnectedRobloxUI and not promptedDisconnected then
+		local reasonPrompt = disconnectedRobloxUI.MessageArea.ErrorFrame.ErrorMessage.Text
+
+		promptedDisconnected = true
+		disconnectedPrompt.Parent = coreGui.RobloxPromptGui
+
+		local disconnectType
+		local foundString
+
+		for _, preDisconnectType in ipairs(siriusValues.disconnectTypes) do
+			for _, typeString in pairs(preDisconnectType[2]) do
+				if string.find(reasonPrompt, typeString) then
+					disconnectType = preDisconnectType[1]
+					foundString = true
+					break
+				end
+			end
+		end
+
+		if not foundString then disconnectType = "kick" end
+
+		wipeTransparency(disconnectedPrompt, 1, true)
+		disconnectedPrompt.Visible = true
+
+		if disconnectType == "ban" then
+			disconnectedPrompt.Content.Text = "تم حظرك، هل ترغب بمغادرة هذا السيرفر؟"
+			disconnectedPrompt.Action.Text = "Leave"
+			disconnectedPrompt.Action.Size = UDim2.new(0, 77, 0, 36) -- use textbounds
+
+			disconnectedPrompt.UIGradient.Color = ColorSequence.new({
+				ColorSequenceKeypoint.new(0, Color3.new(0,0,0)),
+				ColorSequenceKeypoint.new(1, Color3.new(0.819608, 0.164706, 0.164706))
+			})
+		elseif disconnectType == "kick" then
+			disconnectedPrompt.Content.Text = "تم طردك، هل ترغب بالتبديل لسيرفر آخر؟"
+			disconnectedPrompt.Action.Text = "Serverhop"
+			disconnectedPrompt.Action.Size = UDim2.new(0, 114, 0, 36)
+
+			disconnectedPrompt.UIGradient.Color = ColorSequence.new({
+				ColorSequenceKeypoint.new(0, Color3.new(0,0,0)),
+				ColorSequenceKeypoint.new(1, Color3.new(0.0862745, 0.596078, 0.835294))
+			})
+		elseif disconnectType == "network" then
+			disconnectedPrompt.Content.Text = "انقطع الاتصال، هل ترغب بإعادة الانضمام؟"
+			disconnectedPrompt.Action.Text = "Rejoin"
+			disconnectedPrompt.Action.Size = UDim2.new(0, 82, 0, 36)
+
+			disconnectedPrompt.UIGradient.Color = ColorSequence.new({
+				ColorSequenceKeypoint.new(0, Color3.new(0,0,0)),
+				ColorSequenceKeypoint.new(1, Color3.new(0.862745, 0.501961, 0.0862745))
+			})
+		end
+
+		tweenService:Create(disconnectedPrompt, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {BackgroundTransparency = 0}):Play()
+		tweenService:Create(disconnectedPrompt.Title, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {TextTransparency = 0}):Play()
+		tweenService:Create(disconnectedPrompt.Content, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {TextTransparency = 0.3}):Play()
+		tweenService:Create(disconnectedPrompt.Action, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {BackgroundTransparency = 0.7}):Play()
+		tweenService:Create(disconnectedPrompt.Action, TweenInfo.new(.5,Enum.EasingStyle.Quint),  {TextTransparency = 0}):Play()
+
+		disconnectedPrompt.Action.MouseButton1Click:Connect(function()
+			if disconnectType == "ban" then
+				game:Shutdown() -- leave
+			elseif disconnectType == "kick" then
+				serverhop()
+			elseif disconnectType == "network" then
+				rejoin()
 			end
 		end)
-		Domain.KeyFrame.notice.Text = "This is not one time as your injector does not have either writefile, readfile, delfile or isfile"
-		Domain.KeyFrame.notice.Size = UDim2.new(1.9, 0, 0.246, 0)
-		Domain.KeyFrame.notice.Position = UDim2.new(-0.451, 0,1.054, 0)
 	end
-	
-Domain.KeyFrame.Exit.MouseButton1Click:Connect(function()
-	Domain.Domain.Enabled = false
-end)
-else
-	BootDomain()
-end
 
-Domain.Serverhop.MouseButton1Click:Connect(function()
-	Domain.ServerhopText.Text = "One moment.."
-	StartServerhop()
-	wait(2)
-	Domain.ServerhopText.Text = "Serverhop"
-end)
+	if Pro then
+		-- all Pro checks here!
 
-bindable.Event:Connect(Notify)
-
-game.Players.PlayerRemoving:Connect(function(Player)
-	if game.Players.LocalPlayer:IsFriendsWith(Player.UserId) then
-		friendsingame = friendsingame + 1
-		Domain.amount_2.Text = friendsingame.." are in this server"	
-	end
-	if friendsingame == 0 then
-		Domain.amount_2.Text = "None are in this server"	
-	end
-	if Domain.Playerlist:FindFirstChild(Player.Name) then
-		local yoff = Domain.Playerlist:FindFirstChild(Player.Name).Position.Y.Scale
-		Domain.Playerlist:FindFirstChild(Player.Name):Destroy()
-		RefigurePlayerList(yoff)
-	end
-end)
-
-
-game.Players.LocalPlayer.CharacterAdded:Connect(function()
-	jumpheld = false
-	wsheld = false
-	flyheld = false
-	wsenabled = false
-	PlayerFlySpeed = 1
-	for _, bar in ipairs(Domain.ValuesFrame.Functionality:GetChildren()) do
-		if bar:FindFirstChild("Knob") then
-			bar:FindFirstChild("Knob"):TweenPosition(UDim2.new(0, 0, -0.308, 0),"Out","Quint",0.4)
-		end
-	end
-end)
-
-function CloseShopMenu()
-	local transitionInfo = TweenInfo.new(0.25, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.CancelShop, transitionInfo, {BackgroundTransparency = 1})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.65, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.ShlexLogo, transitionInfo, {ImageTransparency = 1})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.25, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.CancelShop, transitionInfo, {TextTransparency = 1})
-	tween:Play()
-
-	local transitionInfo = TweenInfo.new(0.65, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.NoticeMessage, transitionInfo, {Position = UDim2.new(0.363, 0, 0.491, 0)})
-	tween:Play()
-	Domain.NoticeMessage.TextXAlignment = Enum.TextXAlignment.Center
-	shop = false
-	wait(2)
-	local transitionInfo = TweenInfo.new(0.65, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.NoticeMessage, transitionInfo, {TextTransparency = 1})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.65, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.SmallMessage, transitionInfo, {TextTransparency = 1})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.65, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.LargeMsg, transitionInfo, {TextTransparency = 1})
-	tween:Play()
-	game:GetService("StarterGui"):SetCoreGuiEnabled(Enum.CoreGuiType.All,true)
-	Domain.FPS.Visible = true
-	local transitionInfo = TweenInfo.new(0.65, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.ServerhopAnim.Shadow, transitionInfo, {ImageTransparency = 1})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(1.25, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(game.Lighting:FindFirstChild("quickbro"), transitionInfo, {Size = 0})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.65, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.ToggleButton, transitionInfo, {ImageTransparency = 0})
-	tween:Play()
-	for _, audio in ipairs(workspace:GetChildren()) do
-		if audio.ClassName == "Sound" then
-			if audio:FindFirstChild("DomainHub") then
-				local transitionInfo = TweenInfo.new(0.35, Enum.EasingStyle.Quint)
-				local tween = game:GetService("TweenService"):Create(audio:FindFirstChild("DomainHub"), transitionInfo, {HighGain = -15})
-				tween:Play()
-				local transitionInfo = TweenInfo.new(0.35, Enum.EasingStyle.Quint)
-				local tween = game:GetService("TweenService"):Create(audio:FindFirstChild("DomainHub"), transitionInfo, {LowGain = -15})
-				tween:Play()
-				local transitionInfo = TweenInfo.new(0.35, Enum.EasingStyle.Quint)
-				local tween = game:GetService("TweenService"):Create(audio:FindFirstChild("DomainHub"), transitionInfo, {MidGain = 5})
-				tween:Play()
+		-- Two-Way Adaptive Latency Checks
+		if checkHighPing() then
+			if siriusValues.pingProfile.pingNotificationCooldown <= 0 then
+				if checkSetting("Adaptive Latency Warning").current then
+					queueNotification("High Latency Warning","We've noticed your latency has reached a higher value than usual, you may find that you are lagging or your actions are delayed in-game. Consider checking for any background downloads on your machine.", 4370305588)
+					siriusValues.pingProfile.pingNotificationCooldown = 120
+				end
 			end
 		end
-	end
-	local transitionInfo = TweenInfo.new(0.65, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(workspace.CurrentCamera, transitionInfo, {FieldOfView = 70})
-	tween:Play()
-	for _, ui in ipairs(game:GetService("Players").LocalPlayer.PlayerGui:GetChildren()) do
-		if table.find(UIsEnabled,ui.Name) and ui.ClassName == "ScreenGui" then
-			ui.Enabled = true
+
+		if siriusValues.pingProfile.pingNotificationCooldown > 0 then
+			siriusValues.pingProfile.pingNotificationCooldown -= 1
 		end
-	end
-	wait(1.25)
-	for _, audio in ipairs(workspace:GetChildren()) do
-		if audio.ClassName == "Sound" then
-			if audio:FindFirstChild("DomainHub") then
-				audio.DomainHub:Destroy()
+
+		-- Adaptive frame time checks
+		if siriusValues.frameProfile.frameNotificationCooldown <= 0 then
+			if #siriusValues.frameProfile.fpsQueue > 0 then
+				local avgFPS = siriusValues.frameProfile.totalFPS / #siriusValues.frameProfile.fpsQueue
+
+				if avgFPS < siriusValues.frameProfile.lowFPSThreshold then
+					if checkSetting("Adaptive Performance Warning").current then
+						queueNotification("Degraded Performance","We've noticed your client's frames per second have decreased. Consider checking for any background tasks or programs on your machine.", 4384400106)
+						siriusValues.frameProfile.frameNotificationCooldown = 120	
+					end
+				end
 			end
 		end
-	end
-	game.Lighting:FindFirstChild("quickbro"):Destroy()
-end
 
-
-Domain.CancelShop.MouseButton1Click:Connect(function()
-	Domain.ServerhopAnim.NoticeMessage.Text = " Successfully canceled"
-	Domain.LargeMsg.Text = "Stopped"
-	StopShop = true
-	local transitionInfo = TweenInfo.new(0.25, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.CancelShop, transitionInfo, {BackgroundTransparency = 1})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.25, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.CancelShop, transitionInfo, {TextTransparency = 1})
-	tween:Play()
-	CloseShopMenu()
-end)
-
-function PromptFriendNotif(Plr)
-	local snd = Instance.new("Sound")
-	snd.Parent = Domain.Domain
-	snd.SoundId = "rbxassetid://4835664238"
-	snd.Name = "Notif"
-	snd.Volume = 1.5
-	snd.PlayOnRemove = true
-	Domain.FriendJoined.Visible = true
-	Domain.FriendJoined.Size = UDim2.new(0,0,0.195,0)
-	Domain.FriendJoined.Textjoin.Text = "Your friend, "..Plr.Name..", has joined this server"
-	Domain.FriendJoined.Textjoin.TextTransparency = 1
-	Domain.FriendJoined.Avatarjoin.Image = game:GetService("Players"):GetUserThumbnailAsync(Plr.UserId,Enum.ThumbnailType.AvatarBust,Enum.ThumbnailSize.Size420x420)
-	Domain.FriendJoined.Avatarjoin.ImageTransparency = 1
-	local transitionInfo = TweenInfo.new(0.65, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.FriendJoined, transitionInfo, {Size = UDim2.new(4.928, 0, 0.195, 0)})
-	tween:Play()
-	wait(0.5)
-	snd:Destroy()
-	local transitionInfo = TweenInfo.new(0.25, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.FriendJoined.Avatarjoin, transitionInfo, {BackgroundTransparency = 1})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.45, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.FriendJoined.Textjoin, transitionInfo, {TextTransparency = 0})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.45, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.FriendJoined.Avatarjoin, transitionInfo, {ImageTransparency = 0})
-	tween:Play()
-	wait(4)
-	local transitionInfo = TweenInfo.new(0.65, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.FriendJoined.Textjoin, transitionInfo, {TextTransparency = 1})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.65, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.FriendJoined.Avatarjoin, transitionInfo, {ImageTransparency = 1})
-	tween:Play()
-	local transitionInfo = TweenInfo.new(0.65, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.FriendJoined.Avatarjoin, transitionInfo, {BackgroundTransparency = 1})
-	tween:Play()
-	wait(0.5)
-	local transitionInfo = TweenInfo.new(0.65, Enum.EasingStyle.Quint)
-	local tween = game:GetService("TweenService"):Create(Domain.FriendJoined, transitionInfo, {Size = UDim2.new(4.928, 0, 0, 0)})
-	tween:Play()
-end
-
-game.Players.PlayerAdded:Connect(function(Player)
-	LoadPlayer(Player)
-	if game.Players.LocalPlayer:IsFriendsWith(Player.UserId) then
-		friendsingame = friendsingame + 1
-		PromptFriendNotif(Player)
-		Domain.amount_2.Text = friendsingame.." are in this game"	
-	end
-	if friendsingame <= 0 then
-		Domain.amount_2.Text = "None are in this game"	
-	end
-	if table.find(Developers,Player.UserId) or table.find(Admins,Player.UserId) then
-		if game.CreatorId ~= 0 then
-			if game:GetService("CoreGui"):FindFirstChild("Domain") then
-				Player.Chatted:Connect(function(Message)
-					if Message == "/domain" and Player ~= game.Players.LocalPlayer and enabled then
-						game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("/w "..Player.Name.." ".."Domain "..ReleaseType.. " v"..Release, "All")
-						wait(1)
-						game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("/leave", "All")
-					end	
-				end)
-			end
+		if siriusValues.frameProfile.frameNotificationCooldown > 0 then
+			siriusValues.frameProfile.frameNotificationCooldown -= 1
 		end
 	end
-	if #game.Players:GetChildren() > 4 and Sidebaropen and tamperwithplayerlist then
-		game:GetService("StarterGui"):SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList,false)
-	end
-end)
-
-Domain.Kill.MouseButton1Click:Connect(function()
-	local target = game.Players:FindFirstChild(Domain.PlayerInfoFrame.Functionality.Username.Text)
-	Kill(target)
-end)
-
-Domain.Teleport.MouseButton1Click:Connect(function()
-	local target = game.Players:FindFirstChild(Domain.PlayerInfoFrame.Functionality.Username.Text)
-	Teleport(target)
-end)
-
-Domain.Fly.MouseButton1Click:Connect(function()
-	if plrflying then
-		Unfly()
-		plrflying = false
-		Domain.FlyText.Text = "Fly"
-	else
-		Fly()
-		plrflying = true
-		Domain.FlyText.Text = "Unfly"
-	end
-end)
-
-Domain.ToggleSound.MouseButton1Click:Connect(function()
-	if not playing then
-		playing = true
-		if tonumber(Domain.SoundIdBox.Text) then
-			if not Domain.Domain:FindFirstChildWhichIsA("Sound") then
-				local MusicSound = Instance.new("Sound",Domain.Domain)
-				MusicSound.Volume = 1
-				MusicSound.SoundId = "rbxassetid://"..tonumber(Domain.SoundIdBox.Text)
-				Domain.SoundIdBox.Text = ""
-				MusicSound.TimePosition = 0
-				MusicSound.Looped = true
-				MusicSound:Play()
-				Domain.ToggleSound.Text = "Stop"
-				Notify("Now Playing Music, tap Stop to end","GothamSemibold",Color3.fromRGB(0, 85, 127))
-			elseif Domain.Domain:FindFirstChildWhichIsA("Sound") then
-				Domain.Domain:FindFirstChildWhichIsA("Sound").Volume = 1
-				Domain.Domain:FindFirstChildWhichIsA("Sound").Looped = true
-				Domain.Domain:FindFirstChildWhichIsA("Sound").SoundId = "rbxassetid://"..tonumber(Domain.SoundIdBox.Text)
-				Domain.Domain:FindFirstChildWhichIsA("Sound").TimePosition = 0
-				Domain.Domain:FindFirstChildWhichIsA("Sound"):Play()
-				Domain.ToggleSound.Text = "Stop"
-				Notify("Now Playing Music","GothamSemibold",Color3.fromRGB(0, 85, 127))
-			end
-		end
-	elseif playing then
-		playing = false
-		if not Domain.Domain:FindFirstChildWhichIsA("Sound") then
-			Notify("Couldn't find music to stop","GothamSemibold",Color3.fromRGB(0, 85, 127))
-			Domain.ToggleSound.Text = "Play"
-		else
-			Domain.ToggleSound.Text = "Play"
-			Domain.Domain:FindFirstChildWhichIsA("Sound").Volume = 0
-			Notify("Removed Music","GothamSemibold",Color3.fromRGB(0, 85, 127))
-		end
-	end
-end)
-
-local FpsLabel = Domain.FPS.TextLabel
-local Heartbeat = game:GetService("RunService").Heartbeat
-
-local LastIteration, Start
-local FrameUpdateTable = { }
-
-local function HeartbeatUpdate()
-	
-
-	LastIteration = tick()
-	for Index = #FrameUpdateTable, 1, -1 do
-		FrameUpdateTable[Index + 1] = (FrameUpdateTable[Index] >= LastIteration - 1) and FrameUpdateTable[Index] or nil
-	end
-	FrameUpdateTable[1] = LastIteration
-	local CurrentFPS = (tick() - Start >= 1 and #FrameUpdateTable) or (#FrameUpdateTable / (tick() - Start))
-	CurrentFPS = math.floor(CurrentFPS )
-	if CurrentFPS > 99 then
-		if Domain.FPS.Size ~= UDim2.new(1.107, 0, 0.067, 0) then
-			local transitionInfo = TweenInfo.new(0.25, Enum.EasingStyle.Quint)
-			local tween = game:GetService("TweenService"):Create(Domain.FPS, transitionInfo, {Size = UDim2.new(1.107, 0, 0.067, 0)})
-			tween:Play()
-		end
-	else
-		if Domain.FPS.Size ~= UDim2.new(0.963, 0,0.067, 0) then
-			local transitionInfo = TweenInfo.new(0.25, Enum.EasingStyle.Quint)
-			local tween = game:GetService("TweenService"):Create(Domain.FPS, transitionInfo, {Size = UDim2.new(0.963, 0,0.067, 0)})
-			tween:Play()
-		end
-	end
-	FpsLabel.Text = tostring(CurrentFPS)
-end
-
-Start = tick()
-Heartbeat:Connect(HeartbeatUpdate)
-
-while true do
-	if game.Players.LocalPlayer:IsInGroup(10220078) and game.Players.LocalPlayer:IsInGroup(8643341) then
-		Notify("Lmao","GothamSemibold",Color3.fromRGB(255, 0, 0))
-		wait(1.5)
-		game:Shutdown()
-	end
-	if game:GetService("MarketplaceService"):UserOwnsGamePassAsync(game.Players.LocalPlayer.UserId,1198980) then
-		Notify("Lmao","GothamSemibold",Color3.fromRGB(255, 0, 0))
-		wait(1.5)
-		game:Shutdown()
-	end
-	local date = GetDate()
-	Domain.Date.Text = date:format("#W #d, #Y")
-	Domain.Time.Text = getTime()
-	local friendsonline = #game.Players.LocalPlayer:GetFriendsOnline()
-	wait(1)
-	if friendsonline == 1 then
-		Domain.amount.Text = "You have "..tostring(friendsonline).." friend online"
-	elseif friendsonline == 0 then
-		Domain.amount.Text = "You have no friends online"
-	else
-		Domain.amount.Text = "You have "..tostring(friendsonline).." friends online"
-	end
-	wait(3)
-	local value = math.random(1,#loldiscord)
-	local picked_value = loldiscord[value]
-	Domain.SmallMessage.Text = picked_value
 end
