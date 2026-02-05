@@ -1,7 +1,7 @@
 --[[
     ╔═══════════════════════════════════════════════════════════════╗
-    ║    🌟 Ultimate Premium Hub - Final Complete Version 🌟       ║
-    ║           النسخة النهائية الكاملة مع كل المميزات             ║
+    ║      🌟 Ultimate Hub - Fixed Final Version 🌟                ║
+    ║        النسخة النهائية المصلحة بدون مشاكل                    ║
     ╚═══════════════════════════════════════════════════════════════╝
 ]]
 
@@ -16,7 +16,7 @@ local UltimateHub = {}
 UltimateHub.__index = UltimateHub
 
 -- ═══════════════════════════════════════════════════════════════
---                    🎨 نظام الثيمات المحسّن
+--                    🎨 نظام الثيمات
 -- ═══════════════════════════════════════════════════════════════
 local Themes = {
     Glass = {
@@ -83,7 +83,7 @@ local CurrentThemeIndex = 1
 local ThemeNames = {"Glass", "Neon", "Royal"}
 
 -- ═══════════════════════════════════════════════════════════════
---                    🎯 أيقونات متقدمة
+--                    🎯 أيقونات
 -- ═══════════════════════════════════════════════════════════════
 local Icons = {
     Close = "rbxassetid://7072725342",
@@ -96,11 +96,6 @@ local Icons = {
     Users = "rbxassetid://7072718006",
     Check = "rbxassetid://7072706796",
     Back = "rbxassetid://7072719070",
-    Settings = "rbxassetid://7072718900",
-    User = "rbxassetid://7072719654",
-    Award = "rbxassetid://7072706463",
-    Shield = "rbxassetid://7072718799",
-    Verified = "rbxassetid://7072718900",
 }
 
 -- ═══════════════════════════════════════════════════════════════
@@ -112,13 +107,11 @@ local UserCountData = {
     CurrentMap = game.PlaceId
 }
 
--- تحديث عدد المستخدمين
 local function UpdateUserCount()
     UserCountData.TotalUsers = #UserCountData.ActiveUsers
     return UserCountData.TotalUsers
 end
 
--- إضافة مستخدم
 local function AddUser(userId)
     if not table.find(UserCountData.ActiveUsers, userId) then
         table.insert(UserCountData.ActiveUsers, userId)
@@ -126,7 +119,6 @@ local function AddUser(userId)
     end
 end
 
--- إزالة مستخدم
 local function RemoveUser(userId)
     local index = table.find(UserCountData.ActiveUsers, userId)
     if index then
@@ -135,10 +127,8 @@ local function RemoveUser(userId)
     end
 end
 
--- تسجيل المستخدم الحالي
 AddUser(LocalPlayer.UserId)
 
--- مراقبة اللاعبين
 Players.PlayerAdded:Connect(function(player)
     AddUser(player.UserId)
 end)
@@ -162,7 +152,7 @@ local DeveloperInfo = {
 }
 
 -- ═══════════════════════════════════════════════════════════════
---                    ✨ وظائف التأثيرات المتقدمة
+--                    ✨ وظائف التأثيرات (بدون ألوان خارجية)
 -- ═══════════════════════════════════════════════════════════════
 
 local function CreateGlassEffect(parent)
@@ -221,32 +211,34 @@ local function CreateGradient(parent, rotation, colorStart, colorEnd)
     return Gradient
 end
 
-local function CreateGlow(parent, color, intensity)
+-- توهج داخلي فقط (بدون توهج خارجي)
+local function CreateInnerGlow(parent, color, intensity)
     color = color or CurrentTheme.Primary
-    intensity = intensity or 0.5
+    intensity = intensity or 0.3
     
     local Glow = Instance.new("ImageLabel")
-    Glow.Name = "Glow"
-    Glow.AnchorPoint = Vector2.new(0.5, 0.5)
-    Glow.Position = UDim2.new(0.5, 0, 0.5, 0)
-    Glow.Size = UDim2.new(1.4, 0, 1.4, 0)
+    Glow.Name = "InnerGlow"
+    Glow.Size = UDim2.new(1, 0, 1, 0)
+    Glow.Position = UDim2.new(0, 0, 0, 0)
     Glow.BackgroundTransparency = 1
-    Glow.Image = "rbxassetid://6015897843"
+    Glow.Image = "rbxassetid://8992230677"
     Glow.ImageColor3 = color
     Glow.ImageTransparency = 1 - intensity
-    Glow.ZIndex = 0
+    Glow.ScaleType = Enum.ScaleType.Slice
+    Glow.SliceCenter = Rect.new(99, 99, 99, 99)
+    Glow.ZIndex = parent.ZIndex - 1
     Glow.Parent = parent
     
     spawn(function()
         while Glow and Glow.Parent do
             TweenService:Create(Glow, TweenInfo.new(2, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), {
                 ImageColor3 = CurrentTheme.Secondary,
-                Size = UDim2.new(1.5, 0, 1.5, 0)
+                ImageTransparency = 1 - (intensity + 0.1)
             }):Play()
             wait(2)
             TweenService:Create(Glow, TweenInfo.new(2, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), {
                 ImageColor3 = color,
-                Size = UDim2.new(1.4, 0, 1.4, 0)
+                ImageTransparency = 1 - intensity
             }):Play()
             wait(2)
         end
@@ -286,7 +278,7 @@ local function CreateCorner(radius)
 end
 
 -- ═══════════════════════════════════════════════════════════════
---                    🔔 نظام الإشعارات المحسّن
+--                    🔔 نظام الإشعارات
 -- ═══════════════════════════════════════════════════════════════
 function UltimateHub:ShowNotification(title, message, icon, notifType, duration)
     duration = duration or 4
@@ -324,7 +316,7 @@ function UltimateHub:ShowNotification(title, message, icon, notifType, duration)
     end
     
     CreateStroke(NotifFrame, primaryColor, 2, 0.4)
-    CreateGlow(NotifFrame, primaryColor, 0.4)
+    CreateInnerGlow(NotifFrame, primaryColor, 0.2)
     
     local TopBar = Instance.new("Frame")
     TopBar.Size = UDim2.new(1, 0, 0, 4)
@@ -422,7 +414,7 @@ function UltimateHub:ShowNotification(title, message, icon, notifType, duration)
 end
 
 -- ═══════════════════════════════════════════════════════════════
---                    🖼️ إنشاء صورة اللاعب الدائرية
+--                    🖼️ إنشاء صورة اللاعب
 -- ═══════════════════════════════════════════════════════════════
 local function CreatePlayerAvatar(parent, userId, size, position)
     local AvatarFrame = Instance.new("Frame")
@@ -436,7 +428,7 @@ local function CreatePlayerAvatar(parent, userId, size, position)
     CreateCorner(size and size.X.Offset / 2 or 40).Parent = AvatarFrame
     CreateGlassEffect(AvatarFrame)
     CreateStroke(AvatarFrame, CurrentTheme.Primary, 3, 0.3)
-    CreateGlow(AvatarFrame, CurrentTheme.Primary, 0.5)
+    CreateInnerGlow(AvatarFrame, CurrentTheme.Primary, 0.2)
     
     local Avatar = Instance.new("ImageLabel")
     Avatar.Size = UDim2.new(1, -8, 1, -8)
@@ -447,7 +439,6 @@ local function CreatePlayerAvatar(parent, userId, size, position)
     
     CreateCorner((size and size.X.Offset / 2 or 40) - 4).Parent = Avatar
     
-    -- تأثير دوران
     spawn(function()
         while AvatarFrame and AvatarFrame.Parent do
             TweenService:Create(AvatarFrame, TweenInfo.new(3, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), {
@@ -465,7 +456,7 @@ local function CreatePlayerAvatar(parent, userId, size, position)
 end
 
 -- ═══════════════════════════════════════════════════════════════
---                    📱 إنشاء زر iOS
+--                    📱 إنشاء زر
 -- ═══════════════════════════════════════════════════════════════
 local function CreateButton(parent, text, icon, color, position, size, callback)
     local Button = Instance.new("TextButton")
@@ -481,7 +472,7 @@ local function CreateButton(parent, text, icon, color, position, size, callback)
     CreateCorner(17).Parent = Button
     CreateGlassEffect(Button)
     CreateStroke(Button, color or CurrentTheme.Primary, 2, 0.4)
-    CreateGlow(Button, color or CurrentTheme.Primary, 0.35)
+    CreateInnerGlow(Button, color or CurrentTheme.Primary, 0.15)
     CreateGradient(Button, 45)
     
     if icon then
@@ -573,8 +564,8 @@ local function CreateMapCard(parent, imageId, mapName, scriptCount, position, ca
     MapNameLabel.Parent = Card
     
     local CountBadge = Instance.new("Frame")
-    CountBadge.Size = UDim2.new(0, 85, 0, 26)
-    CountBadge.Position = UDim2.new(0.5, -42.5, 0, 166)
+    CountBadge.Size = UDim2.new(0, 90, 0, 26)
+    CountBadge.Position = UDim2.new(0.5, -45, 0, 166)
     CountBadge.BackgroundColor3 = CurrentTheme.Primary
     CountBadge.BackgroundTransparency = 0.2
     CountBadge.BorderSizePixel = 0
@@ -586,7 +577,7 @@ local function CreateMapCard(parent, imageId, mapName, scriptCount, position, ca
     local CountLabel = Instance.new("TextLabel")
     CountLabel.Size = UDim2.new(1, 0, 1, 0)
     CountLabel.BackgroundTransparency = 1
-    CountLabel.Text = "📜 " .. scriptCount .. " سكربت"
+    CountLabel.Text = scriptCount .. " سكربت 📜"
     CountLabel.TextColor3 = CurrentTheme.TextPrimary
     CountLabel.TextSize = 14
     CountLabel.Font = Enum.Font.GothamBold
@@ -658,7 +649,7 @@ function UltimateHub:CreateWindow(scriptName)
     ScreenGui.Parent = CoreGui
     
     -- ═══════════════════════════════════════════════════════════
-    --                    الزر العائم مع صورة اللاعب
+    --                    الزر العائم
     -- ═══════════════════════════════════════════════════════════
     local ToggleButton = Instance.new("TextButton")
     ToggleButton.Size = UDim2.new(0, 68, 0, 68)
@@ -674,7 +665,7 @@ function UltimateHub:CreateWindow(scriptName)
     CreateCorner(34).Parent = ToggleButton
     CreateGlassEffect(ToggleButton)
     CreateStroke(ToggleButton, CurrentTheme.Primary, 3, 0.3)
-    CreateGlow(ToggleButton, CurrentTheme.Primary, 0.6)
+    CreateInnerGlow(ToggleButton, CurrentTheme.Primary, 0.25)
     CreateGradient(ToggleButton, 135)
     
     local PlayerAvatar = Instance.new("ImageLabel")
@@ -686,7 +677,6 @@ function UltimateHub:CreateWindow(scriptName)
     
     CreateCorner(28).Parent = PlayerAvatar
     
-    -- نبض
     spawn(function()
         while ToggleButton and ToggleButton.Parent do
             TweenService:Create(ToggleButton, TweenInfo.new(2.5, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), {
@@ -700,7 +690,6 @@ function UltimateHub:CreateWindow(scriptName)
         end
     end)
     
-    -- سحب
     local dragging, dragInput, mousePos, framePos = false
     
     ToggleButton.InputBegan:Connect(function(input)
@@ -768,8 +757,16 @@ function UltimateHub:CreateWindow(scriptName)
     TitleFix.BorderSizePixel = 0
     TitleFix.Parent = TitleBar
     
-    -- صورة اللاعب في العنوان
-    local TitleAvatar = CreatePlayerAvatar(TitleBar, LocalPlayer.UserId, UDim2.new(0, 45, 0, 45), UDim2.new(0, 14, 0.5, -22.5))
+    -- صورة اللاعب القابلة للضغط
+    local TitleAvatarButton = Instance.new("TextButton")
+    TitleAvatarButton.Size = UDim2.new(0, 45, 0, 45)
+    TitleAvatarButton.Position = UDim2.new(0, 14, 0.5, -22.5)
+    TitleAvatarButton.BackgroundTransparency = 1
+    TitleAvatarButton.Text = ""
+    TitleAvatarButton.AutoButtonColor = false
+    TitleAvatarButton.Parent = TitleBar
+    
+    local TitleAvatar = CreatePlayerAvatar(TitleAvatarButton, LocalPlayer.UserId, UDim2.new(1, 0, 1, 0), UDim2.new(0, 0, 0, 0))
     
     local TitleLabel = Instance.new("TextLabel")
     TitleLabel.Size = UDim2.new(1, -230, 1, 0)
@@ -1023,10 +1020,8 @@ function UltimateHub:CreateWindow(scriptName)
     ProfileBackText.TextXAlignment = Enum.TextXAlignment.Left
     ProfileBackText.Parent = ProfileBackButton
     
-    -- صورة اللاعب الكبيرة
     local BigAvatar = CreatePlayerAvatar(ProfilePage, LocalPlayer.UserId, UDim2.new(0, 120, 0, 120), UDim2.new(0, 15, 0, 80))
     
-    -- ترحيب
     local WelcomeLabel = Instance.new("TextLabel")
     WelcomeLabel.Size = UDim2.new(1, -150, 0, 40)
     WelcomeLabel.Position = UDim2.new(0, 145, 0, 80)
@@ -1038,7 +1033,6 @@ function UltimateHub:CreateWindow(scriptName)
     WelcomeLabel.TextXAlignment = Enum.TextXAlignment.Left
     WelcomeLabel.Parent = ProfilePage
     
-    -- مربع المعلومات
     local InfoBox = Instance.new("Frame")
     InfoBox.Size = UDim2.new(1, -150, 0, 140)
     InfoBox.Position = UDim2.new(0, 145, 0, 130)
@@ -1051,7 +1045,6 @@ function UltimateHub:CreateWindow(scriptName)
     CreateGlassEffect(InfoBox)
     CreateStroke(InfoBox, CurrentTheme.Primary, 2, 0.4)
     
-    -- عدد المستخدمين
     local UsersCountLabel = Instance.new("TextLabel")
     UsersCountLabel.Size = UDim2.new(0.5, -10, 0, 30)
     UsersCountLabel.Position = UDim2.new(0, 10, 0, 10)
@@ -1074,7 +1067,6 @@ function UltimateHub:CreateWindow(scriptName)
     UsersCountValue.TextXAlignment = Enum.TextXAlignment.Left
     UsersCountValue.Parent = InfoBox
     
-    -- عنوان المطورين
     local DevLabel = Instance.new("TextLabel")
     DevLabel.Size = UDim2.new(0.5, -10, 0, 30)
     DevLabel.Position = UDim2.new(0.5, 0, 0, 10)
@@ -1086,7 +1078,6 @@ function UltimateHub:CreateWindow(scriptName)
     DevLabel.TextXAlignment = Enum.TextXAlignment.Left
     DevLabel.Parent = InfoBox
     
-    -- معلومات المطور
     local DevAvatar = CreatePlayerAvatar(InfoBox, DeveloperInfo[1].UserId, UDim2.new(0, 50, 0, 50), UDim2.new(0.5, 10, 0, 45))
     
     local DevUsername = Instance.new("TextLabel")
@@ -1119,7 +1110,6 @@ function UltimateHub:CreateWindow(scriptName)
     DevRank.TextXAlignment = Enum.TextXAlignment.Left
     DevRank.Parent = InfoBox
     
-    -- تحديث عدد المستخدمين كل 5 ثواني
     spawn(function()
         while UsersCountValue and UsersCountValue.Parent do
             wait(5)
@@ -1260,6 +1250,7 @@ function UltimateHub:CreateWindow(scriptName)
         
         MainPage.Visible = true
         ProfilePage.Visible = true
+        FolderPage.Visible = false
         ProfilePage.Position = UDim2.new(1, 0, 0, 70)
         
         TweenService:Create(MainPage, TweenInfo.new(0.45, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {
@@ -1276,10 +1267,11 @@ function UltimateHub:CreateWindow(scriptName)
     
     BackButton.MouseButton1Click:Connect(SwitchToMain)
     ProfileBackButton.MouseButton1Click:Connect(SwitchToMain)
-    TitleAvatar.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            SwitchToProfile()
-        end
+    
+    -- الضغط على صورة اللاعب لفتح الملف الشخصي (مصلح!)
+    TitleAvatarButton.MouseButton1Click:Connect(function()
+        print("تم الضغط على صورة اللاعب!")
+        SwitchToProfile()
     end)
     
     -- ═══════════════════════════════════════════════════════════
