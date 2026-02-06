@@ -1,3 +1,30 @@
+success",
+                2.5
+            )
+        else
+            PlaySound(Sounds.Click, 0.3)
+            local closeTween = TweenService:Create(MainFrame, TweenInfo.new(0.6, Enum.EasingStyle.Back, Enum.EasingDirection.In), {
+                Size = UDim2.new(0, 0, 0, 0)
+            })
+            closeTween:Play()
+            closeTween.Completed:Connect(function()
+                MainFrame.Visible = false
+            end)
+            
+            TweenService:Create(PlayerAvatar, TweenInfo.new(0.5), {Rotation = 0}):Play()
+        end
+    end
+    
+    ToggleButton.MouseButton1Click:Connect(ToggleUI)
+    CloseButton.MouseButton1Click:Connect(ToggleUI)
+    
+    wait(0.6)
+    ToggleUI()
+    
+    return Hub
+end
+
+return UltimateHub
 --[[
     ╔═══════════════════════════════════════════════════════════════╗
     ║      🌟 Ultimate Hub - Fixed Final Version 🌟                ║
