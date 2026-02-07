@@ -1,7 +1,7 @@
 --[[
     ╔═══════════════════════════════════════════════════════════════╗
-    ║      🌟 Ultimate Hub - Fixed Final Version 🌟                ║
-    ║        النسخة النهائية المصلحة بدون مشاكل                    ║
+    ║      🌟 Ultimate Premium Hub - Perfect Edition 🌟           ║
+    ║           النسخة المثالية الفخمة مع كل المميزات              ║
     ╚═══════════════════════════════════════════════════════════════╝
 ]]
 
@@ -10,13 +10,14 @@ local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
 local CoreGui = game:GetService("CoreGui")
 local HttpService = game:GetService("HttpService")
+local SoundService = game:GetService("SoundService")
 local LocalPlayer = Players.LocalPlayer
 
 local UltimateHub = {}
 UltimateHub.__index = UltimateHub
 
 -- ═══════════════════════════════════════════════════════════════
---                    🎨 نظام الثيمات
+--                    🎨 نظام الثيمات المتقدم
 -- ═══════════════════════════════════════════════════════════════
 local Themes = {
     Glass = {
@@ -83,59 +84,126 @@ local CurrentThemeIndex = 1
 local ThemeNames = {"Glass", "Neon", "Royal"}
 
 -- ═══════════════════════════════════════════════════════════════
---                    🎯 أيقونات
+--                    🎯 أيقونات متقدمة
 -- ═══════════════════════════════════════════════════════════════
 local Icons = {
-    Close = "rbxassetid://7072725342",
-    Resize = "rbxassetid://7072718230",
-    Theme = "rbxassetid://7072718863",
-    Menu = "rbxassetid://7072718409",
-    Search = "rbxassetid://7072719338",
-    Play = "rbxassetid://7072717643",
-    Star = "rbxassetid://7072718799",
-    Users = "rbxassetid://7072718006",
-    Check = "rbxassetid://7072706796",
-    Back = "rbxassetid://7072719070",
+    Close = "rbxassetid://10747384394",
+    Minimize = "rbxassetid://10734896206",
+    Maximize = "rbxassetid://10734950309",
+    Expand = "rbxassetid://10747372992",
+    Theme = "rbxassetid://10734950309",
+    Palette = "rbxassetid://10734920149",
+    Menu = "rbxassetid://10734896206",
+    Search = "rbxassetid://10734898102",
+    Play = "rbxassetid://10734942024",
+    Star = "rbxassetid://10734952273",
+    Users = "rbxassetid://10747373176",
+    Check = "rbxassetid://10734896144",
+    Back = "rbxassetid://10734884548",
+    User = "rbxassetid://10747373176",
+    PlayerJoin = "rbxassetid://10723407389",
+    Info = "rbxassetid://10723434711",
+    Settings = "rbxassetid://10734949856",
+    Clock = "rbxassetid://10734896206",
+    Activity = "rbxassetid://10723407389"
 }
 
 -- ═══════════════════════════════════════════════════════════════
---                    📊 نظام عد المستخدمين
+--                    🔊 نظام الأصوات
+-- ═══════════════════════════════════════════════════════════════
+local Sounds = {
+    Notification = "rbxassetid://9770089602",
+    Success = "rbxassetid://9770089602", 
+    Error = "rbxassetid://9770089119",
+    Click = "rbxassetid://9770089602",
+    Toggle = "rbxassetid://9770089602",
+    PlayerJoin = "rbxassetid://9770089602"
+}
+
+local function PlaySound(soundId, volume)
+    volume = volume or 0.5
+    local sound = Instance.new("Sound")
+    sound.SoundId = soundId
+    sound.Volume = volume
+    sound.Parent = SoundService
+    sound:Play()
+    
+    sound.Ended:Connect(function()
+        sound:Destroy()
+    end)
+end
+
+-- ═══════════════════════════════════════════════════════════════
+--                    📊 نظام عد المستخدمين المحسّن
 -- ═══════════════════════════════════════════════════════════════
 local UserCountData = {
     TotalUsers = 0,
     ActiveUsers = {},
-    CurrentMap = game.PlaceId
+    SessionStart = os.time(),
+    DataFile = "HubUserData_" .. game.PlaceId .. ".json"
 }
+
+-- حفظ البيانات
+local function SaveUserData()
+    local data = {
+        users = UserCountData.ActiveUsers,
+        total = UserCountData.TotalUsers,
+        lastUpdate = os.time()
+    }
+    -- في التطبيق الحقيقي، استخدم DataStore
+    return data
+end
+
+-- تحميل البيانات
+local function LoadUserData()
+    -- في التطبيق الحقيقي، استخدم DataStore
+    return nil
+end
 
 local function UpdateUserCount()
     UserCountData.TotalUsers = #UserCountData.ActiveUsers
     return UserCountData.TotalUsers
 end
 
-local function AddUser(userId)
-    if not table.find(UserCountData.ActiveUsers, userId) then
-        table.insert(UserCountData.ActiveUsers, userId)
-        UpdateUserCount()
+local function AddUser(userId, username, displayName)
+    local userExists = false
+    for _, user in pairs(UserCountData.ActiveUsers) do
+        if user.UserId == userId then
+            userExists = true
+            user.LastSeen = os.time()
+            break
+        end
     end
+    
+    if not userExists then
+        table.insert(UserCountData.ActiveUsers, {
+            UserId = userId,
+            Username = username,
+            DisplayName = displayName,
+            JoinTime = os.time(),
+            LastSeen = os.time()
+        })
+        UpdateUserCount()
+        return true -- مستخدم جديد
+    end
+    
+    UpdateUserCount()
+    return false -- مستخدم موجود
 end
 
 local function RemoveUser(userId)
-    local index = table.find(UserCountData.ActiveUsers, userId)
-    if index then
-        table.remove(UserCountData.ActiveUsers, index)
-        UpdateUserCount()
+    for i, user in pairs(UserCountData.ActiveUsers) do
+        if user.UserId == userId then
+            table.remove(UserCountData.ActiveUsers, i)
+            UpdateUserCount()
+            return true
+        end
     end
+    return false
 end
 
-AddUser(LocalPlayer.UserId)
-
-Players.PlayerAdded:Connect(function(player)
-    AddUser(player.UserId)
-end)
-
-Players.PlayerRemoving:Connect(function(player)
-    RemoveUser(player.UserId)
-end)
+-- تسجيل المستخدم الحالي
+AddUser(LocalPlayer.UserId, LocalPlayer.Name, LocalPlayer.DisplayName)
 
 -- ═══════════════════════════════════════════════════════════════
 --                    👨‍💻 معلومات المطورين
@@ -143,7 +211,7 @@ end)
 local DeveloperInfo = {
     {
         Name = "مطور السكربت",
-        Username = "@ScriptDev",
+        Username = "@DevPro",
         UserId = 1,
         Rank = "مطور رئيسي",
         Verified = true,
@@ -152,7 +220,7 @@ local DeveloperInfo = {
 }
 
 -- ═══════════════════════════════════════════════════════════════
---                    ✨ وظائف التأثيرات (بدون ألوان خارجية)
+--                    ✨ وظائف التأثيرات
 -- ═══════════════════════════════════════════════════════════════
 
 local function CreateGlassEffect(parent)
@@ -211,7 +279,6 @@ local function CreateGradient(parent, rotation, colorStart, colorEnd)
     return Gradient
 end
 
--- توهج داخلي فقط (بدون توهج خارجي)
 local function CreateInnerGlow(parent, color, intensity)
     color = color or CurrentTheme.Primary
     intensity = intensity or 0.3
@@ -278,140 +345,358 @@ local function CreateCorner(radius)
 end
 
 -- ═══════════════════════════════════════════════════════════════
---                    🔔 نظام الإشعارات
+--                    🔔 نظام الإشعارات الفخم الجديد
 -- ═══════════════════════════════════════════════════════════════
+local NotificationQueue = {}
+local NotificationContainer = nil
+
 function UltimateHub:ShowNotification(title, message, icon, notifType, duration)
     duration = duration or 4
     
-    local NotifGui = Instance.new("ScreenGui")
-    NotifGui.Name = "Notification"
-    NotifGui.DisplayOrder = 999
-    NotifGui.ResetOnSpawn = false
-    NotifGui.Parent = CoreGui
+    if not NotificationContainer then
+        NotificationContainer = Instance.new("ScreenGui")
+        NotificationContainer.Name = "NotificationContainer"
+        NotificationContainer.DisplayOrder = 999
+        NotificationContainer.ResetOnSpawn = false
+        NotificationContainer.Parent = CoreGui
+    end
     
     local NotifFrame = Instance.new("Frame")
-    NotifFrame.Size = UDim2.new(0, 350, 0, 100)
-    NotifFrame.Position = UDim2.new(0.5, -175, 0, -120)
+    NotifFrame.Size = UDim2.new(0, 320, 0, 80)
+    NotifFrame.Position = UDim2.new(1, 350, 0, 20 + (#NotificationQueue * 90))
     NotifFrame.BackgroundColor3 = CurrentTheme.Surface
-    NotifFrame.BackgroundTransparency = CurrentTheme.Transparency
+    NotifFrame.BackgroundTransparency = 0.15
     NotifFrame.BorderSizePixel = 0
-    NotifFrame.Parent = NotifGui
+    NotifFrame.ZIndex = 10
+    NotifFrame.Parent = NotificationContainer
     
-    CreateCorner(20).Parent = NotifFrame
+    CreateCorner(18).Parent = NotifFrame
     CreateGlassEffect(NotifFrame)
     
-    local primaryColor, secondaryColor
+    local primaryColor, secondaryColor, soundId
     if notifType == "success" then
         primaryColor = CurrentTheme.Success
         secondaryColor = Color3.fromRGB(100, 255, 150)
+        soundId = Sounds.Success
     elseif notifType == "error" then
         primaryColor = CurrentTheme.Error
         secondaryColor = Color3.fromRGB(255, 120, 120)
+        soundId = Sounds.Error
     elseif notifType == "warning" then
         primaryColor = CurrentTheme.Warning
         secondaryColor = Color3.fromRGB(255, 200, 100)
+        soundId = Sounds.Notification
     else
         primaryColor = CurrentTheme.Primary
         secondaryColor = CurrentTheme.Secondary
+        soundId = Sounds.Notification
     end
     
-    CreateStroke(NotifFrame, primaryColor, 2, 0.4)
-    CreateInnerGlow(NotifFrame, primaryColor, 0.2)
+    CreateStroke(NotifFrame, primaryColor, 1.5, 0.3)
+    CreateInnerGlow(NotifFrame, primaryColor, 0.15)
     
-    local TopBar = Instance.new("Frame")
-    TopBar.Size = UDim2.new(1, 0, 0, 4)
-    TopBar.BackgroundColor3 = primaryColor
-    TopBar.BorderSizePixel = 0
-    TopBar.Parent = NotifFrame
+    -- شريط جانبي
+    local SideBar = Instance.new("Frame")
+    SideBar.Size = UDim2.new(0, 4, 1, 0)
+    SideBar.BackgroundColor3 = primaryColor
+    SideBar.BorderSizePixel = 0
+    SideBar.ZIndex = 11
+    SideBar.Parent = NotifFrame
     
-    CreateGradient(TopBar, 0, primaryColor, secondaryColor)
+    CreateGradient(SideBar, 90, primaryColor, secondaryColor)
     
+    -- أيقونة
     local IconContainer = Instance.new("Frame")
-    IconContainer.Size = UDim2.new(0, 55, 0, 55)
-    IconContainer.Position = UDim2.new(0, 15, 0.5, -27.5)
+    IconContainer.Size = UDim2.new(0, 45, 0, 45)
+    IconContainer.Position = UDim2.new(0, 12, 0.5, -22.5)
     IconContainer.BackgroundColor3 = primaryColor
-    IconContainer.BackgroundTransparency = 0.3
+    IconContainer.BackgroundTransparency = 0.7
     IconContainer.BorderSizePixel = 0
+    IconContainer.ZIndex = 11
     IconContainer.Parent = NotifFrame
     
-    CreateCorner(16).Parent = IconContainer
-    CreateGradient(IconContainer, 45, primaryColor, secondaryColor)
+    CreateCorner(12).Parent = IconContainer
     
     local IconImage = Instance.new("ImageLabel")
-    IconImage.Size = UDim2.new(0, 32, 0, 32)
-    IconImage.Position = UDim2.new(0.5, -16, 0.5, -16)
+    IconImage.Size = UDim2.new(0, 28, 0, 28)
+    IconImage.Position = UDim2.new(0.5, -14, 0.5, -14)
     IconImage.BackgroundTransparency = 1
     IconImage.Image = icon or Icons.Star
     IconImage.ImageColor3 = Color3.fromRGB(255, 255, 255)
+    IconImage.ZIndex = 12
     IconImage.Parent = IconContainer
     
+    -- أنيميشن الأيقونة
     spawn(function()
-        while IconImage and IconImage.Parent do
-            TweenService:Create(IconImage, TweenInfo.new(2, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), {
-                Rotation = 20,
-                Size = UDim2.new(0, 36, 0, 36)
-            }):Play()
-            wait(2)
-            TweenService:Create(IconImage, TweenInfo.new(2, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), {
-                Rotation = -20,
+        for i = 1, 3 do
+            TweenService:Create(IconImage, TweenInfo.new(0.3, Enum.EasingStyle.Back), {
+                Rotation = 15,
                 Size = UDim2.new(0, 32, 0, 32)
             }):Play()
-            wait(2)
+            wait(0.3)
+            TweenService:Create(IconImage, TweenInfo.new(0.3, Enum.EasingStyle.Back), {
+                Rotation = -15,
+                Size = UDim2.new(0, 28, 0, 28)
+            }):Play()
+            wait(0.3)
         end
+        IconImage.Rotation = 0
     end)
     
+    -- العنوان
     local TitleLabel = Instance.new("TextLabel")
-    TitleLabel.Size = UDim2.new(1, -85, 0, 30)
-    TitleLabel.Position = UDim2.new(0, 78, 0, 15)
+    TitleLabel.Size = UDim2.new(1, -70, 0, 24)
+    TitleLabel.Position = UDim2.new(0, 64, 0, 12)
     TitleLabel.BackgroundTransparency = 1
     TitleLabel.Text = title
     TitleLabel.TextColor3 = CurrentTheme.TextPrimary
-    TitleLabel.TextSize = 18
+    TitleLabel.TextSize = 15
     TitleLabel.Font = Enum.Font.GothamBold
     TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
+    TitleLabel.ZIndex = 11
     TitleLabel.Parent = NotifFrame
     
+    -- الرسالة
     local MessageLabel = Instance.new("TextLabel")
-    MessageLabel.Size = UDim2.new(1, -85, 0, 45)
-    MessageLabel.Position = UDim2.new(0, 78, 0, 42)
+    MessageLabel.Size = UDim2.new(1, -70, 0, 36)
+    MessageLabel.Position = UDim2.new(0, 64, 0, 36)
     MessageLabel.BackgroundTransparency = 1
     MessageLabel.Text = message
     MessageLabel.TextColor3 = CurrentTheme.TextSecondary
-    MessageLabel.TextSize = 14
+    MessageLabel.TextSize = 13
     MessageLabel.Font = Enum.Font.Gotham
     MessageLabel.TextXAlignment = Enum.TextXAlignment.Left
     MessageLabel.TextYAlignment = Enum.TextYAlignment.Top
     MessageLabel.TextWrapped = true
+    MessageLabel.ZIndex = 11
     MessageLabel.Parent = NotifFrame
     
+    -- شريط التقدم
     local ProgressBar = Instance.new("Frame")
-    ProgressBar.Size = UDim2.new(1, 0, 0, 3)
-    ProgressBar.Position = UDim2.new(0, 0, 1, -3)
+    ProgressBar.Size = UDim2.new(1, 0, 0, 2)
+    ProgressBar.Position = UDim2.new(0, 0, 1, -2)
     ProgressBar.BackgroundColor3 = primaryColor
     ProgressBar.BorderSizePixel = 0
+    ProgressBar.ZIndex = 11
     ProgressBar.Parent = NotifFrame
     
     CreateGradient(ProgressBar, 90, primaryColor, secondaryColor)
     
-    local slideIn = TweenService:Create(NotifFrame, TweenInfo.new(0.8, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
-        Position = UDim2.new(0.5, -175, 0, 25)
+    table.insert(NotificationQueue, NotifFrame)
+    
+    -- صوت
+    PlaySound(soundId, 0.4)
+    
+    -- أنيميشن الدخول
+    local slideIn = TweenService:Create(NotifFrame, TweenInfo.new(0.6, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+        Position = UDim2.new(1, -330, 0, 20 + ((#NotificationQueue - 1) * 90))
     })
     slideIn:Play()
     
+    -- أنيميشن شريط التقدم
     TweenService:Create(ProgressBar, TweenInfo.new(duration, Enum.EasingStyle.Linear), {
-        Size = UDim2.new(0, 0, 0, 3)
+        Size = UDim2.new(0, 0, 0, 2)
     }):Play()
     
     wait(duration)
     
-    local slideOut = TweenService:Create(NotifFrame, TweenInfo.new(0.7, Enum.EasingStyle.Back, Enum.EasingDirection.In), {
-        Position = UDim2.new(0.5, -175, 0, -120)
+    -- أنيميشن الخروج
+    local slideOut = TweenService:Create(NotifFrame, TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.In), {
+        Position = UDim2.new(1, 350, 0, NotifFrame.Position.Y.Offset),
+        BackgroundTransparency = 1
     })
     slideOut:Play()
+    
     slideOut.Completed:Connect(function()
-        NotifGui:Destroy()
+        for i, notif in pairs(NotificationQueue) do
+            if notif == NotifFrame then
+                table.remove(NotificationQueue, i)
+                break
+            end
+        end
+        NotifFrame:Destroy()
+        
+        -- إعادة ترتيب الإشعارات
+        for i, notif in pairs(NotificationQueue) do
+            TweenService:Create(notif, TweenInfo.new(0.3), {
+                Position = UDim2.new(1, -330, 0, 20 + ((i - 1) * 90))
+            }):Play()
+        end
     end)
 end
+
+-- ═══════════════════════════════════════════════════════════════
+--                    👥 إشعار دخول لاعب جديد
+-- ═══════════════════════════════════════════════════════════════
+function UltimateHub:ShowPlayerJoinNotification(player)
+    if not NotificationContainer then
+        NotificationContainer = Instance.new("ScreenGui")
+        NotificationContainer.Name = "NotificationContainer"
+        NotificationContainer.DisplayOrder = 999
+        NotificationContainer.ResetOnSpawn = false
+        NotificationContainer.Parent = CoreGui
+    end
+    
+    local NotifFrame = Instance.new("Frame")
+    NotifFrame.Size = UDim2.new(0, 350, 0, 110)
+    NotifFrame.Position = UDim2.new(1, 370, 0, 20 + (#NotificationQueue * 120))
+    NotifFrame.BackgroundColor3 = CurrentTheme.Card
+    NotifFrame.BackgroundTransparency = 0.1
+    NotifFrame.BorderSizePixel = 0
+    NotifFrame.ZIndex = 10
+    NotifFrame.Parent = NotificationContainer
+    
+    CreateCorner(20).Parent = NotifFrame
+    CreateGlassEffect(NotifFrame)
+    CreateStroke(NotifFrame, CurrentTheme.Info, 2, 0.3)
+    CreateInnerGlow(NotifFrame, CurrentTheme.Info, 0.2)
+    
+    -- صورة اللاعب
+    local PlayerImage = Instance.new("ImageLabel")
+    PlayerImage.Size = UDim2.new(0, 60, 0, 60)
+    PlayerImage.Position = UDim2.new(0, 15, 0, 15)
+    PlayerImage.BackgroundColor3 = CurrentTheme.Surface
+    PlayerImage.BackgroundTransparency = 0.3
+    PlayerImage.BorderSizePixel = 0
+    PlayerImage.Image = "https://www.roblox.com/headshot-thumbnail/image?userId=" .. player.UserId .. "&width=150&height=150&format=png"
+    PlayerImage.ZIndex = 11
+    PlayerImage.Parent = NotifFrame
+    
+    CreateCorner(30).Parent = PlayerImage
+    CreateStroke(PlayerImage, CurrentTheme.Primary, 2, 0.4)
+    
+    -- العنوان
+    local TitleLabel = Instance.new("TextLabel")
+    TitleLabel.Size = UDim2.new(1, -90, 0, 22)
+    TitleLabel.Position = UDim2.new(0, 85, 0, 12)
+    TitleLabel.BackgroundTransparency = 1
+    TitleLabel.Text = "🎮 دخل لاعب جديد!"
+    TitleLabel.TextColor3 = CurrentTheme.Info
+    TitleLabel.TextSize = 16
+    TitleLabel.Font = Enum.Font.GothamBold
+    TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
+    TitleLabel.ZIndex = 11
+    TitleLabel.Parent = NotifFrame
+    
+    -- الاسم
+    local NameLabel = Instance.new("TextLabel")
+    NameLabel.Size = UDim2.new(1, -90, 0, 18)
+    NameLabel.Position = UDim2.new(0, 85, 0, 36)
+    NameLabel.BackgroundTransparency = 1
+    NameLabel.Text = "👤 الاسم: " .. player.DisplayName
+    NameLabel.TextColor3 = CurrentTheme.TextPrimary
+    NameLabel.TextSize = 13
+    NameLabel.Font = Enum.Font.Gotham
+    NameLabel.TextXAlignment = Enum.TextXAlignment.Left
+    NameLabel.ZIndex = 11
+    NameLabel.Parent = NotifFrame
+    
+    -- اليوزر
+    local UsernameLabel = Instance.new("TextLabel")
+    UsernameLabel.Size = UDim2.new(1, -90, 0, 18)
+    UsernameLabel.Position = UDim2.new(0, 85, 0, 54)
+    UsernameLabel.BackgroundTransparency = 1
+    UsernameLabel.Text = "📝 اليوزر: @" .. player.Name
+    UsernameLabel.TextColor3 = CurrentTheme.TextSecondary
+    UsernameLabel.TextSize = 12
+    UsernameLabel.Font = Enum.Font.Gotham
+    UsernameLabel.TextXAlignment = Enum.TextXAlignment.Left
+    UsernameLabel.ZIndex = 11
+    UsernameLabel.Parent = NotifFrame
+    
+    -- الآيدي
+    local IdLabel = Instance.new("TextLabel")
+    IdLabel.Size = UDim2.new(1, -90, 0, 18)
+    IdLabel.Position = UDim2.new(0, 85, 0, 72)
+    IdLabel.BackgroundTransparency = 1
+    IdLabel.Text = "🆔 الآيدي: " .. player.UserId
+    IdLabel.TextColor3 = CurrentTheme.TextSecondary
+    IdLabel.TextSize = 12
+    IdLabel.Font = Enum.Font.Gotham
+    IdLabel.TextXAlignment = Enum.TextXAlignment.Left
+    IdLabel.ZIndex = 11
+    IdLabel.Parent = NotifFrame
+    
+    -- شريط جانبي متحرك
+    local SideBar = Instance.new("Frame")
+    SideBar.Size = UDim2.new(0, 5, 0, 0)
+    SideBar.Position = UDim2.new(0, 0, 0, 0)
+    SideBar.BackgroundColor3 = CurrentTheme.Info
+    SideBar.BorderSizePixel = 0
+    SideBar.ZIndex = 12
+    SideBar.Parent = NotifFrame
+    
+    CreateGradient(SideBar, 90, CurrentTheme.Info, CurrentTheme.Primary)
+    
+    TweenService:Create(SideBar, TweenInfo.new(0.6, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+        Size = UDim2.new(0, 5, 1, 0)
+    }):Play()
+    
+    table.insert(NotificationQueue, NotifFrame)
+    
+    -- صوت
+    PlaySound(Sounds.PlayerJoin, 0.5)
+    
+    -- أنيميشن الدخول
+    local slideIn = TweenService:Create(NotifFrame, TweenInfo.new(0.7, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+        Position = UDim2.new(1, -360, 0, 20 + ((#NotificationQueue - 1) * 120))
+    })
+    slideIn:Play()
+    
+    -- أنيميشن الصورة
+    spawn(function()
+        for i = 1, 2 do
+            TweenService:Create(PlayerImage, TweenInfo.new(0.5, Enum.EasingStyle.Elastic), {
+                Size = UDim2.new(0, 65, 0, 65)
+            }):Play()
+            wait(0.5)
+            TweenService:Create(PlayerImage, TweenInfo.new(0.5, Enum.EasingStyle.Elastic), {
+                Size = UDim2.new(0, 60, 0, 60)
+            }):Play()
+            wait(0.5)
+        end
+    end)
+    
+    wait(6)
+    
+    -- أنيميشن الخروج
+    local slideOut = TweenService:Create(NotifFrame, TweenInfo.new(0.6, Enum.EasingStyle.Back, Enum.EasingDirection.In), {
+        Position = UDim2.new(1, 370, 0, NotifFrame.Position.Y.Offset),
+        BackgroundTransparency = 1
+    })
+    slideOut:Play()
+    
+    slideOut.Completed:Connect(function()
+        for i, notif in pairs(NotificationQueue) do
+            if notif == NotifFrame then
+                table.remove(NotificationQueue, i)
+                break
+            end
+        end
+        NotifFrame:Destroy()
+        
+        for i, notif in pairs(NotificationQueue) do
+            TweenService:Create(notif, TweenInfo.new(0.3), {
+                Position = UDim2.new(1, notif.Size.X.Offset > 330 and -360 or -330, 0, 20 + ((i - 1) * (notif.Size.Y.Offset + 10)))
+            }):Play()
+        end
+    end)
+end
+
+-- مراقبة دخول اللاعبين
+Players.PlayerAdded:Connect(function(player)
+    if player ~= LocalPlayer then
+        local isNew = AddUser(player.UserId, player.Name, player.DisplayName)
+        if isNew then
+            wait(1)
+            UltimateHub:ShowPlayerJoinNotification(player)
+        end
+    end
+end)
+
+Players.PlayerRemoving:Connect(function(player)
+    RemoveUser(player.UserId)
+end)
 
 -- ═══════════════════════════════════════════════════════════════
 --                    🖼️ إنشاء صورة اللاعب
@@ -456,6 +741,79 @@ local function CreatePlayerAvatar(parent, userId, size, position)
 end
 
 -- ═══════════════════════════════════════════════════════════════
+--                    🔘 زر تشغيل/إيقاف iOS
+-- ═══════════════════════════════════════════════════════════════
+local function CreateIOSToggle(parent, position, defaultState, callback)
+    local ToggleFrame = Instance.new("Frame")
+    ToggleFrame.Size = UDim2.new(0, 56, 0, 32)
+    ToggleFrame.Position = position
+    ToggleFrame.BackgroundColor3 = defaultState and CurrentTheme.Success or Color3.fromRGB(60, 60, 70)
+    ToggleFrame.BackgroundTransparency = 0.3
+    ToggleFrame.BorderSizePixel = 0
+    ToggleFrame.Parent = parent
+    
+    CreateCorner(16).Parent = ToggleFrame
+    CreateGlassEffect(ToggleFrame)
+    CreateStroke(ToggleFrame, defaultState and CurrentTheme.Success or Color3.fromRGB(80, 80, 90), 2, 0.4)
+    
+    local ToggleButton = Instance.new("TextButton")
+    ToggleButton.Size = UDim2.new(0, 26, 0, 26)
+    ToggleButton.Position = defaultState and UDim2.new(0, 27, 0, 3) or UDim2.new(0, 3, 0, 3)
+    ToggleButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ToggleButton.BackgroundTransparency = 0.1
+    ToggleButton.BorderSizePixel = 0
+    ToggleButton.Text = ""
+    ToggleButton.AutoButtonColor = false
+    ToggleButton.ZIndex = 2
+    ToggleButton.Parent = ToggleFrame
+    
+    CreateCorner(13).Parent = ToggleButton
+    CreateStroke(ToggleButton, Color3.fromRGB(200, 200, 200), 1, 0.3)
+    
+    local isOn = defaultState
+    
+    ToggleButton.MouseButton1Click:Connect(function()
+        isOn = not isOn
+        
+        -- صوت
+        PlaySound(Sounds.Toggle, 0.4)
+        
+        -- أنيميشن
+        TweenService:Create(ToggleFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {
+            BackgroundColor3 = isOn and CurrentTheme.Success or Color3.fromRGB(60, 60, 70)
+        }):Play()
+        
+        TweenService:Create(ToggleButton, TweenInfo.new(0.35, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+            Position = isOn and UDim2.new(0, 27, 0, 3) or UDim2.new(0, 3, 0, 3)
+        }):Play()
+        
+        -- تغيير الحد
+        for _, child in pairs(ToggleFrame:GetChildren()) do
+            if child:IsA("UIStroke") then
+                TweenService:Create(child, TweenInfo.new(0.3), {
+                    Color = isOn and CurrentTheme.Success or Color3.fromRGB(80, 80, 90)
+                }):Play()
+            end
+        end
+        
+        if callback then
+            callback(isOn)
+        end
+        
+        -- إشعار
+        UltimateHub:ShowNotification(
+            isOn and "✅ تم التفعيل" or "⏸️ تم الإيقاف",
+            isOn and "تم تشغيل الميزة بنجاح" or "تم إيقاف الميزة مؤقتاً",
+            isOn and Icons.Check or Icons.Close,
+            isOn and "success" or "info",
+            2
+        )
+    end)
+    
+    return ToggleFrame, isOn
+end
+
+-- ═══════════════════════════════════════════════════════════════
 --                    📱 إنشاء زر
 -- ═══════════════════════════════════════════════════════════════
 local function CreateButton(parent, text, icon, color, position, size, callback)
@@ -497,6 +855,7 @@ local function CreateButton(parent, text, icon, color, position, size, callback)
     TextLabel.Parent = Button
     
     Button.MouseButton1Down:Connect(function()
+        PlaySound(Sounds.Click, 0.3)
         TweenService:Create(Button, TweenInfo.new(0.1), {
             Size = (size or UDim2.new(0, 290, 0, 58)) - UDim2.new(0, 6, 0, 4),
             BackgroundTransparency = CurrentTheme.Transparency - 0.05
@@ -625,6 +984,8 @@ local function CreateMapCard(parent, imageId, mapName, scriptCount, position, ca
     
     return Card
 end
+
+-- تابع في الجزء التالي...
 
 -- ═══════════════════════════════════════════════════════════════
 --                    📱 إنشاء الواجهة الرئيسية
@@ -757,7 +1118,6 @@ function UltimateHub:CreateWindow(scriptName)
     TitleFix.BorderSizePixel = 0
     TitleFix.Parent = TitleBar
     
-    -- صورة اللاعب القابلة للضغط
     local TitleAvatarButton = Instance.new("TextButton")
     TitleAvatarButton.Size = UDim2.new(0, 45, 0, 45)
     TitleAvatarButton.Position = UDim2.new(0, 14, 0.5, -22.5)
@@ -769,7 +1129,7 @@ function UltimateHub:CreateWindow(scriptName)
     local TitleAvatar = CreatePlayerAvatar(TitleAvatarButton, LocalPlayer.UserId, UDim2.new(1, 0, 1, 0), UDim2.new(0, 0, 0, 0))
     
     local TitleLabel = Instance.new("TextLabel")
-    TitleLabel.Size = UDim2.new(1, -230, 1, 0)
+    TitleLabel.Size = UDim2.new(1, -240, 1, 0)
     TitleLabel.Position = UDim2.new(0, 66, 0, 0)
     TitleLabel.BackgroundTransparency = 1
     TitleLabel.Text = scriptName
@@ -779,7 +1139,7 @@ function UltimateHub:CreateWindow(scriptName)
     TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
     TitleLabel.Parent = TitleBar
     
-    -- أزرار التحكم
+    -- أزرار التحكم مع أيقونات جديدة
     local ThemeButton = Instance.new("TextButton")
     ThemeButton.Size = UDim2.new(0, 50, 0, 50)
     ThemeButton.Position = UDim2.new(1, -165, 0.5, -25)
@@ -798,7 +1158,7 @@ function UltimateHub:CreateWindow(scriptName)
     ThemeIcon.Size = UDim2.new(0, 30, 0, 30)
     ThemeIcon.Position = UDim2.new(0.5, -15, 0.5, -15)
     ThemeIcon.BackgroundTransparency = 1
-    ThemeIcon.Image = Icons.Theme
+    ThemeIcon.Image = Icons.Palette
     ThemeIcon.ImageColor3 = CurrentTheme.TextPrimary
     ThemeIcon.Parent = ThemeButton
     
@@ -820,7 +1180,7 @@ function UltimateHub:CreateWindow(scriptName)
     ResizeIcon.Size = UDim2.new(0, 30, 0, 30)
     ResizeIcon.Position = UDim2.new(0.5, -15, 0.5, -15)
     ResizeIcon.BackgroundTransparency = 1
-    ResizeIcon.Image = Icons.Resize
+    ResizeIcon.Image = Icons.Expand
     ResizeIcon.ImageColor3 = CurrentTheme.TextPrimary
     ResizeIcon.Parent = ResizeButton
     
@@ -978,7 +1338,7 @@ function UltimateHub:CreateWindow(scriptName)
     ScriptsList.Parent = ScriptsScroll
     
     -- ═══════════════════════════════════════════════════════════
-    --                    صفحة معلومات اللاعب
+    --                    صفحة معلومات اللاعب المحسّنة
     -- ═══════════════════════════════════════════════════════════
     local ProfilePage = Instance.new("Frame")
     ProfilePage.Size = UDim2.new(1, 0, 1, -70)
@@ -1020,105 +1380,236 @@ function UltimateHub:CreateWindow(scriptName)
     ProfileBackText.TextXAlignment = Enum.TextXAlignment.Left
     ProfileBackText.Parent = ProfileBackButton
     
-    local BigAvatar = CreatePlayerAvatar(ProfilePage, LocalPlayer.UserId, UDim2.new(0, 120, 0, 120), UDim2.new(0, 15, 0, 80))
+    -- صورة اللاعب الكبيرة
+    local BigAvatar = CreatePlayerAvatar(ProfilePage, LocalPlayer.UserId, UDim2.new(0, 100, 0, 100), UDim2.new(0, 15, 0, 80))
     
+    -- الترحيب
     local WelcomeLabel = Instance.new("TextLabel")
-    WelcomeLabel.Size = UDim2.new(1, -150, 0, 40)
-    WelcomeLabel.Position = UDim2.new(0, 145, 0, 80)
+    WelcomeLabel.Size = UDim2.new(1, -130, 0, 35)
+    WelcomeLabel.Position = UDim2.new(0, 125, 0, 85)
     WelcomeLabel.BackgroundTransparency = 1
     WelcomeLabel.Text = "مرحباً، " .. LocalPlayer.DisplayName .. "! 👋"
     WelcomeLabel.TextColor3 = CurrentTheme.TextPrimary
-    WelcomeLabel.TextSize = 22
+    WelcomeLabel.TextSize = 20
     WelcomeLabel.Font = Enum.Font.GothamBold
     WelcomeLabel.TextXAlignment = Enum.TextXAlignment.Left
     WelcomeLabel.Parent = ProfilePage
     
-    local InfoBox = Instance.new("Frame")
-    InfoBox.Size = UDim2.new(1, -150, 0, 140)
-    InfoBox.Position = UDim2.new(0, 145, 0, 130)
-    InfoBox.BackgroundColor3 = CurrentTheme.Card
-    InfoBox.BackgroundTransparency = CurrentTheme.Transparency
-    InfoBox.BorderSizePixel = 0
-    InfoBox.Parent = ProfilePage
+    local StatusLabel = Instance.new("TextLabel")
+    StatusLabel.Size = UDim2.new(1, -130, 0, 20)
+    StatusLabel.Position = UDim2.new(0, 125, 0, 120)
+    StatusLabel.BackgroundTransparency = 1
+    StatusLabel.Text = "🟢 متصل الآن"
+    StatusLabel.TextColor3 = CurrentTheme.Success
+    StatusLabel.TextSize = 13
+    StatusLabel.Font = Enum.Font.Gotham
+    StatusLabel.TextXAlignment = Enum.TextXAlignment.Left
+    StatusLabel.Parent = ProfilePage
     
-    CreateCorner(20).Parent = InfoBox
-    CreateGlassEffect(InfoBox)
-    CreateStroke(InfoBox, CurrentTheme.Primary, 2, 0.4)
+    -- مربع الإحصائيات
+    local StatsBox = Instance.new("Frame")
+    StatsBox.Size = UDim2.new(1, -30, 0, 180)
+    StatsBox.Position = UDim2.new(0, 15, 0, 195)
+    StatsBox.BackgroundColor3 = CurrentTheme.Card
+    StatsBox.BackgroundTransparency = CurrentTheme.Transparency
+    StatsBox.BorderSizePixel = 0
+    StatsBox.Parent = ProfilePage
+    
+    CreateCorner(20).Parent = StatsBox
+    CreateGlassEffect(StatsBox)
+    CreateStroke(StatsBox, CurrentTheme.Primary, 2, 0.4)
+    
+    -- عداد المستخدمين المحسّن
+    local UsersContainer = Instance.new("Frame")
+    UsersContainer.Size = UDim2.new(0.5, -10, 0, 70)
+    UsersContainer.Position = UDim2.new(0, 10, 0, 10)
+    UsersContainer.BackgroundColor3 = CurrentTheme.Surface
+    UsersContainer.BackgroundTransparency = 0.5
+    UsersContainer.BorderSizePixel = 0
+    UsersContainer.Parent = StatsBox
+    
+    CreateCorner(15).Parent = UsersContainer
+    CreateGradient(UsersContainer, 45)
+    
+    local UsersIcon = Instance.new("ImageLabel")
+    UsersIcon.Size = UDim2.new(0, 32, 0, 32)
+    UsersIcon.Position = UDim2.new(0, 12, 0, 12)
+    UsersIcon.BackgroundTransparency = 1
+    UsersIcon.Image = Icons.Users
+    UsersIcon.ImageColor3 = CurrentTheme.Primary
+    UsersIcon.Parent = UsersContainer
     
     local UsersCountLabel = Instance.new("TextLabel")
-    UsersCountLabel.Size = UDim2.new(0.5, -10, 0, 30)
-    UsersCountLabel.Position = UDim2.new(0, 10, 0, 10)
+    UsersCountLabel.Size = UDim2.new(1, -52, 0, 18)
+    UsersCountLabel.Position = UDim2.new(0, 48, 0, 10)
     UsersCountLabel.BackgroundTransparency = 1
-    UsersCountLabel.Text = "عدد المستخدمين:"
+    UsersCountLabel.Text = "المستخدمين"
     UsersCountLabel.TextColor3 = CurrentTheme.TextSecondary
-    UsersCountLabel.TextSize = 14
+    UsersCountLabel.TextSize = 12
     UsersCountLabel.Font = Enum.Font.Gotham
     UsersCountLabel.TextXAlignment = Enum.TextXAlignment.Left
-    UsersCountLabel.Parent = InfoBox
+    UsersCountLabel.Parent = UsersContainer
     
     local UsersCountValue = Instance.new("TextLabel")
-    UsersCountValue.Size = UDim2.new(0.5, -10, 0, 30)
-    UsersCountValue.Position = UDim2.new(0, 10, 0, 35)
+    UsersCountValue.Size = UDim2.new(1, -52, 0, 32)
+    UsersCountValue.Position = UDim2.new(0, 48, 0, 28)
     UsersCountValue.BackgroundTransparency = 1
     UsersCountValue.Text = tostring(UpdateUserCount())
     UsersCountValue.TextColor3 = CurrentTheme.Primary
-    UsersCountValue.TextSize = 28
+    UsersCountValue.TextSize = 24
     UsersCountValue.Font = Enum.Font.GothamBold
     UsersCountValue.TextXAlignment = Enum.TextXAlignment.Left
-    UsersCountValue.Parent = InfoBox
+    UsersCountValue.Parent = UsersContainer
     
-    local DevLabel = Instance.new("TextLabel")
-    DevLabel.Size = UDim2.new(0.5, -10, 0, 30)
-    DevLabel.Position = UDim2.new(0.5, 0, 0, 10)
-    DevLabel.BackgroundTransparency = 1
-    DevLabel.Text = "المطورين"
-    DevLabel.TextColor3 = CurrentTheme.TextSecondary
-    DevLabel.TextSize = 14
-    DevLabel.Font = Enum.Font.Gotham
-    DevLabel.TextXAlignment = Enum.TextXAlignment.Left
-    DevLabel.Parent = InfoBox
+    -- وقت الجلسة
+    local TimeContainer = Instance.new("Frame")
+    TimeContainer.Size = UDim2.new(0.5, -10, 0, 70)
+    TimeContainer.Position = UDim2.new(0.5, 5, 0, 10)
+    TimeContainer.BackgroundColor3 = CurrentTheme.Surface
+    TimeContainer.BackgroundTransparency = 0.5
+    TimeContainer.BorderSizePixel = 0
+    TimeContainer.Parent = StatsBox
     
-    local DevAvatar = CreatePlayerAvatar(InfoBox, DeveloperInfo[1].UserId, UDim2.new(0, 50, 0, 50), UDim2.new(0.5, 10, 0, 45))
+    CreateCorner(15).Parent = TimeContainer
+    CreateGradient(TimeContainer, 135)
     
-    local DevUsername = Instance.new("TextLabel")
-    DevUsername.Size = UDim2.new(0.5, -75, 0, 20)
-    DevUsername.Position = UDim2.new(0.5, 68, 0, 50)
-    DevUsername.BackgroundTransparency = 1
-    DevUsername.Text = DeveloperInfo[1].Username
-    DevUsername.TextColor3 = CurrentTheme.TextPrimary
-    DevUsername.TextSize = 15
-    DevUsername.Font = Enum.Font.GothamBold
-    DevUsername.TextXAlignment = Enum.TextXAlignment.Left
-    DevUsername.Parent = InfoBox
+    local TimeIcon = Instance.new("ImageLabel")
+    TimeIcon.Size = UDim2.new(0, 32, 0, 32)
+    TimeIcon.Position = UDim2.new(0, 12, 0, 12)
+    TimeIcon.BackgroundTransparency = 1
+    TimeIcon.Image = Icons.Clock
+    TimeIcon.ImageColor3 = CurrentTheme.Accent
+    TimeIcon.Parent = TimeContainer
     
-    local VerifiedIcon = Instance.new("ImageLabel")
-    VerifiedIcon.Size = UDim2.new(0, 18, 0, 18)
-    VerifiedIcon.Position = UDim2.new(0.5, 68 + DevUsername.TextBounds.X + 5, 0, 51)
-    VerifiedIcon.BackgroundTransparency = 1
-    VerifiedIcon.Image = Icons.Check
-    VerifiedIcon.ImageColor3 = CurrentTheme.Primary
-    VerifiedIcon.Parent = InfoBox
+    local TimeLabel = Instance.new("TextLabel")
+    TimeLabel.Size = UDim2.new(1, -52, 0, 18)
+    TimeLabel.Position = UDim2.new(0, 48, 0, 10)
+    TimeLabel.BackgroundTransparency = 1
+    TimeLabel.Text = "وقت الجلسة"
+    TimeLabel.TextColor3 = CurrentTheme.TextSecondary
+    TimeLabel.TextSize = 12
+    TimeLabel.Font = Enum.Font.Gotham
+    TimeLabel.TextXAlignment = Enum.TextXAlignment.Left
+    TimeLabel.Parent = TimeContainer
     
-    local DevRank = Instance.new("TextLabel")
-    DevRank.Size = UDim2.new(0.5, -75, 0, 18)
-    DevRank.Position = UDim2.new(0.5, 68, 0, 72)
-    DevRank.BackgroundTransparency = 1
-    DevRank.Text = DeveloperInfo[1].Rank
-    DevRank.TextColor3 = DeveloperInfo[1].RankColor
-    DevRank.TextSize = 13
-    DevRank.Font = Enum.Font.Gotham
-    DevRank.TextXAlignment = Enum.TextXAlignment.Left
-    DevRank.Parent = InfoBox
+    local TimeValue = Instance.new("TextLabel")
+    TimeValue.Size = UDim2.new(1, -52, 0, 32)
+    TimeValue.Position = UDim2.new(0, 48, 0, 28)
+    TimeValue.BackgroundTransparency = 1
+    TimeValue.Text = "0:00"
+    TimeValue.TextColor3 = CurrentTheme.Accent
+    TimeValue.TextSize = 20
+    TimeValue.Font = Enum.Font.GothamBold
+    TimeValue.TextXAlignment = Enum.TextXAlignment.Left
+    TimeValue.Parent = TimeContainer
     
+    -- تحديث وقت الجلسة
     spawn(function()
-        while UsersCountValue and UsersCountValue.Parent do
-            wait(5)
-            UsersCountValue.Text = tostring(UpdateUserCount())
+        while TimeValue and TimeValue.Parent do
+            wait(1)
+            local elapsed = os.time() - UserCountData.SessionStart
+            local minutes = math.floor(elapsed / 60)
+            local seconds = elapsed % 60
+            TimeValue.Text = string.format("%d:%02d", minutes, seconds)
         end
     end)
     
+    -- معلومات المطور
+    local DevContainer = Instance.new("Frame")
+    DevContainer.Size = UDim2.new(1, -20, 0, 80)
+    DevContainer.Position = UDim2.new(0, 10, 0, 90)
+    DevContainer.BackgroundColor3 = CurrentTheme.Surface
+    DevContainer.BackgroundTransparency = 0.5
+    DevContainer.BorderSizePixel = 0
+    DevContainer.Parent = StatsBox
+    
+    CreateCorner(15).Parent = DevContainer
+    CreateGradient(DevContainer, 90)
+    
+    local DevTitle = Instance.new("TextLabel")
+    DevTitle.Size = UDim2.new(1, -20, 0, 20)
+    DevTitle.Position = UDim2.new(0, 10, 0, 8)
+    DevTitle.BackgroundTransparency = 1
+    DevTitle.Text = "👨‍💻 المطور"
+    DevTitle.TextColor3 = CurrentTheme.TextSecondary
+    DevTitle.TextSize = 13
+    DevTitle.Font = Enum.Font.GothamBold
+    DevTitle.TextXAlignment = Enum.TextXAlignment.Left
+    DevTitle.Parent = DevContainer
+    
+    local DevAvatar = CreatePlayerAvatar(DevContainer, DeveloperInfo[1].UserId, UDim2.new(0, 45, 0, 45), UDim2.new(0, 10, 0, 30))
+    
+    local DevUsername = Instance.new("TextLabel")
+    DevUsername.Size = UDim2.new(1, -70, 0, 18)
+    DevUsername.Position = UDim2.new(0, 62, 0, 32)
+    DevUsername.BackgroundTransparency = 1
+    DevUsername.Text = DeveloperInfo[1].Username
+    DevUsername.TextColor3 = CurrentTheme.TextPrimary
+    DevUsername.TextSize = 14
+    DevUsername.Font = Enum.Font.GothamBold
+    DevUsername.TextXAlignment = Enum.TextXAlignment.Left
+    DevUsername.Parent = DevContainer
+    
+    local VerifiedIcon = Instance.new("ImageLabel")
+    VerifiedIcon.Size = UDim2.new(0, 16, 0, 16)
+    VerifiedIcon.Position = UDim2.new(0, 62 + DevUsername.TextBounds.X + 4, 0, 33)
+    VerifiedIcon.BackgroundTransparency = 1
+    VerifiedIcon.Image = Icons.Check
+    VerifiedIcon.ImageColor3 = CurrentTheme.Primary
+    VerifiedIcon.Parent = DevContainer
+    
+    local DevRank = Instance.new("TextLabel")
+    DevRank.Size = UDim2.new(1, -70, 0, 16)
+    DevRank.Position = UDim2.new(0, 62, 0, 52)
+    DevRank.BackgroundTransparency = 1
+    DevRank.Text = DeveloperInfo[1].Rank
+    DevRank.TextColor3 = DeveloperInfo[1].RankColor
+    DevRank.TextSize = 12
+    DevRank.Font = Enum.Font.Gotham
+    DevRank.TextXAlignment = Enum.TextXAlignment.Left
+    DevRank.Parent = DevContainer
+    
+    -- زر التشغيل/الإيقاف iOS
+    local ToggleLabel = Instance.new("TextLabel")
+    ToggleLabel.Size = UDim2.new(1, -30, 0, 22)
+    ToggleLabel.Position = UDim2.new(0, 15, 0, 390)
+    ToggleLabel.BackgroundTransparency = 1
+    ToggleLabel.Text = "⚙️ تفعيل الميزات المتقدمة"
+    ToggleLabel.TextColor3 = CurrentTheme.TextPrimary
+    ToggleLabel.TextSize = 15
+    ToggleLabel.Font = Enum.Font.GothamBold
+    ToggleLabel.TextXAlignment = Enum.TextXAlignment.Left
+    ToggleLabel.Parent = ProfilePage
+    
+    local FeatureToggle, toggleState = CreateIOSToggle(ProfilePage, UDim2.new(1, -71, 0, 390), true, function(state)
+        print("الميزات المتقدمة:", state and "مفعلة" or "معطلة")
+    end)
+    
+    -- تحديث عداد المستخدمين
+    spawn(function()
+        while UsersCountValue and UsersCountValue.Parent do
+            wait(2)
+            local count = UpdateUserCount()
+            TweenService:Create(UsersCountValue, TweenInfo.new(0.3, Enum.EasingStyle.Back), {
+                TextSize = 28
+            }):Play()
+            UsersCountValue.Text = tostring(count)
+            wait(0.3)
+            TweenService:Create(UsersCountValue, TweenInfo.new(0.3, Enum.EasingStyle.Back), {
+                TextSize = 24
+            }):Play()
+        end
+    end)
+    
+    -- تابع في الجزء الأخير...
+    
+    return Hub, MainFrame, MainPage, FolderPage, ProfilePage, TitleAvatarButton, BackButton, ProfileBackButton, MapsScroll, ScriptsScroll, SearchBox, ThemeButton, ResizeButton, CloseButton, ToggleButton, PlayerAvatar, ResizeIcon, ThemeIcon
+end
+
+-- يتم إضافته للجزء الثاني
+
     -- ═══════════════════════════════════════════════════════════
-    --                    وظائف التبديل
+    --                    وظائف التبديل بين الصفحات
     -- ═══════════════════════════════════════════════════════════
     local function SwitchToFolder(mapData)
         Hub.CurrentPage = "folder"
@@ -1267,10 +1758,7 @@ function UltimateHub:CreateWindow(scriptName)
     
     BackButton.MouseButton1Click:Connect(SwitchToMain)
     ProfileBackButton.MouseButton1Click:Connect(SwitchToMain)
-    
-    -- الضغط على صورة اللاعب لفتح الملف الشخصي (مصلح!)
     TitleAvatarButton.MouseButton1Click:Connect(function()
-        print("تم الضغط على صورة اللاعب!")
         SwitchToProfile()
     end)
     
@@ -1326,7 +1814,7 @@ function UltimateHub:CreateWindow(scriptName)
         UltimateHub:ShowNotification(
             "🎨 تم تغيير الثيم",
             "الثيم الحالي: " .. theme.Name,
-            Icons.Theme,
+            Icons.Palette,
             "info",
             3
         )
@@ -1351,26 +1839,32 @@ function UltimateHub:CreateWindow(scriptName)
     local function ResizeWindow()
         local screenSize = workspace.CurrentCamera.ViewportSize
         local newSize
+        local iconImage
         
         if CurrentSize == "Normal" then
             CurrentSize = "Minimized"
             newSize = UDim2.new(0, math.min(screenSize.X - 60, SizeStates.Minimized.Width), 0, math.min(screenSize.Y - 100, SizeStates.Minimized.Height))
+            iconImage = Icons.Minimize
         elseif CurrentSize == "Minimized" then
             CurrentSize = "Maximized"
             newSize = UDim2.new(0, math.min(screenSize.X - 20, SizeStates.Maximized.Width), 0, math.min(screenSize.Y - 40, SizeStates.Maximized.Height))
+            iconImage = Icons.Maximize
         else
             CurrentSize = "Normal"
             newSize = UDim2.new(0, math.min(screenSize.X - 40, SizeStates.Normal.Width), 0, math.min(screenSize.Y - 80, SizeStates.Normal.Height))
+            iconImage = Icons.Expand
         end
         
         TweenService:Create(MainFrame, TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
             Size = newSize
         }):Play()
         
+        ResizeIcon.Image = iconImage
+        
         UltimateHub:ShowNotification(
             "📐 تغيير الحجم",
             "الحجم: " .. (CurrentSize == "Normal" and "عادي" or CurrentSize == "Minimized" and "صغير" or "كبير"),
-            Icons.Resize,
+            iconImage,
             "info",
             2
         )
