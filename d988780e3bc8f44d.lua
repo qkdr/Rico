@@ -2324,15 +2324,15 @@ function v61.Win(_, p104, _)
     }
 end
 
-local _AtomicHub = v61:Win('Atomic Hub | \u{645}\u{627}\u{628} \u{627}\u{644}\u{628}\u{64a}\u{648}\u{62a} \u{627}\u{644}\u{639}\u{631}\u{628}\u{64a}')
-local v315 = _AtomicHub:Tab('\u{627}\u{644}\u{631}\u{626}\u{64a}\u{633}\u{64a}\u{629}', true)
-local v316 = _AtomicHub:Tab('\u{627}\u{644}\u{642}\u{64a}\u{645}')
-local v317 = _AtomicHub:Tab('\u{627}\u{644}\u{627}\u{639}\u{628}')
-local v318 = _AtomicHub:Tab('\u{627}\u{644}\u{627}\u{633}\u{62a}\u{647}\u{62f}\u{627}\u{641}')
-local v319 = _AtomicHub:Tab('\u{627}\u{62e}\u{631}\u{649}')
-local v320 = _AtomicHub:Tab('\u{627}\u{644}\u{627}\u{646}\u{645}\u{64a}\u{634}\u{646}')
-local v321 = _AtomicHub:Tab('\u{627}\u{644}\u{645}\u{637}\u{648}\u{631}\u{64a}\u{646}')
+local _AtomicHub = v61:Win("Atomic Hub | ماب البيوت العربي")
 
+local v315 = _AtomicHub:Tab("الرئيسية", true)
+local v316 = _AtomicHub:Tab("القيم")
+local v317 = _AtomicHub:Tab("اللاعب تجربه تغير")
+local v318 = _AtomicHub:Tab("الاستهداف")
+local v319 = _AtomicHub:Tab("اخرى")
+local v320 = _AtomicHub:Tab("الانميشن")
+local v321 = _AtomicHub:Tab("المطورين")
 v315:ImageLabel('https://www.roblox.com/headshot-thumbnail/image?userId=' .. game.Players.LocalPlayer.UserId .. '&width=420&height=420&format=png', '\u{645}\u{631}\u{62d}\u{628}\u{627}\u{64b} ' .. game.Players.LocalPlayer.DisplayName, '@' .. game.Players.LocalPlayer.Name)
 
 if game.Players.LocalPlayer.Name ~= 'NiQ' then
