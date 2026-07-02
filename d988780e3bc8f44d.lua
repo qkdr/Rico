@@ -1,8 +1,14 @@
 --[[
     UILibrary.lua
-    مكتبة واجهة مستخدم بسيطة لروبلوكس - نافذة + تابات + أزرار
+    مكتبة واجهة مستخدم كاملة لروبلوكس - نافذة + تابات + أزرار
     مبنية من الصفر - لا تحتوي على أي أدوات استغلال أو استهداف لاعبين
-    الاستخدام: ضع هذا الملف كـ LocalScript أو استدعِه كـ ModuleScript
+
+    الاستخدام:
+    هذا الملف "سكربت كامل شغّال لحاله" - إذا شغلته مباشرة (كـ LocalScript
+    أو عبر أي منفذ سكربتات) بيطلع لك نافذة تجريبية فيها كل العناصر جاهزة.
+
+    إذا تبي تستخدم المكتبة بمشروعك الخاص وتسوي عناصرك أنت، انزل لآخر
+    الملف لقسم "بناء نافذتك الخاصة" وعدّل عليه بدل القسم التجريبي.
 --]]
 
 local TweenService = game:GetService("TweenService")
@@ -11,15 +17,12 @@ local Players = game:GetService("Players")
 
 local LocalPlayer = Players.LocalPlayer
 
+-- ==========================================================
+-- تعريف المكتبة
+-- ==========================================================
 local Library = {}
 Library.__index = Library
 
--- ==========================================================
--- إنشاء نافذة جديدة
--- Params:
---   title (string)      : عنوان النافذة
---   toggleKey (Enum.KeyCode, اختياري) : الزر لإخفاء/إظهار الواجهة (افتراضي: V)
--- ==========================================================
 function Library:CreateWindow(title, toggleKey)
     toggleKey = toggleKey or Enum.KeyCode.V
 
@@ -43,6 +46,7 @@ function Library:CreateWindow(title, toggleKey)
     MainFrame.BorderSizePixel = 0
     MainFrame.Position = UDim2.new(0.26, 0, 0.3, 0)
     MainFrame.Size = UDim2.new(0, 440, 0, 300)
+    MainFrame.ClipsDescendants = false
 
     local MainCorner = Instance.new("UICorner")
     MainCorner.Parent = MainFrame
@@ -79,22 +83,25 @@ function Library:CreateWindow(title, toggleKey)
     TitleLabel.TextSize = 19
     TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
 
-    local CloseButton = Instance.new("ImageButton")
+    local CloseButton = Instance.new("TextButton")
     CloseButton.Name = "CloseButton"
     CloseButton.Parent = TitleBar
     CloseButton.BackgroundTransparency = 1
-    CloseButton.Position = UDim2.new(0.936, 0, 0.235, 0)
-    CloseButton.Size = UDim2.new(0, 17, 0, 17)
-    CloseButton.Image = "rbxassetid://11293981586"
+    CloseButton.Position = UDim2.new(0.9, 0, 0.1, 0)
+    CloseButton.Size = UDim2.new(0, 30, 0, 26)
+    CloseButton.Font = Enum.Font.GothamBold
+    CloseButton.Text = "X"
+    CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    CloseButton.TextSize = 16
 
     CloseButton.MouseButton1Down:Connect(function()
         MainFrame.Visible = not MainFrame.Visible
     end)
     CloseButton.MouseEnter:Connect(function()
-        TweenService:Create(CloseButton, TweenInfo.new(0.25), {ImageColor3 = Color3.fromRGB(200, 60, 60)}):Play()
+        TweenService:Create(CloseButton, TweenInfo.new(0.2), {TextColor3 = Color3.fromRGB(220, 70, 70)}):Play()
     end)
     CloseButton.MouseLeave:Connect(function()
-        TweenService:Create(CloseButton, TweenInfo.new(0.25), {ImageColor3 = Color3.fromRGB(255, 255, 255)}):Play()
+        TweenService:Create(CloseButton, TweenInfo.new(0.2), {TextColor3 = Color3.fromRGB(255, 255, 255)}):Play()
     end)
 
     -- ===================== شريط التابات =====================
@@ -120,7 +127,7 @@ function Library:CreateWindow(title, toggleKey)
     TabsScrolling.Active = true
     TabsScrolling.BackgroundTransparency = 1
     TabsScrolling.BorderSizePixel = 0
-    TabsScrolling.Size = UDim2.new(0, 116, 0, 238)
+    TabsScrolling.Size = UDim2.new(1, 0, 1, 0)
     TabsScrolling.CanvasSize = UDim2.new(0, 0, 0, 0)
     TabsScrolling.ScrollBarThickness = 4
 
@@ -130,6 +137,11 @@ function Library:CreateWindow(title, toggleKey)
     TabsListLayout.SortOrder = Enum.SortOrder.LayoutOrder
     TabsListLayout.Padding = UDim.new(0, 5)
 
+    local function updateTabsCanvas()
+        TabsScrolling.CanvasSize = UDim2.new(0, 0, 0, TabsListLayout.AbsoluteContentSize.Y + 10)
+    end
+    TabsListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(updateTabsCanvas)
+
     -- ===================== منطقة الصفحات =====================
     local PagesFrame = Instance.new("Frame")
     PagesFrame.Name = "Pages"
@@ -138,6 +150,7 @@ function Library:CreateWindow(title, toggleKey)
     PagesFrame.BorderSizePixel = 0
     PagesFrame.Position = UDim2.new(0.302, 0, 0.163, 0)
     PagesFrame.Size = UDim2.new(0, 296, 0, 238)
+    PagesFrame.ClipsDescendants = true
 
     local PagesCorner = Instance.new("UICorner")
     PagesCorner.CornerRadius = UDim.new(0, 4)
@@ -153,13 +166,16 @@ function Library:CreateWindow(title, toggleKey)
     OpenScreenGui.Parent = game.CoreGui
     OpenScreenGui.ResetOnSpawn = false
 
-    local OpenButton = Instance.new("ImageButton")
+    local OpenButton = Instance.new("TextButton")
     OpenButton.Parent = OpenScreenGui
-    OpenButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-    OpenButton.BackgroundTransparency = 0.65
+    OpenButton.BackgroundColor3 = Color3.fromRGB(24, 24, 24)
+    OpenButton.BackgroundTransparency = 0.2
     OpenButton.Position = UDim2.new(0.1, 0, 0.07, 0)
     OpenButton.Size = UDim2.new(0, 45, 0, 45)
-    OpenButton.Image = "rbxassetid://11963368259"
+    OpenButton.Font = Enum.Font.GothamBold
+    OpenButton.Text = "UI"
+    OpenButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    OpenButton.TextSize = 16
     OpenButton.Draggable = true
     OpenButton.Active = true
 
@@ -167,20 +183,25 @@ function Library:CreateWindow(title, toggleKey)
     OpenCorner.CornerRadius = UDim.new(0, 50)
     OpenCorner.Parent = OpenButton
 
+    local OpenStroke = Instance.new("UIStroke")
+    OpenStroke.Color = Color3.fromRGB(90, 90, 90)
+    OpenStroke.Parent = OpenButton
+
     OpenButton.MouseButton1Down:Connect(function()
         MainFrame.Visible = not MainFrame.Visible
     end)
 
     -- ===================== السحب (Drag) =====================
-    local function makeDraggable(frame)
-        local dragging, dragInput, dragStart, startPos
+    local function makeDraggable(dragHandle, targetFrame)
+        local dragging = false
+        local dragInput, dragStart, startPos
 
-        frame.InputBegan:Connect(function(input)
+        dragHandle.InputBegan:Connect(function(input)
             if input.UserInputType == Enum.UserInputType.MouseButton1
                 or input.UserInputType == Enum.UserInputType.Touch then
                 dragging = true
                 dragStart = input.Position
-                startPos = frame.Position
+                startPos = targetFrame.Position
 
                 input.Changed:Connect(function()
                     if input.UserInputState == Enum.UserInputState.End then
@@ -190,7 +211,7 @@ function Library:CreateWindow(title, toggleKey)
             end
         end)
 
-        frame.InputChanged:Connect(function(input)
+        dragHandle.InputChanged:Connect(function(input)
             if input.UserInputType == Enum.UserInputType.MouseMovement
                 or input.UserInputType == Enum.UserInputType.Touch then
                 dragInput = input
@@ -200,16 +221,15 @@ function Library:CreateWindow(title, toggleKey)
         UserInputService.InputChanged:Connect(function(input)
             if input == dragInput and dragging then
                 local delta = input.Position - dragStart
-                local newPos = UDim2.new(
+                targetFrame.Position = UDim2.new(
                     startPos.X.Scale, startPos.X.Offset + delta.X,
                     startPos.Y.Scale, startPos.Y.Offset + delta.Y
                 )
-                TweenService:Create(frame, TweenInfo.new(0.15), {Position = newPos}):Play()
             end
         end)
     end
 
-    makeDraggable(TitleBar)
+    makeDraggable(TitleBar, MainFrame)
 
     -- ===================== زر لوحة المفاتيح لإظهار/إخفاء =====================
     UserInputService.InputBegan:Connect(function(input, gameProcessed)
@@ -219,7 +239,7 @@ function Library:CreateWindow(title, toggleKey)
     end)
 
     -- ==========================================================
-    -- كائن التاب (Tab)
+    -- كائن النافذة (يحتوي دالة Tab لإنشاء تابات جديدة)
     -- ==========================================================
     local WindowObj = {}
     WindowObj.__index = WindowObj
@@ -245,10 +265,11 @@ function Library:CreateWindow(title, toggleKey)
         TabBtnStroke.Parent = TabButton
 
         local Page = Instance.new("Frame")
+        Page.Name = "Page_" .. tabName
         Page.Parent = PagesFrame
         Page.BackgroundTransparency = 1
         Page.BorderSizePixel = 0
-        Page.Size = UDim2.new(0, 296, 0, 238)
+        Page.Size = UDim2.new(1, 0, 1, 0)
         Page.Visible = isDefault or false
 
         local PageScrolling = Instance.new("ScrollingFrame")
@@ -256,7 +277,7 @@ function Library:CreateWindow(title, toggleKey)
         PageScrolling.Active = true
         PageScrolling.BackgroundTransparency = 1
         PageScrolling.BorderSizePixel = 0
-        PageScrolling.Size = UDim2.new(0, 296, 0, 238)
+        PageScrolling.Size = UDim2.new(1, 0, 1, 0)
         PageScrolling.CanvasSize = UDim2.new(0, 0, 0, 0)
         PageScrolling.ScrollBarThickness = 4
 
@@ -266,8 +287,13 @@ function Library:CreateWindow(title, toggleKey)
         PageListLayout.SortOrder = Enum.SortOrder.LayoutOrder
         PageListLayout.Padding = UDim.new(0, 8)
 
+        local PagePadding = Instance.new("UIPadding")
+        PagePadding.PaddingTop = UDim.new(0, 8)
+        PagePadding.PaddingBottom = UDim.new(0, 8)
+        PagePadding.Parent = PageScrolling
+
         local function updateCanvas()
-            PageScrolling.CanvasSize = UDim2.new(0, 0, 0, PageListLayout.AbsoluteContentSize.Y + 10)
+            PageScrolling.CanvasSize = UDim2.new(0, 0, 0, PageListLayout.AbsoluteContentSize.Y + 20)
         end
         PageListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(updateCanvas)
 
@@ -280,8 +306,9 @@ function Library:CreateWindow(title, toggleKey)
             Page.Visible = true
 
             TweenService:Create(TabBtnStroke, TweenInfo.new(0.2), {Color = Color3.fromRGB(100, 100, 100)}):Play()
-            task.wait(0.15)
-            TweenService:Create(TabBtnStroke, TweenInfo.new(0.1), {Color = Color3.fromRGB(62, 62, 62)}):Play()
+            task.delay(0.15, function()
+                TweenService:Create(TabBtnStroke, TweenInfo.new(0.1), {Color = Color3.fromRGB(62, 62, 62)}):Play()
+            end)
         end)
         TabButton.MouseEnter:Connect(function()
             TweenService:Create(TabBtnStroke, TweenInfo.new(0.2), {Color = Color3.fromRGB(80, 80, 80)}):Play()
@@ -303,6 +330,7 @@ function Library:CreateWindow(title, toggleKey)
             Lbl.Text = text
             Lbl.TextColor3 = Color3.fromRGB(255, 255, 255)
             Lbl.TextSize = 16
+            Lbl.TextWrapped = true
             return Lbl
         end
 
@@ -340,9 +368,10 @@ function Library:CreateWindow(title, toggleKey)
             BtnLabel.TextXAlignment = Enum.TextXAlignment.Left
 
             Btn.MouseButton1Down:Connect(function()
-                TweenService:Create(BtnStroke, TweenInfo.new(0.2), {Color = Color3.fromRGB(255, 255, 255)}):Play()
-                task.wait(0.05)
-                TweenService:Create(BtnStroke, TweenInfo.new(0.2), {Color = Color3.fromRGB(74, 74, 74)}):Play()
+                TweenService:Create(BtnStroke, TweenInfo.new(0.15), {Color = Color3.fromRGB(255, 255, 255)}):Play()
+                task.delay(0.15, function()
+                    TweenService:Create(BtnStroke, TweenInfo.new(0.15), {Color = Color3.fromRGB(74, 74, 74)}):Play()
+                end)
                 pcall(callback)
             end)
             Btn.MouseEnter:Connect(function()
@@ -358,7 +387,7 @@ function Library:CreateWindow(title, toggleKey)
         -- --- زر تفعيل/تعطيل (Toggle) ---
         function TabAPI:Toggle(text, default, callback)
             callback = callback or function() end
-            local state = default or false
+            local state = (default == true)
 
             local Tgl = Instance.new("TextButton")
             Tgl.Parent = PageScrolling
@@ -378,8 +407,8 @@ function Library:CreateWindow(title, toggleKey)
             local TglLabel = Instance.new("TextLabel")
             TglLabel.Parent = Tgl
             TglLabel.BackgroundTransparency = 1
-            TglLabel.Position = UDim2.new(0.12, 0, 0, 0)
-            TglLabel.Size = UDim2.new(0, 200, 1, 0)
+            TglLabel.Position = UDim2.new(0.16, 0, 0, 0)
+            TglLabel.Size = UDim2.new(0, 190, 1, 0)
             TglLabel.Font = Enum.Font.RobotoCondensed
             TglLabel.Text = text
             TglLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -389,7 +418,7 @@ function Library:CreateWindow(title, toggleKey)
             local TglIndicator = Instance.new("Frame")
             TglIndicator.Parent = Tgl
             TglIndicator.AnchorPoint = Vector2.new(0, 0.5)
-            TglIndicator.Position = UDim2.new(0.02, 0, 0.5, 0)
+            TglIndicator.Position = UDim2.new(0.04, 0, 0.5, 0)
             TglIndicator.Size = UDim2.new(0, 20, 0, 20)
             TglIndicator.BackgroundColor3 = state and Color3.fromRGB(0, 211, 0) or Color3.fromRGB(211, 0, 0)
 
@@ -432,6 +461,7 @@ function Library:CreateWindow(title, toggleKey)
             callback = callback or function() end
             min, max = tonumber(min) or 0, tonumber(max) or 100
             local value = tonumber(default) or min
+            value = math.clamp(value, min, max)
 
             local SliderFrame = Instance.new("Frame")
             SliderFrame.Parent = PageScrolling
@@ -449,7 +479,7 @@ function Library:CreateWindow(title, toggleKey)
             local SliderLabel = Instance.new("TextLabel")
             SliderLabel.Parent = SliderFrame
             SliderLabel.BackgroundTransparency = 1
-            SliderLabel.Position = UDim2.new(0.07, 0, 0.13, 0)
+            SliderLabel.Position = UDim2.new(0.07, 0, 0.1, 0)
             SliderLabel.Size = UDim2.new(0, 180, 0, 15)
             SliderLabel.Font = Enum.Font.RobotoCondensed
             SliderLabel.Text = text
@@ -460,56 +490,74 @@ function Library:CreateWindow(title, toggleKey)
             local SliderValueLabel = Instance.new("TextLabel")
             SliderValueLabel.Parent = SliderFrame
             SliderValueLabel.BackgroundTransparency = 1
-            SliderValueLabel.Position = UDim2.new(0.84, 0, 0.13, 0)
+            SliderValueLabel.Position = UDim2.new(0.84, 0, 0.1, 0)
             SliderValueLabel.Size = UDim2.new(0, 32, 0, 15)
             SliderValueLabel.Font = Enum.Font.RobotoCondensed
             SliderValueLabel.Text = tostring(value)
             SliderValueLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
             SliderValueLabel.TextSize = 13
 
-            local SliderTrack = Instance.new("TextButton")
+            local SliderTrack = Instance.new("Frame")
             SliderTrack.Parent = SliderFrame
-            SliderTrack.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-            SliderTrack.BackgroundTransparency = 1
+            SliderTrack.BackgroundColor3 = Color3.fromRGB(90, 90, 90)
+            SliderTrack.BackgroundTransparency = 0.4
             SliderTrack.BorderSizePixel = 0
-            SliderTrack.Position = UDim2.new(0.066, 0, 0.58, 0)
+            SliderTrack.Position = UDim2.new(0.066, 0, 0.6, 0)
             SliderTrack.Size = UDim2.new(0, 235, 0, 13)
-            SliderTrack.Text = ""
 
             local SliderTrackCorner = Instance.new("UICorner")
             SliderTrackCorner.Parent = SliderTrack
 
             local SliderFill = Instance.new("Frame")
             SliderFill.Parent = SliderTrack
-            SliderFill.BackgroundColor3 = Color3.fromRGB(90, 90, 90)
+            SliderFill.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
             SliderFill.BorderSizePixel = 0
             SliderFill.Size = UDim2.new((value - min) / (max - min), 0, 1, 0)
 
             local SliderFillCorner = Instance.new("UICorner")
             SliderFillCorner.Parent = SliderFill
 
+            local SliderButton = Instance.new("TextButton")
+            SliderButton.Parent = SliderTrack
+            SliderButton.BackgroundTransparency = 1
+            SliderButton.Size = UDim2.new(1, 0, 1, 0)
+            SliderButton.Text = ""
+
+            local dragging = false
+
             local function setFromX(xPos)
                 local relative = math.clamp((xPos - SliderTrack.AbsolutePosition.X) / SliderTrack.AbsoluteSize.X, 0, 1)
-                value = math.floor(min + (max - min) * relative)
+                value = math.floor(min + (max - min) * relative + 0.5)
                 SliderValueLabel.Text = tostring(value)
-                SliderFill:TweenSize(UDim2.new(relative, 0, 1, 0), "Out", "Linear", 0.1, true)
+                SliderFill.Size = UDim2.new(relative, 0, 1, 0)
                 pcall(callback, value)
             end
 
-            local dragging = false
-            SliderTrack.MouseButton1Down:Connect(function()
+            SliderButton.MouseButton1Down:Connect(function()
                 dragging = true
                 local mouse = LocalPlayer:GetMouse()
                 setFromX(mouse.X)
             end)
-            UserInputService.InputChanged:Connect(function(input)
-                if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+
+            local inputChangedConn
+            local inputEndedConn
+            inputChangedConn = UserInputService.InputChanged:Connect(function(input)
+                if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement
+                    or input.UserInputType == Enum.UserInputType.Touch) then
                     setFromX(input.Position.X)
                 end
             end)
-            UserInputService.InputEnded:Connect(function(input)
-                if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            inputEndedConn = UserInputService.InputEnded:Connect(function(input)
+                if input.UserInputType == Enum.UserInputType.MouseButton1
+                    or input.UserInputType == Enum.UserInputType.Touch then
                     dragging = false
+                end
+            end)
+
+            SliderFrame.AncestryChanged:Connect(function(_, parent)
+                if not parent then
+                    if inputChangedConn then inputChangedConn:Disconnect() end
+                    if inputEndedConn then inputEndedConn:Disconnect() end
                 end
             end)
 
@@ -561,10 +609,11 @@ function Library:CreateWindow(title, toggleKey)
             TextBox.Position = UDim2.new(0.577, 0, 0.15, 0)
             TextBox.Size = UDim2.new(0, 103, 0, 31)
             TextBox.Font = Enum.Font.RobotoCondensed
-            TextBox.Text = placeholder or ""
+            TextBox.Text = ""
             TextBox.PlaceholderText = placeholder or ""
             TextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
             TextBox.TextSize = 14
+            TextBox.ClearTextOnFocus = false
 
             local TBCorner = Instance.new("UICorner")
             TBCorner.Parent = TextBox
@@ -573,7 +622,12 @@ function Library:CreateWindow(title, toggleKey)
             TBStroke.Color = Color3.fromRGB(74, 74, 74)
             TBStroke.Parent = TextBox
 
+            TextBox.Focused:Connect(function()
+                TweenService:Create(TBStroke, TweenInfo.new(0.2), {Color = Color3.fromRGB(150, 150, 150)}):Play()
+            end)
+
             TextBox.FocusLost:Connect(function(enterPressed)
+                TweenService:Create(TBStroke, TweenInfo.new(0.2), {Color = Color3.fromRGB(74, 74, 74)}):Play()
                 if enterPressed then
                     pcall(callback, TextBox.Text)
                 end
@@ -601,7 +655,7 @@ function Library:CreateWindow(title, toggleKey)
             VersionLabel.Parent = InfoFrame
             VersionLabel.BackgroundTransparency = 1
             VersionLabel.Position = UDim2.new(0.05, 0, 0.15, 0)
-            VersionLabel.Size = UDim2.new(0, 100, 0, 30)
+            VersionLabel.Size = UDim2.new(0, 110, 0, 30)
             VersionLabel.Font = Enum.Font.RobotoCondensed
             VersionLabel.Text = "الإصدار: " .. tostring(version)
             VersionLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
@@ -612,7 +666,7 @@ function Library:CreateWindow(title, toggleKey)
             StatusLabel.Parent = InfoFrame
             StatusLabel.BackgroundTransparency = 1
             StatusLabel.Position = UDim2.new(0.5, 0, 0.15, 0)
-            StatusLabel.Size = UDim2.new(0, 120, 0, 30)
+            StatusLabel.Size = UDim2.new(0, 130, 0, 30)
             StatusLabel.Font = Enum.Font.RobotoCondensed
             StatusLabel.Text = "الحالة: " .. tostring(status)
             StatusLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
@@ -628,37 +682,51 @@ function Library:CreateWindow(title, toggleKey)
     return setmetatable(WindowObj, WindowObj)
 end
 
-return Library
+-- ==========================================================
+-- ==========    قسم تجريبي - يعمل تلقائياً عند التشغيل    ==========
+-- ==========================================================
+-- هذا الجزء يشتغل فور تشغيل السكربت ويعرض نافذة كاملة فيها
+-- كل العناصر عشان تتأكد إن كل شي شغّال صح.
+
+local DemoWindow = Library:CreateWindow("مكتبتي - نسخة تجريبية", Enum.KeyCode.V)
+
+local MainTab = DemoWindow:Tab("الرئيسية", true)
+local SettingsTab = DemoWindow:Tab("الإعدادات")
+
+MainTab:Label("مرحباً بك في المكتبة ✅")
+
+MainTab:Button("زر ضغطة واحدة", function()
+    print("[UILibrary] تم الضغط على الزر!")
+end)
+
+MainTab:Toggle("تفعيل / تعطيل", false, function(state)
+    print("[UILibrary] حالة التفعيل:", state)
+end)
+
+MainTab:Slider("السرعة", 0, 100, 16, function(value)
+    print("[UILibrary] السرعة الحالية:", value)
+end)
+
+MainTab:Info("1.0", "يعمل")
+
+SettingsTab:Label("تاب ثاني للتجربة")
+SettingsTab:Textbox("اسم اللاعب", "اكتب هنا...", function(text)
+    print("[UILibrary] تم إدخال:", text)
+end)
+
+print("[UILibrary] تم تحميل الواجهة بنجاح - اضغط V لإخفاء/إظهار النافذة")
 
 --[[
-    ==================== مثال استخدام ====================
+    ==================== بناء نافذتك الخاصة ====================
+    لو تبي تحذف القسم التجريبي فوق وتسوي نافذتك أنت، احذف كل شي
+    من "قسم تجريبي" لين هذا التعليق، واستخدم النمط التالي:
 
-    local Library = loadstring(readfile("UILibrary.lua"))()
-    -- أو require() لو استخدمته كـ ModuleScript
+    local Window = Library:CreateWindow("اسم نافذتي")
+    local Tab1 = Window:Tab("الرئيسية", true)
 
-    local Window = Library:CreateWindow("مكتبتي")
+    Tab1:Button("زري", function() end)
+    Tab1:Toggle("خياري", false, function(state) end)
+    Tab1:Slider("قيمتي", 0, 100, 50, function(value) end)
 
-    local MainTab = Window:Tab("الرئيسية", true)
-
-    MainTab:Label("مرحباً بك في المكتبة")
-
-    MainTab:Button("زر ضغطة واحدة", function()
-        print("تم الضغط على الزر!")
-    end)
-
-    MainTab:Toggle("تفعيل / تعطيل", false, function(state)
-        print("الحالة:", state)
-    end)
-
-    MainTab:Slider("السرعة", 0, 100, 16, function(value)
-        print("القيمة الحالية:", value)
-    end)
-
-    MainTab:Textbox("اسم اللاعب", "اكتب هنا...", function(text)
-        print("تم إدخال:", text)
-    end)
-
-    MainTab:Info("1.0", "يعمل")
-
-    ========================================================
+    ===============================================================
 --]]
