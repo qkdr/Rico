@@ -1,7 +1,8 @@
 --[[
     ================================================================
-      Ultimate Hub Premium - النسخة الفخمة المطورة
-      نظام إشعارات متطور + عداد مستخدمين حقيقي + أزرار فخمة
+      Ultimate Hub Premium - النسخة الفخمة المطورة (V3)
+      قائمة جانبية ثابتة على اليسار + شريط أدوات سريع + ربط API
+      سكربتات (ScriptBlox) و API ترجمة (Google) + إعدادات لاعب محسّنة
     ================================================================
 ]]
 
@@ -133,20 +134,20 @@ local Icons = {
     UserMinus  = "rbxassetid://7072725342",
     Shield     = "rbxassetid://7072718799",
     Bell       = "rbxassetid://7072719338",
+    Bolt       = "rbxassetid://7072719338",
+    Copy       = "rbxassetid://7072706796",
 }
 
 -- ================================================================
 --        نظام عدّ المستخدمين الحقيقي (يعمل فعلياً)
---   يزيد الرقم عند تفعيل السكربت، وينقص عند خروج اللاعب
 -- ================================================================
 local UserDatabase = {
-    RegisteredUsers = {},   -- كل من فعّل السكربت من قبل (بيانات دائمة خلال الجلسة)
-    ActiveNow = {},         -- قائمة UserId لكل من فعّل السكربت الآن ولم يخرج
-    TotalActivations = 0,   -- إجمالي عدد مرات التفعيل (تراكمي)
+    RegisteredUsers = {},
+    ActiveNow = {},
+    TotalActivations = 0,
     PlaceId = game.PlaceId,
 }
 
--- تسجيل بيانات مستخدم فعّل السكربت
 local function RegisterUser(userId, username, displayName)
     if not UserDatabase.RegisteredUsers[userId] then
         UserDatabase.RegisteredUsers[userId] = {
@@ -163,17 +164,15 @@ local function RegisterUser(userId, username, displayName)
     end
 end
 
--- عند تفعيل شخص للسكربت -> يزيد العداد "النشط الآن"
 local function ActivateUser(userId, username, displayName)
     if not table.find(UserDatabase.ActiveNow, userId) then
         table.insert(UserDatabase.ActiveNow, userId)
         RegisterUser(userId, username, displayName)
-        return true -- تفعيل جديد
+        return true
     end
-    return false -- كان مفعّل أصلاً
+    return false
 end
 
--- عند خروج لاعب من السيرفر -> ينقص العداد "النشط الآن"
 local function DeactivateUser(userId)
     local index = table.find(UserDatabase.ActiveNow, userId)
     if index then
@@ -212,6 +211,107 @@ local DeveloperInfo = {
         RankColor = Color3.fromRGB(255, 215, 0)
     }
 }
+
+-- ================================================================
+--        معلومات جاهزة للنسخ (تظهر في إعدادات اللاعب)
+--   عدّل النصوص هنا بما تريد (عنوان + وصف لكل مربع، 3 مربعات فقط)
+-- ================================================================
+local CopyInfoBoxes = {
+    { Title = "الديسكورد الرسمي", Description = "انضم لسيرفر الدعم الرسمي لمتابعة التحديثات والدعم الفني." },
+    { Title = "قناة التيليجرام", Description = "تابع آخر إصدارات السكربت وطرق الاستخدام هنا." },
+    { Title = "ملاحظة مهمة", Description = "استخدم السكربت على مسؤوليتك الخاصة، ولا تستخدم حسابك الرئيسي." },
+}
+
+-- ================================================================
+--            ربط APIs خارجية: ترجمة Google + بحث ScriptBlox
+--   (تم استخراج الجزء المطلوب فقط، ولا يوجد أي كود إضافي غيره)
+-- ================================================================
+local ScriptAPI = {}
+
+-- طلب HTTP عام يعمل مع أغلب أدوات التنفيذ (Executors)
+local function HttpRequest(options)
+    local ok, response
+
+    if syn and syn.request then
+        ok, response = pcall(syn.request, options)
+    elseif http_request then
+        ok, response = pcall(http_request, options)
+    elseif request then
+        ok, response = pcall(request, options)
+    elseif fluxus and fluxus.request then
+        ok, response = pcall(fluxus.request, options)
+    elseif game and game.HttpGetAsync and (options.Method == nil or options.Method == "GET") then
+        ok, response = pcall(function()
+            return { Body = game:HttpGetAsync(options.Url), StatusCode = 200 }
+        end)
+    else
+        return false, "الأداة (Executor) الحالية لا تدعم طلبات HTTP خارجية"
+    end
+
+    if not ok then
+        return false, tostring(response)
+    end
+    if response and response.StatusCode and response.StatusCode ~= 200 then
+        return false, "فشل الطلب - رمز الحالة: " .. tostring(response.StatusCode)
+    end
+
+    return true, response
+end
+
+-- API الترجمة (Google) - يترجم أي نص إلى الإنجليزية تلقائياً
+function ScriptAPI.TranslateToEnglish(text)
+    if not text or text == "" then return nil, "النص فاضي" end
+
+    local url = "https://translate.googleapis.com/translate_a/single?client=gtx&dt=t&sl=auto&tl=en&q="
+        .. HttpService:UrlEncode(text)
+
+    local ok, response = HttpRequest({ Url = url, Method = "GET" })
+    if not ok then return nil, response end
+
+    local okDecode, decoded = pcall(function()
+        return HttpService:JSONDecode(response.Body)
+    end)
+    if not okDecode then return nil, "تعذر قراءة رد الترجمة" end
+
+    local translated = decoded and decoded[1] and decoded[1][1] and decoded[1][1][1]
+    if not translated then return nil, "لم يتم العثور على ترجمة" end
+
+    return translated
+end
+
+-- API سكربتات (ScriptBlox) - بحث باسم الماب بالإنجليزية
+function ScriptAPI.SearchScripts(englishQuery)
+    if not englishQuery or englishQuery == "" then return nil, "النص فاضي" end
+
+    local url = "https://scriptblox.com/api/script/search?q=" .. HttpService:UrlEncode(englishQuery)
+
+    local ok, response = HttpRequest({ Url = url, Method = "GET" })
+    if not ok then return nil, response end
+
+    local okDecode, decoded = pcall(function()
+        return HttpService:JSONDecode(response.Body)
+    end)
+    if not okDecode then return nil, "تعذر قراءة رد البحث" end
+
+    if decoded and decoded.result and decoded.result.scripts then
+        return decoded.result.scripts
+    end
+
+    return nil, (decoded and decoded.message) or "لا توجد نتائج"
+end
+
+-- ترجمة اسم الماب ثم البحث عنه دفعة واحدة (هذا ما يستخدمه زر البحث بالواجهة)
+function ScriptAPI.TranslateThenSearch(anyLanguageQuery)
+    local translated, err = ScriptAPI.TranslateToEnglish(anyLanguageQuery)
+    if not translated then
+        return nil, err
+    end
+    local scripts, err2 = ScriptAPI.SearchScripts(translated)
+    if not scripts then
+        return nil, err2
+    end
+    return scripts, nil, translated
+end
 
 -- ================================================================
 --                    وظائف التأثيرات البصرية
@@ -330,9 +430,11 @@ end
 
 -- ================================================================
 --        نظام الإشعارات الفخم (مضغوط، أنيميشن، صوت)
+--   + دعم كتم الإشعارات بالكامل عند تعطيل السكربت
 -- ================================================================
 local NotifGui = nil
 local NotifContainer = nil
+local NotificationsMuted = false -- يتحكم بها زر التفعيل/التعطيل
 
 local function EnsureNotifGui()
     if NotifGui and NotifGui.Parent then return end
@@ -366,8 +468,9 @@ local function EnsureNotifGui()
     Layout.Parent = NotifContainer
 end
 
--- إشعار فخم مضغوط الحجم (بدل الإشعار الكبير القديم)
-function UltimateHub:ShowNotification(title, message, icon, notifType, duration)
+function UltimateHub:ShowNotification(title, message, icon, notifType, duration, forceShow)
+    if NotificationsMuted and not forceShow then return end
+
     duration = duration or 4
     notifType = notifType or "info"
     icon = icon or Icons.Bell
@@ -382,7 +485,6 @@ function UltimateHub:ShowNotification(title, message, icon, notifType, duration)
     }
     local accentColor = colorMap[notifType] or CurrentTheme.Info
 
-    -- الحجم الفعلي يعتمد على طول النص (مضغوط، مو كبير)
     local lineCount = 1
     for _ in string.gmatch(message, "\n") do lineCount = lineCount + 1 end
     local bodyHeight = 34 + (lineCount * 16)
@@ -412,7 +514,6 @@ function UltimateHub:ShowNotification(title, message, icon, notifType, duration)
 
     CreateGradient(Notif, 60, accentColor, CurrentTheme.Secondary)
 
-    -- توهج خفيف خلف البطاقة
     local Glow = Instance.new("ImageLabel")
     Glow.Name = "Glow"
     Glow.Size = UDim2.new(1, 30, 1, 30)
@@ -427,7 +528,6 @@ function UltimateHub:ShowNotification(title, message, icon, notifType, duration)
     Glow.ZIndex = 0
     Glow.Parent = Notif
 
-    -- شريط لوني جانبي (يمين البطاقة، متوافق مع اتجاه عربي)
     local SideBar = Instance.new("Frame")
     SideBar.Name = "SideBar"
     SideBar.Size = UDim2.new(0, 4, 1, 0)
@@ -439,7 +539,6 @@ function UltimateHub:ShowNotification(title, message, icon, notifType, duration)
     SideCorner.CornerRadius = UDim.new(0, 14)
     SideCorner.Parent = SideBar
 
-    -- دائرة الأيقونة
     local IconFrame = Instance.new("Frame")
     IconFrame.Name = "IconFrame"
     IconFrame.Size = UDim2.new(0, 40, 0, 40)
@@ -450,18 +549,12 @@ function UltimateHub:ShowNotification(title, message, icon, notifType, duration)
     IconFrame.Parent = Notif
 
     local IconCorner = Instance.new("UICorner")
-    IconCorner.CornerRadius = UDim.new(1, 0)
+    IconCorner.CornerRadius = UDim.new(0, 10)
     IconCorner.Parent = IconFrame
-
-    local IconStroke = Instance.new("UIStroke")
-    IconStroke.Color = accentColor
-    IconStroke.Thickness = 1.5
-    IconStroke.Transparency = 0.3
-    IconStroke.Parent = IconFrame
 
     local IconImage = Instance.new("ImageLabel")
     IconImage.Name = "Icon"
-    IconImage.Size = UDim2.new(0, 20, 0, 20)
+    IconImage.Size = UDim2.new(0, 22, 0, 22)
     IconImage.Position = UDim2.new(0.5, 0, 0.5, 0)
     IconImage.AnchorPoint = Vector2.new(0.5, 0.5)
     IconImage.BackgroundTransparency = 1
@@ -469,7 +562,6 @@ function UltimateHub:ShowNotification(title, message, icon, notifType, duration)
     IconImage.ImageColor3 = accentColor
     IconImage.Parent = IconFrame
 
-    -- النصوص
     local TitleLbl = Instance.new("TextLabel")
     TitleLbl.Name = "Title"
     TitleLbl.Size = UDim2.new(1, -66, 0, 18)
@@ -497,7 +589,6 @@ function UltimateHub:ShowNotification(title, message, icon, notifType, duration)
     MsgLbl.TextWrapped = true
     MsgLbl.Parent = Notif
 
-    -- شريط التقدم أسفل البطاقة
     local ProgressBg = Instance.new("Frame")
     ProgressBg.Name = "ProgressBg"
     ProgressBg.Size = UDim2.new(1, 0, 0, 3)
@@ -514,14 +605,12 @@ function UltimateHub:ShowNotification(title, message, icon, notifType, duration)
     ProgressBar.BorderSizePixel = 0
     ProgressBar.Parent = ProgressBg
 
-    -- صوت الإشعار (نغمة مختلفة بسيطة حسب النوع)
     local pitch = 1
     if notifType == "success" then pitch = 1.12
     elseif notifType == "error" then pitch = 0.85
     elseif notifType == "warning" then pitch = 0.95 end
     PlaySound(SoundEffects.Notification, 0.45, pitch)
 
-    -- أنيميشن الدخول: انزلاق + تكبير ناعم
     Notif.Size = UDim2.new(0, 0, 0, cardHeight)
     local entryTween = TweenService:Create(Notif,
         TweenInfo.new(0.45, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
@@ -529,7 +618,6 @@ function UltimateHub:ShowNotification(title, message, icon, notifType, duration)
     )
     entryTween:Play()
 
-    -- أنيميشن الأيقونة: دوران خفيف عند الدخول
     IconImage.Rotation = -90
     IconImage.ImageTransparency = 1
     TweenService:Create(IconImage, TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
@@ -537,7 +625,6 @@ function UltimateHub:ShowNotification(title, message, icon, notifType, duration)
         ImageTransparency = 0
     }):Play()
 
-    -- نبض خفيف للتوهج
     task.spawn(function()
         while Notif and Notif.Parent do
             local t1 = TweenService:Create(Glow, TweenInfo.new(1.2, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), {ImageTransparency = 0.55})
@@ -550,7 +637,6 @@ function UltimateHub:ShowNotification(title, message, icon, notifType, duration)
         end
     end)
 
-    -- شريط التقدم يتناقص
     task.spawn(function()
         task.wait(0.45)
         TweenService:Create(ProgressBar, TweenInfo.new(duration, Enum.EasingStyle.Linear), {
@@ -558,7 +644,6 @@ function UltimateHub:ShowNotification(title, message, icon, notifType, duration)
         }):Play()
     end)
 
-    -- إغلاق تلقائي بأنيميشن خروج
     task.spawn(function()
         task.wait(duration + 0.45)
         if not (Notif and Notif.Parent) then return end
@@ -575,7 +660,6 @@ function UltimateHub:ShowNotification(title, message, icon, notifType, duration)
     return Notif
 end
 
--- إشعار دخول لاعب جديد للسيرفر (فخم، يعرض بياناته الكاملة)
 function UltimateHub:ShowPlayerJoinNotification(player)
     local message = string.format(
         "اسم اللاعب: %s\nيوزر: @%s\nايدي: %d",
@@ -593,7 +677,6 @@ function UltimateHub:ShowPlayerJoinNotification(player)
     )
 end
 
--- إشعار خروج لاعب من السيرفر
 function UltimateHub:ShowPlayerLeaveNotification(player)
     local message = string.format("اسم اللاعب: %s\nيوزر: @%s", player.DisplayName, player.Name)
     self:ShowNotification(
@@ -605,28 +688,43 @@ function UltimateHub:ShowPlayerLeaveNotification(player)
     )
 end
 
+-- نسخ نص للحافظة مع دعم أغلب أدوات التنفيذ
+local function CopyToClipboard(hub, text)
+    local ok = pcall(function()
+        if setclipboard then
+            setclipboard(text)
+        elseif toclipboard then
+            toclipboard(text)
+        else
+            error("no clipboard function")
+        end
+    end)
+
+    if ok then
+        hub:ShowNotification("📋 تم النسخ", "تم نسخ المحتوى إلى الحافظة بنجاح", Icons.Copy, "success", 2, true)
+    else
+        hub:ShowNotification("⚠️ تعذر النسخ", "الأداة الحالية لا تدعم النسخ التلقائي للحافظة", Icons.Info, "warning", 3, true)
+    end
+end
+
 -- ================================================================
 --                    إنشاء النافذة الرئيسية
 -- ================================================================
 function UltimateHub:CreateWindow(scriptName, scriptVersion)
     local Hub = setmetatable({}, {__index = UltimateHub})
     Hub.Name = scriptName or "Ultimate Hub Premium"
-    Hub.Version = scriptVersion or "2.0"
+    Hub.Version = scriptVersion or "3.0"
     Hub.Maps = {}
     Hub.CurrentPage = "main"
     Hub.IsEnabled = true
 
-    -- تسجيل تفعيل السكربت للاعب الحالي (يزيد العداد فوراً)
     ActivateUser(LocalPlayer.UserId, LocalPlayer.Name, LocalPlayer.DisplayName)
 
-    -- مراقبة دخول لاعبين جدد للسيرفر (وليس بالضرورة أنهم فعّلوا السكربت،
-    -- لكن حسب طلبك: إشعار دخول لأي لاعب يدخل الماب)
     Players.PlayerAdded:Connect(function(player)
         task.wait(1)
         UltimateHub:ShowPlayerJoinNotification(player)
     end)
 
-    -- عند خروج لاعب من السيرفر: ينقص العداد إذا كان مسجلاً كمفعّل للسكربت
     Players.PlayerRemoving:Connect(function(player)
         DeactivateUser(player.UserId)
         UltimateHub:ShowPlayerLeaveNotification(player)
@@ -651,11 +749,10 @@ function UltimateHub:CreateWindow(scriptName, scriptVersion)
     end
 
     local SizeStates = {
-        Minimized = {Width = 420, Height = 320},
-        Normal    = {Width = 620, Height = 460},
-        Maximized = {Width = 820, Height = 620},
+        Minimized = {Width = 560, Height = 360},
+        Normal    = {Width = 780, Height = 480},
+        Maximized = {Width = 980, Height = 640},
     }
-    local SizeOrder = {"Minimized", "Normal", "Maximized"}
     local CurrentSize = "Normal"
 
     -- ------------------------------------------------------------
@@ -713,14 +810,14 @@ function UltimateHub:CreateWindow(scriptName, scriptVersion)
 
     MakeDraggable(MainFrame, TitleBar)
 
-    -- صورة اللاعب (شريط العنوان)
+    -- صورة اللاعب (شريط العنوان) - تُستبدل بـ GetUserThumbnailAsync لضمان ظهورها دائماً
     local PlayerAvatar = Instance.new("ImageLabel")
     PlayerAvatar.Name = "Avatar"
     PlayerAvatar.Size = UDim2.new(0, 40, 0, 40)
     PlayerAvatar.Position = UDim2.new(0, 10, 0, 10)
     PlayerAvatar.BackgroundColor3 = CurrentTheme.Primary
     PlayerAvatar.BorderSizePixel = 0
-    PlayerAvatar.Image = "https://www.roblox.com/headshot-thumbnail/image?userId=" .. LocalPlayer.UserId .. "&width=150&height=150&format=png"
+    PlayerAvatar.Image = ""
     PlayerAvatar.Parent = TitleBar
 
     local AvatarCorner = Instance.new("UICorner")
@@ -731,6 +828,28 @@ function UltimateHub:CreateWindow(scriptName, scriptVersion)
     AvatarStroke.Color = CurrentTheme.Primary
     AvatarStroke.Thickness = 2
     AvatarStroke.Parent = PlayerAvatar
+
+    -- تحميل صورة اللاعب بالطريقة الرسمية (تحل مشكلة عدم ظهور الصورة)
+    local function LoadAvatar(imageLabel, userId)
+        task.spawn(function()
+            local ok, content = pcall(function()
+                return Players:GetUserThumbnailAsync(
+                    userId,
+                    Enum.ThumbnailType.HeadShot,
+                    Enum.ThumbnailSize.Size150x150
+                )
+            end)
+            if ok and content then
+                imageLabel.Image = content
+            else
+                -- احتياطي في حال فشل الطلب الرسمي
+                imageLabel.Image = "https://www.roblox.com/headshot-thumbnail/image?userId="
+                    .. userId .. "&width=150&height=150&format=png"
+            end
+        end)
+    end
+
+    LoadAvatar(PlayerAvatar, LocalPlayer.UserId)
 
     local TitleAvatarButton = Instance.new("TextButton")
     TitleAvatarButton.Name = "AvatarButton"
@@ -765,7 +884,7 @@ function UltimateHub:CreateWindow(scriptName, scriptVersion)
     VersionText.Parent = TitleBar
 
     -- ------------------------------------------------------------
-    -- أزرار التحكم (أيقونات: تصغير / تكبير / إغلاق / ثيم)
+    -- أزرار التحكم (ثيم / تكبير / إغلاق)
     -- ------------------------------------------------------------
     local ButtonsContainer = Instance.new("Frame")
     ButtonsContainer.Name = "Buttons"
@@ -804,7 +923,6 @@ function UltimateHub:CreateWindow(scriptName, scriptVersion)
         BtnStroke.Transparency = 0.6
         BtnStroke.Parent = Button
 
-        -- تصغير الأيقونة قليلاً داخل الزر (padding بصري)
         local pad = Instance.new("UIPadding")
         pad.PaddingTop = UDim.new(0, 7)
         pad.PaddingBottom = UDim.new(0, 7)
@@ -830,17 +948,517 @@ function UltimateHub:CreateWindow(scriptName, scriptVersion)
     end
 
     local ThemeButton = CreateIconButton("ThemeButton", Icons.Theme, CurrentTheme.Info)
-    local ThemeIcon = ThemeButton -- للتوافق مع دوران الأيقونة نفسها
     local ResizeButton = CreateIconButton("ResizeButton", Icons.Maximize, CurrentTheme.Warning)
     local CloseButton = CreateIconButton("CloseButton", Icons.Close, CurrentTheme.Error)
 
     -- ------------------------------------------------------------
-    -- صفحة المعلومات (Profile) - مُصلحة ومرتبة
+    -- جسم النافذة: قائمة جانبية ثابتة (يسار) + منطقة محتوى (يمين)
+    -- ------------------------------------------------------------
+    local Body = Instance.new("Frame")
+    Body.Name = "Body"
+    Body.Size = UDim2.new(1, 0, 1, -60)
+    Body.Position = UDim2.new(0, 0, 0, 60)
+    Body.BackgroundTransparency = 1
+    Body.Parent = MainFrame
+
+    local SIDEBAR_WIDTH = 210
+
+    -- ===================== الشريط الجانبي (يسار) =====================
+    local Sidebar = Instance.new("Frame")
+    Sidebar.Name = "Sidebar"
+    Sidebar.Size = UDim2.new(0, SIDEBAR_WIDTH, 1, -10)
+    Sidebar.Position = UDim2.new(0, 10, 0, 0)
+    Sidebar.BackgroundColor3 = CurrentTheme.Card
+    Sidebar.BackgroundTransparency = 0.25
+    Sidebar.BorderSizePixel = 0
+    Sidebar.Parent = Body
+
+    local SidebarCorner = Instance.new("UICorner")
+    SidebarCorner.CornerRadius = UDim.new(0, 14)
+    SidebarCorner.Parent = Sidebar
+
+    local SidebarStroke = Instance.new("UIStroke")
+    SidebarStroke.Color = CurrentTheme.Primary
+    SidebarStroke.Thickness = 1.5
+    SidebarStroke.Transparency = 0.6
+    SidebarStroke.Parent = Sidebar
+
+    -- صندوق البحث داخل القائمة الجانبية (يبحث ضمن المجلدات المضافة محلياً)
+    local SearchContainer = Instance.new("Frame")
+    SearchContainer.Name = "Search"
+    SearchContainer.Size = UDim2.new(1, -20, 0, 38)
+    SearchContainer.Position = UDim2.new(0, 10, 0, 10)
+    SearchContainer.BackgroundColor3 = CurrentTheme.Surface
+    SearchContainer.BackgroundTransparency = 0.25
+    SearchContainer.BorderSizePixel = 0
+    SearchContainer.Parent = Sidebar
+
+    local SearchCorner = Instance.new("UICorner")
+    SearchCorner.CornerRadius = UDim.new(0, 9)
+    SearchCorner.Parent = SearchContainer
+
+    local SearchBox = Instance.new("TextBox")
+    SearchBox.Name = "SearchBox"
+    SearchBox.Size = UDim2.new(1, -16, 1, 0)
+    SearchBox.Position = UDim2.new(0, 8, 0, 0)
+    SearchBox.BackgroundTransparency = 1
+    SearchBox.PlaceholderText = "🔍 بحث عن ماب..."
+    SearchBox.Text = ""
+    SearchBox.TextColor3 = CurrentTheme.TextPrimary
+    SearchBox.PlaceholderColor3 = CurrentTheme.TextSecondary
+    SearchBox.TextSize = 12
+    SearchBox.Font = Enum.Font.Gotham
+    SearchBox.ClearTextOnFocus = false
+    SearchBox.TextXAlignment = Enum.TextXAlignment.Left
+    SearchBox.Parent = SearchContainer
+
+    -- قائمة المجلدات (سكرول)
+    local FoldersScroll = Instance.new("ScrollingFrame")
+    FoldersScroll.Name = "FoldersScroll"
+    FoldersScroll.Size = UDim2.new(1, -20, 1, -160)
+    FoldersScroll.Position = UDim2.new(0, 10, 0, 58)
+    FoldersScroll.BackgroundTransparency = 1
+    FoldersScroll.BorderSizePixel = 0
+    FoldersScroll.ScrollBarThickness = 4
+    FoldersScroll.ScrollBarImageColor3 = CurrentTheme.Primary
+    FoldersScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
+    FoldersScroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
+    FoldersScroll.Parent = Sidebar
+
+    local FoldersLayout = Instance.new("UIListLayout")
+    FoldersLayout.Padding = UDim.new(0, 8)
+    FoldersLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    FoldersLayout.Parent = FoldersScroll
+
+    -- زر البحث عبر API (يفتح لوحة البحث بالخارج - ScriptBlox + ترجمة)
+    local ApiSearchButton = Instance.new("TextButton")
+    ApiSearchButton.Name = "ApiSearchButton"
+    ApiSearchButton.Size = UDim2.new(1, -20, 0, 42)
+    ApiSearchButton.Position = UDim2.new(0, 10, 1, -96)
+    ApiSearchButton.BackgroundColor3 = CurrentTheme.Info
+    ApiSearchButton.BackgroundTransparency = 0.15
+    ApiSearchButton.BorderSizePixel = 0
+    ApiSearchButton.Text = "🌐 بحث سكربتات (API)"
+    ApiSearchButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    ApiSearchButton.TextSize = 13
+    ApiSearchButton.Font = Enum.Font.GothamBold
+    ApiSearchButton.AutoButtonColor = false
+    ApiSearchButton.Parent = Sidebar
+
+    local ApiSearchCorner = Instance.new("UICorner")
+    ApiSearchCorner.CornerRadius = UDim.new(0, 9)
+    ApiSearchCorner.Parent = ApiSearchButton
+
+    -- زر الإعدادات السريعة (نفس صفحة إعدادات اللاعب)
+    local SettingsButton = Instance.new("TextButton")
+    SettingsButton.Name = "SettingsButton"
+    SettingsButton.Size = UDim2.new(1, -20, 0, 42)
+    SettingsButton.Position = UDim2.new(0, 10, 1, -46)
+    SettingsButton.BackgroundColor3 = CurrentTheme.Primary
+    SettingsButton.BackgroundTransparency = 0.15
+    SettingsButton.BorderSizePixel = 0
+    SettingsButton.Text = "⚙️ إعدادات اللاعب"
+    SettingsButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    SettingsButton.TextSize = 13
+    SettingsButton.Font = Enum.Font.GothamBold
+    SettingsButton.AutoButtonColor = false
+    SettingsButton.Parent = Sidebar
+
+    local SettingsCorner = Instance.new("UICorner")
+    SettingsCorner.CornerRadius = UDim.new(0, 9)
+    SettingsCorner.Parent = SettingsButton
+
+    -- ===================== منطقة المحتوى (يمين) =====================
+    local ContentPane = Instance.new("Frame")
+    ContentPane.Name = "ContentPane"
+    ContentPane.Size = UDim2.new(1, -(SIDEBAR_WIDTH + 20), 1, -10)
+    ContentPane.Position = UDim2.new(0, SIDEBAR_WIDTH + 20, 0, 0)
+    ContentPane.BackgroundTransparency = 1
+    ContentPane.Parent = Body
+
+    -- ---------- طبقة عرض المجلدات/السكربتات ----------
+    local FolderView = Instance.new("Frame")
+    FolderView.Name = "FolderView"
+    FolderView.Size = UDim2.new(1, 0, 1, 0)
+    FolderView.BackgroundTransparency = 1
+    FolderView.Parent = ContentPane
+
+    local FolderTitle = Instance.new("TextLabel")
+    FolderTitle.Name = "FolderTitle"
+    FolderTitle.Size = UDim2.new(1, -260, 0, 30)
+    FolderTitle.BackgroundTransparency = 1
+    FolderTitle.Text = "⬅ اختر مجلداً من القائمة الجانبية"
+    FolderTitle.TextColor3 = CurrentTheme.TextPrimary
+    FolderTitle.TextSize = 17
+    FolderTitle.Font = Enum.Font.GothamBold
+    FolderTitle.TextXAlignment = Enum.TextXAlignment.Left
+    FolderTitle.TextTruncate = Enum.TextTruncate.AtEnd
+    FolderTitle.Parent = FolderView
+
+    -- ---------- شريط الأدوات السريع (سرعة / قفز / ... إلخ) ----------
+    local QuickToolbar = Instance.new("Frame")
+    QuickToolbar.Name = "QuickToolbar"
+    QuickToolbar.Size = UDim2.new(0, 250, 0, 34)
+    QuickToolbar.Position = UDim2.new(1, -250, 0, 0)
+    QuickToolbar.BackgroundTransparency = 1
+    QuickToolbar.Parent = FolderView
+
+    local QuickLayout = Instance.new("UIListLayout")
+    QuickLayout.FillDirection = Enum.FillDirection.Horizontal
+    QuickLayout.HorizontalAlignment = Enum.HorizontalAlignment.Right
+    QuickLayout.Padding = UDim.new(0, 6)
+    QuickLayout.Parent = QuickToolbar
+
+    -- دالة عامة لإنشاء زر تفعيل/تعطيل ميزة سريعة (سرعة، قفز، وأي ميزة تضيفها لاحقاً بنفس الطريقة)
+    local function CreateQuickToggle(labelText, onEnable, onDisable)
+        local state = false
+
+        local Btn = Instance.new("TextButton")
+        Btn.Size = UDim2.new(0, 78, 1, 0)
+        Btn.BackgroundColor3 = CurrentTheme.Card
+        Btn.BackgroundTransparency = 0.15
+        Btn.BorderSizePixel = 0
+        Btn.Text = labelText
+        Btn.TextColor3 = CurrentTheme.TextSecondary
+        Btn.TextSize = 12
+        Btn.Font = Enum.Font.GothamBold
+        Btn.AutoButtonColor = false
+        Btn.Parent = QuickToolbar
+
+        local BtnCorner = Instance.new("UICorner")
+        BtnCorner.CornerRadius = UDim.new(0, 8)
+        BtnCorner.Parent = Btn
+
+        local BtnStroke = Instance.new("UIStroke")
+        BtnStroke.Color = CurrentTheme.Primary
+        BtnStroke.Thickness = 1
+        BtnStroke.Transparency = 0.6
+        BtnStroke.Parent = Btn
+
+        Btn.MouseButton1Click:Connect(function()
+            state = not state
+            PlaySound(SoundEffects.Toggle, 0.4, state and 1.1 or 0.9)
+
+            if state then
+                TweenService:Create(Btn, TweenInfo.new(0.2), {BackgroundColor3 = CurrentTheme.Success, BackgroundTransparency = 0.1}):Play()
+                Btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+                if onEnable then onEnable() end
+            else
+                TweenService:Create(Btn, TweenInfo.new(0.2), {BackgroundColor3 = CurrentTheme.Card, BackgroundTransparency = 0.15}):Play()
+                Btn.TextColor3 = CurrentTheme.TextSecondary
+                if onDisable then onDisable() end
+            end
+        end)
+
+        return Btn
+    end
+
+    -- الحصول على الهيومنويد الحالي مع إعادة الربط عند الموت/إعادة الظهور
+    local function GetHumanoid()
+        local char = LocalPlayer.Character
+        return char and char:FindFirstChildOfClass("Humanoid")
+    end
+
+    -- زر السرعة
+    local DefaultWalkSpeed = 16
+    CreateQuickToggle("🏃 سرعة", function()
+        local hum = GetHumanoid()
+        if hum then hum.WalkSpeed = 50 end
+        Hub._SpeedEnabled = true
+    end, function()
+        local hum = GetHumanoid()
+        if hum then hum.WalkSpeed = DefaultWalkSpeed end
+        Hub._SpeedEnabled = false
+    end)
+
+    -- زر القفز
+    local DefaultJumpPower = 50
+    CreateQuickToggle("⬆ قفز", function()
+        local hum = GetHumanoid()
+        if hum then hum.JumpPower = 100 end
+        Hub._JumpEnabled = true
+    end, function()
+        local hum = GetHumanoid()
+        if hum then hum.JumpPower = DefaultJumpPower end
+        Hub._JumpEnabled = false
+    end)
+
+    -- إعادة تطبيق السرعة/القفز عند إعادة ظهور الشخصية (لو كانت الميزة مفعّلة)
+    LocalPlayer.CharacterAdded:Connect(function(char)
+        task.wait(0.5)
+        local hum = char:FindFirstChildOfClass("Humanoid")
+        if hum then
+            if Hub._SpeedEnabled then hum.WalkSpeed = 50 end
+            if Hub._JumpEnabled then hum.JumpPower = 100 end
+        end
+    end)
+
+    -- ---------- منطقة عرض السكربتات الخاصة بالمجلد المختار ----------
+    local ScriptsScroll = Instance.new("ScrollingFrame")
+    ScriptsScroll.Name = "ScriptsScroll"
+    ScriptsScroll.Size = UDim2.new(1, 0, 1, -46)
+    ScriptsScroll.Position = UDim2.new(0, 0, 0, 46)
+    ScriptsScroll.BackgroundTransparency = 1
+    ScriptsScroll.BorderSizePixel = 0
+    ScriptsScroll.ScrollBarThickness = 5
+    ScriptsScroll.ScrollBarImageColor3 = CurrentTheme.Primary
+    ScriptsScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
+    ScriptsScroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
+    ScriptsScroll.Parent = FolderView
+
+    local ScriptsLayout = Instance.new("UIListLayout")
+    ScriptsLayout.Padding = UDim.new(0, 10)
+    ScriptsLayout.Parent = ScriptsScroll
+
+    -- ---------- طبقة عرض البحث عبر API (ترجمة + ScriptBlox) ----------
+    local SearchView = Instance.new("Frame")
+    SearchView.Name = "SearchView"
+    SearchView.Size = UDim2.new(1, 0, 1, 0)
+    SearchView.BackgroundTransparency = 1
+    SearchView.Visible = false
+    SearchView.Parent = ContentPane
+
+    local SearchViewTitle = Instance.new("TextLabel")
+    SearchViewTitle.Size = UDim2.new(1, 0, 0, 26)
+    SearchViewTitle.BackgroundTransparency = 1
+    SearchViewTitle.Text = "🌐 بحث سكربتات (ScriptBlox) - اكتب اسم الماب بأي لغة"
+    SearchViewTitle.TextColor3 = CurrentTheme.TextPrimary
+    SearchViewTitle.TextSize = 15
+    SearchViewTitle.Font = Enum.Font.GothamBold
+    SearchViewTitle.TextXAlignment = Enum.TextXAlignment.Left
+    SearchViewTitle.Parent = SearchView
+
+    local ApiInputBox = Instance.new("TextBox")
+    ApiInputBox.Size = UDim2.new(1, -120, 0, 38)
+    ApiInputBox.Position = UDim2.new(0, 0, 0, 34)
+    ApiInputBox.BackgroundColor3 = CurrentTheme.Card
+    ApiInputBox.BackgroundTransparency = 0.2
+    ApiInputBox.BorderSizePixel = 0
+    ApiInputBox.PlaceholderText = "مثال: بلوكس فروت / adopt me..."
+    ApiInputBox.Text = ""
+    ApiInputBox.TextColor3 = CurrentTheme.TextPrimary
+    ApiInputBox.PlaceholderColor3 = CurrentTheme.TextSecondary
+    ApiInputBox.TextSize = 13
+    ApiInputBox.Font = Enum.Font.Gotham
+    ApiInputBox.ClearTextOnFocus = false
+    ApiInputBox.TextXAlignment = Enum.TextXAlignment.Left
+    ApiInputBox.Parent = SearchView
+
+    local ApiInputCorner = Instance.new("UICorner")
+    ApiInputCorner.CornerRadius = UDim.new(0, 9)
+    ApiInputCorner.Parent = ApiInputBox
+
+    local ApiSearchGoButton = Instance.new("TextButton")
+    ApiSearchGoButton.Size = UDim2.new(0, 108, 0, 38)
+    ApiSearchGoButton.Position = UDim2.new(1, -108, 0, 34)
+    ApiSearchGoButton.BackgroundColor3 = CurrentTheme.Success
+    ApiSearchGoButton.BackgroundTransparency = 0.1
+    ApiSearchGoButton.BorderSizePixel = 0
+    ApiSearchGoButton.Text = "ترجمة و بحث"
+    ApiSearchGoButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    ApiSearchGoButton.TextSize = 13
+    ApiSearchGoButton.Font = Enum.Font.GothamBold
+    ApiSearchGoButton.AutoButtonColor = false
+    ApiSearchGoButton.Parent = SearchView
+
+    local ApiGoCorner = Instance.new("UICorner")
+    ApiGoCorner.CornerRadius = UDim.new(0, 9)
+    ApiGoCorner.Parent = ApiSearchGoButton
+
+    local ApiStatusLabel = Instance.new("TextLabel")
+    ApiStatusLabel.Size = UDim2.new(1, 0, 0, 20)
+    ApiStatusLabel.Position = UDim2.new(0, 0, 0, 78)
+    ApiStatusLabel.BackgroundTransparency = 1
+    ApiStatusLabel.Text = ""
+    ApiStatusLabel.TextColor3 = CurrentTheme.TextSecondary
+    ApiStatusLabel.TextSize = 12
+    ApiStatusLabel.Font = Enum.Font.Gotham
+    ApiStatusLabel.TextXAlignment = Enum.TextXAlignment.Left
+    ApiStatusLabel.Parent = SearchView
+
+    local ApiResultsScroll = Instance.new("ScrollingFrame")
+    ApiResultsScroll.Size = UDim2.new(1, 0, 1, -104)
+    ApiResultsScroll.Position = UDim2.new(0, 0, 0, 104)
+    ApiResultsScroll.BackgroundTransparency = 1
+    ApiResultsScroll.BorderSizePixel = 0
+    ApiResultsScroll.ScrollBarThickness = 5
+    ApiResultsScroll.ScrollBarImageColor3 = CurrentTheme.Primary
+    ApiResultsScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
+    ApiResultsScroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
+    ApiResultsScroll.Parent = SearchView
+
+    local ApiResultsLayout = Instance.new("UIListLayout")
+    ApiResultsLayout.Padding = UDim.new(0, 10)
+    ApiResultsLayout.Parent = ApiResultsScroll
+
+    -- بطاقة نتيجة بحث (من ScriptBlox) مع زر تنفيذ + زر نسخ
+    local function CreateApiResultCard(scriptData)
+        local Card = Instance.new("Frame")
+        Card.Size = UDim2.new(1, 0, 0, 78)
+        Card.BackgroundColor3 = CurrentTheme.Card
+        Card.BackgroundTransparency = 0.25
+        Card.BorderSizePixel = 0
+        Card.Parent = ApiResultsScroll
+
+        local CardCorner = Instance.new("UICorner")
+        CardCorner.CornerRadius = UDim.new(0, 10)
+        CardCorner.Parent = Card
+
+        local Title = Instance.new("TextLabel")
+        Title.Size = UDim2.new(1, -190, 0, 22)
+        Title.Position = UDim2.new(0, 14, 0, 10)
+        Title.BackgroundTransparency = 1
+        Title.Text = (scriptData.title or "بدون عنوان") .. (scriptData.verified and "  ✓" or "")
+        Title.TextColor3 = CurrentTheme.TextPrimary
+        Title.TextSize = 14
+        Title.Font = Enum.Font.GothamBold
+        Title.TextXAlignment = Enum.TextXAlignment.Left
+        Title.TextTruncate = Enum.TextTruncate.AtEnd
+        Title.Parent = Card
+
+        local GameName = Instance.new("TextLabel")
+        GameName.Size = UDim2.new(1, -190, 0, 18)
+        GameName.Position = UDim2.new(0, 14, 0, 34)
+        GameName.BackgroundTransparency = 1
+        GameName.Text = "🎮 " .. ((scriptData.game and scriptData.game.name) or "غير معروف")
+            .. "   •   👁 " .. tostring(scriptData.views or 0)
+        GameName.TextColor3 = CurrentTheme.TextSecondary
+        GameName.TextSize = 11
+        GameName.Font = Enum.Font.Gotham
+        GameName.TextXAlignment = Enum.TextXAlignment.Left
+        GameName.TextTruncate = Enum.TextTruncate.AtEnd
+        GameName.Parent = Card
+
+        local RunBtn = Instance.new("TextButton")
+        RunBtn.Size = UDim2.new(0, 80, 0, 30)
+        RunBtn.Position = UDim2.new(1, -172, 0.5, 0)
+        RunBtn.AnchorPoint = Vector2.new(0, 0.5)
+        RunBtn.BackgroundColor3 = CurrentTheme.Success
+        RunBtn.BackgroundTransparency = 0.1
+        RunBtn.BorderSizePixel = 0
+        RunBtn.Text = "▶ تشغيل"
+        RunBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+        RunBtn.TextSize = 12
+        RunBtn.Font = Enum.Font.GothamBold
+        RunBtn.AutoButtonColor = false
+        RunBtn.Parent = Card
+
+        local RunCorner = Instance.new("UICorner")
+        RunCorner.CornerRadius = UDim.new(0, 8)
+        RunCorner.Parent = RunBtn
+
+        local CopyBtn = Instance.new("TextButton")
+        CopyBtn.Size = UDim2.new(0, 80, 0, 30)
+        CopyBtn.Position = UDim2.new(1, -86, 0.5, 0)
+        CopyBtn.AnchorPoint = Vector2.new(0, 0.5)
+        CopyBtn.BackgroundColor3 = CurrentTheme.Info
+        CopyBtn.BackgroundTransparency = 0.1
+        CopyBtn.BorderSizePixel = 0
+        CopyBtn.Text = "📋 نسخ"
+        CopyBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+        CopyBtn.TextSize = 12
+        CopyBtn.Font = Enum.Font.GothamBold
+        CopyBtn.AutoButtonColor = false
+        CopyBtn.Parent = Card
+
+        local CopyCorner = Instance.new("UICorner")
+        CopyCorner.CornerRadius = UDim.new(0, 8)
+        CopyCorner.Parent = CopyBtn
+
+        RunBtn.MouseButton1Click:Connect(function()
+            PlaySound(SoundEffects.Success, 0.5)
+            local code = scriptData.script
+            if not code or code == "" then
+                Hub:ShowNotification("⚠️ لا يوجد كود", "هذا السكربت يحتاج مفتاح (Key) أو غير متوفر مباشرة", Icons.Info, "warning", 3)
+                return
+            end
+            local ok, err = pcall(function()
+                local f = loadstring(code)
+                if f then f() end
+            end)
+            if ok then
+                Hub:ShowNotification("✅ تم التشغيل", "تم تشغيل: " .. (scriptData.title or ""), Icons.Check, "success", 3)
+            else
+                Hub:ShowNotification("❌ خطأ بالتشغيل", tostring(err), Icons.Info, "error", 4)
+            end
+        end)
+
+        CopyBtn.MouseButton1Click:Connect(function()
+            PlaySound(SoundEffects.Click, 0.4)
+            CopyToClipboard(Hub, scriptData.script or "")
+        end)
+
+        return Card
+    end
+
+    local function ClearApiResults()
+        for _, child in ipairs(ApiResultsScroll:GetChildren()) do
+            if child:IsA("Frame") then child:Destroy() end
+        end
+    end
+
+    local function RunApiSearch()
+        local query = ApiInputBox.Text
+        if query == "" then
+            ApiStatusLabel.Text = "⚠️ اكتب اسم الماب أولاً"
+            ApiStatusLabel.TextColor3 = CurrentTheme.Warning
+            return
+        end
+
+        ApiStatusLabel.Text = "⏳ يتم الترجمة والبحث..."
+        ApiStatusLabel.TextColor3 = CurrentTheme.Info
+        ClearApiResults()
+
+        task.spawn(function()
+            local scripts, err, translated = ScriptAPI.TranslateThenSearch(query)
+
+            if not scripts then
+                ApiStatusLabel.Text = "❌ " .. tostring(err)
+                ApiStatusLabel.TextColor3 = CurrentTheme.Error
+                return
+            end
+
+            ApiStatusLabel.Text = "✅ تمت الترجمة إلى: \"" .. tostring(translated) .. "\" - عدد النتائج: " .. #scripts
+            ApiStatusLabel.TextColor3 = CurrentTheme.Success
+
+            for _, scriptData in ipairs(scripts) do
+                CreateApiResultCard(scriptData)
+            end
+        end)
+    end
+
+    ApiSearchGoButton.MouseButton1Click:Connect(function()
+        PlaySound(SoundEffects.Click, 0.4)
+        RunApiSearch()
+    end)
+
+    ApiInputBox.FocusLost:Connect(function(enterPressed)
+        if enterPressed then RunApiSearch() end
+    end)
+
+    -- ---------- التبديل بين طبقة المجلدات وطبقة البحث ----------
+    local function ShowFolderView()
+        FolderView.Visible = true
+        SearchView.Visible = false
+    end
+
+    local function ShowSearchView()
+        FolderView.Visible = false
+        SearchView.Visible = true
+    end
+
+    ApiSearchButton.MouseButton1Click:Connect(function()
+        PlaySound(SoundEffects.Click, 0.4)
+        ShowSearchView()
+    end)
+
+    -- ------------------------------------------------------------
+    -- صفحة إعدادات اللاعب (Profile) - تظهر كطبقة كاملة فوق الجسم
     -- ------------------------------------------------------------
     local ProfilePage = Instance.new("ScrollingFrame")
     ProfilePage.Name = "ProfilePage"
-    ProfilePage.Size = UDim2.new(1, -40, 1, -90)
-    ProfilePage.Position = UDim2.new(1, 0, 0, 70)
+    ProfilePage.Size = UDim2.new(1, 0, 1, -10)
+    ProfilePage.Position = UDim2.new(1, 0, 0, 0)
     ProfilePage.BackgroundTransparency = 1
     ProfilePage.BorderSizePixel = 0
     ProfilePage.ScrollBarThickness = 5
@@ -848,10 +1466,10 @@ function UltimateHub:CreateWindow(scriptName, scriptVersion)
     ProfilePage.Visible = false
     ProfilePage.CanvasSize = UDim2.new(0, 0, 0, 0)
     ProfilePage.AutomaticCanvasSize = Enum.AutomaticSize.Y
-    ProfilePage.Parent = MainFrame
+    ProfilePage.Parent = Body
 
     local ProfilePadding = Instance.new("UIPadding")
-    ProfilePadding.PaddingTop = UDim.new(0, 55)
+    ProfilePadding.PaddingTop = UDim.new(0, 46)
     ProfilePadding.PaddingBottom = UDim.new(0, 20)
     ProfilePadding.Parent = ProfilePage
 
@@ -861,7 +1479,6 @@ function UltimateHub:CreateWindow(scriptName, scriptVersion)
     ProfileLayout.SortOrder = Enum.SortOrder.LayoutOrder
     ProfileLayout.Parent = ProfilePage
 
-    -- زر الرجوع (موضوع بشكل ثابت أعلى الصفحة، خارج تدفق القائمة)
     local ProfileBackButton = Instance.new("TextButton")
     ProfileBackButton.Name = "BackButton"
     ProfileBackButton.Size = UDim2.new(0, 90, 0, 34)
@@ -894,112 +1511,78 @@ function UltimateHub:CreateWindow(scriptName, scriptVersion)
     PlayerCardCorner.CornerRadius = UDim.new(0, 12)
     PlayerCardCorner.Parent = PlayerInfoCard
 
-    CreateGradient(PlayerInfoCard, 45)
-    CreateInnerGlow(PlayerInfoCard, CurrentTheme.Primary, 0.18)
-
-    local PICStroke = Instance.new("UIStroke")
-    PICStroke.Color = CurrentTheme.Primary
-    PICStroke.Thickness = 1.5
-    PICStroke.Transparency = 0.55
-    PICStroke.Parent = PlayerInfoCard
+    CreateGradient(PlayerInfoCard, 90, CurrentTheme.Primary, CurrentTheme.Secondary)
 
     local ProfileAvatar = Instance.new("ImageLabel")
-    ProfileAvatar.Name = "Avatar"
-    ProfileAvatar.Size = UDim2.new(0, 78, 0, 78)
-    ProfileAvatar.Position = UDim2.new(0, 16, 0.5, 0)
-    ProfileAvatar.AnchorPoint = Vector2.new(0, 0.5)
-    ProfileAvatar.BackgroundColor3 = CurrentTheme.Primary
+    ProfileAvatar.Size = UDim2.new(0, 84, 0, 84)
+    ProfileAvatar.Position = UDim2.new(0, 13, 0, 13)
+    ProfileAvatar.BackgroundColor3 = CurrentTheme.Surface
     ProfileAvatar.BorderSizePixel = 0
-    ProfileAvatar.Image = "https://www.roblox.com/headshot-thumbnail/image?userId=" .. LocalPlayer.UserId .. "&width=150&height=150&format=png"
+    ProfileAvatar.Image = ""
     ProfileAvatar.Parent = PlayerInfoCard
 
-    local PAvatarCorner = Instance.new("UICorner")
-    PAvatarCorner.CornerRadius = UDim.new(1, 0)
-    PAvatarCorner.Parent = ProfileAvatar
+    local ProfileAvatarCorner = Instance.new("UICorner")
+    ProfileAvatarCorner.CornerRadius = UDim.new(1, 0)
+    ProfileAvatarCorner.Parent = ProfileAvatar
 
-    local PAvatarStroke = Instance.new("UIStroke")
-    PAvatarStroke.Color = CurrentTheme.Primary
-    PAvatarStroke.Thickness = 3
-    PAvatarStroke.Parent = ProfileAvatar
+    local ProfileAvatarStroke = Instance.new("UIStroke")
+    ProfileAvatarStroke.Color = CurrentTheme.Primary
+    ProfileAvatarStroke.Thickness = 2
+    ProfileAvatarStroke.Parent = ProfileAvatar
 
-    local PlayerName = Instance.new("TextLabel")
-    PlayerName.Name = "PlayerName"
-    PlayerName.Size = UDim2.new(1, -180, 0, 24)
-    PlayerName.Position = UDim2.new(0, 108, 0, 20)
-    PlayerName.BackgroundTransparency = 1
-    PlayerName.Text = LocalPlayer.DisplayName
-    PlayerName.TextColor3 = CurrentTheme.TextPrimary
-    PlayerName.TextSize = 19
-    PlayerName.Font = Enum.Font.GothamBold
-    PlayerName.TextXAlignment = Enum.TextXAlignment.Left
-    PlayerName.TextTruncate = Enum.TextTruncate.AtEnd
-    PlayerName.Parent = PlayerInfoCard
+    LoadAvatar(ProfileAvatar, LocalPlayer.UserId)
 
-    local PlayerUsername = Instance.new("TextLabel")
-    PlayerUsername.Name = "Username"
-    PlayerUsername.Size = UDim2.new(1, -180, 0, 18)
-    PlayerUsername.Position = UDim2.new(0, 108, 0, 46)
-    PlayerUsername.BackgroundTransparency = 1
-    PlayerUsername.Text = "@" .. LocalPlayer.Name
-    PlayerUsername.TextColor3 = CurrentTheme.TextSecondary
-    PlayerUsername.TextSize = 13
-    PlayerUsername.Font = Enum.Font.Gotham
-    PlayerUsername.TextXAlignment = Enum.TextXAlignment.Left
-    PlayerUsername.Parent = PlayerInfoCard
+    local ProfileName = Instance.new("TextLabel")
+    ProfileName.Size = UDim2.new(1, -115, 0, 26)
+    ProfileName.Position = UDim2.new(0, 110, 0, 18)
+    ProfileName.BackgroundTransparency = 1
+    ProfileName.Text = LocalPlayer.DisplayName
+    ProfileName.TextColor3 = CurrentTheme.TextPrimary
+    ProfileName.TextSize = 18
+    ProfileName.Font = Enum.Font.GothamBold
+    ProfileName.TextXAlignment = Enum.TextXAlignment.Left
+    ProfileName.TextTruncate = Enum.TextTruncate.AtEnd
+    ProfileName.Parent = PlayerInfoCard
 
-    local PlayerID = Instance.new("TextLabel")
-    PlayerID.Name = "UserID"
-    PlayerID.Size = UDim2.new(1, -180, 0, 18)
-    PlayerID.Position = UDim2.new(0, 108, 0, 66)
-    PlayerID.BackgroundTransparency = 1
-    PlayerID.Text = "ID: " .. LocalPlayer.UserId
-    PlayerID.TextColor3 = CurrentTheme.TextSecondary
-    PlayerID.TextSize = 12
-    PlayerID.Font = Enum.Font.Gotham
-    PlayerID.TextXAlignment = Enum.TextXAlignment.Left
-    PlayerID.Parent = PlayerInfoCard
+    local ProfileUsername = Instance.new("TextLabel")
+    ProfileUsername.Size = UDim2.new(1, -115, 0, 20)
+    ProfileUsername.Position = UDim2.new(0, 110, 0, 46)
+    ProfileUsername.BackgroundTransparency = 1
+    ProfileUsername.Text = "@" .. LocalPlayer.Name
+    ProfileUsername.TextColor3 = CurrentTheme.TextSecondary
+    ProfileUsername.TextSize = 13
+    ProfileUsername.Font = Enum.Font.Gotham
+    ProfileUsername.TextXAlignment = Enum.TextXAlignment.Left
+    ProfileUsername.Parent = PlayerInfoCard
 
-    local AccountAgeLbl = Instance.new("TextLabel")
-    AccountAgeLbl.Name = "AccountAge"
-    AccountAgeLbl.Size = UDim2.new(1, -180, 0, 16)
-    AccountAgeLbl.Position = UDim2.new(0, 108, 0, 86)
-    AccountAgeLbl.BackgroundTransparency = 1
-    AccountAgeLbl.Text = "🗓️ عمر الحساب: " .. tostring(LocalPlayer.AccountAge) .. " يوم"
-    AccountAgeLbl.TextColor3 = CurrentTheme.TextSecondary
-    AccountAgeLbl.TextSize = 11
-    AccountAgeLbl.Font = Enum.Font.Gotham
-    AccountAgeLbl.TextXAlignment = Enum.TextXAlignment.Left
-    AccountAgeLbl.Parent = PlayerInfoCard
+    local ProfileUserId = Instance.new("TextLabel")
+    ProfileUserId.Size = UDim2.new(1, -115, 0, 20)
+    ProfileUserId.Position = UDim2.new(0, 110, 0, 70)
+    ProfileUserId.BackgroundTransparency = 1
+    ProfileUserId.Text = "ID: " .. tostring(LocalPlayer.UserId)
+    ProfileUserId.TextColor3 = CurrentTheme.TextSecondary
+    ProfileUserId.TextSize = 12
+    ProfileUserId.Font = Enum.Font.Gotham
+    ProfileUserId.TextXAlignment = Enum.TextXAlignment.Left
+    ProfileUserId.Parent = PlayerInfoCard
 
-    -- ------------------------------------------------------------
-    -- بطاقة إحصائيات المستخدمين (منظمة بشكل صحيح - Grid)
-    -- ------------------------------------------------------------
+    -- بطاقة الإحصائيات
     local StatsCard = Instance.new("Frame")
     StatsCard.Name = "StatsCard"
-    StatsCard.Size = UDim2.new(1, 0, 0, 190)
+    StatsCard.Size = UDim2.new(1, 0, 0, 200)
     StatsCard.BackgroundColor3 = CurrentTheme.Card
     StatsCard.BackgroundTransparency = 0.15
     StatsCard.BorderSizePixel = 0
     StatsCard.LayoutOrder = 2
     StatsCard.Parent = ProfilePage
 
-    local StatsCorner = Instance.new("UICorner")
-    StatsCorner.CornerRadius = UDim.new(0, 12)
-    StatsCorner.Parent = StatsCard
-
-    CreateGradient(StatsCard, 135)
-    CreateInnerGlow(StatsCard, CurrentTheme.Secondary, 0.15)
-
-    local SCStroke = Instance.new("UIStroke")
-    SCStroke.Color = CurrentTheme.Secondary
-    SCStroke.Thickness = 1.5
-    SCStroke.Transparency = 0.6
-    SCStroke.Parent = StatsCard
+    local StatsCardCorner = Instance.new("UICorner")
+    StatsCardCorner.CornerRadius = UDim.new(0, 12)
+    StatsCardCorner.Parent = StatsCard
 
     local StatsTitle = Instance.new("TextLabel")
-    StatsTitle.Name = "Title"
     StatsTitle.Size = UDim2.new(1, -30, 0, 26)
-    StatsTitle.Position = UDim2.new(0, 15, 0, 12)
+    StatsTitle.Position = UDim2.new(0, 15, 0, 10)
     StatsTitle.BackgroundTransparency = 1
     StatsTitle.Text = "📊 إحصائيات المستخدمين"
     StatsTitle.TextColor3 = CurrentTheme.TextPrimary
@@ -1009,7 +1592,6 @@ function UltimateHub:CreateWindow(scriptName, scriptVersion)
     StatsTitle.Parent = StatsCard
 
     local StatsGrid = Instance.new("Frame")
-    StatsGrid.Name = "Grid"
     StatsGrid.Size = UDim2.new(1, -30, 0, 145)
     StatsGrid.Position = UDim2.new(0, 15, 0, 42)
     StatsGrid.BackgroundTransparency = 1
@@ -1075,7 +1657,6 @@ function UltimateHub:CreateWindow(scriptName, scriptVersion)
     local _, ServerValue = CreateStatBox("🌐", "لاعبين بالسيرفر", #Players:GetPlayers(), CurrentTheme.Warning, 3)
     local _, PingValue = CreateStatBox("📡", "بينغ (ms)", "..", CurrentTheme.Accent, 4)
 
-    -- تحديث الإحصائيات دورياً
     task.spawn(function()
         while task.wait(2) do
             if ActiveValue then ActiveValue.Text = tostring(GetActiveCount()) end
@@ -1090,143 +1671,14 @@ function UltimateHub:CreateWindow(scriptName, scriptVersion)
         end
     end)
 
-    -- ------------------------------------------------------------
-    -- بطاقة المطورين (منظمة)
-    -- ------------------------------------------------------------
-    local DevCard = Instance.new("Frame")
-    DevCard.Name = "DevelopersCard"
-    DevCard.Size = UDim2.new(1, 0, 0, 36 + (#DeveloperInfo * 58) + 16)
-    DevCard.BackgroundColor3 = CurrentTheme.Card
-    DevCard.BackgroundTransparency = 0.15
-    DevCard.BorderSizePixel = 0
-    DevCard.LayoutOrder = 3
-    DevCard.Parent = ProfilePage
-
-    local DevCorner = Instance.new("UICorner")
-    DevCorner.CornerRadius = UDim.new(0, 12)
-    DevCorner.Parent = DevCard
-
-    CreateGradient(DevCard, 90, CurrentTheme.Primary, CurrentTheme.Accent)
-    CreateInnerGlow(DevCard, CurrentTheme.Primary, 0.18)
-
-    local DCStroke = Instance.new("UIStroke")
-    DCStroke.Color = CurrentTheme.Primary
-    DCStroke.Thickness = 1.5
-    DCStroke.Transparency = 0.6
-    DCStroke.Parent = DevCard
-
-    local DevTitle = Instance.new("TextLabel")
-    DevTitle.Name = "Title"
-    DevTitle.Size = UDim2.new(1, -30, 0, 26)
-    DevTitle.Position = UDim2.new(0, 15, 0, 12)
-    DevTitle.BackgroundTransparency = 1
-    DevTitle.Text = "👨‍💻 المطورون"
-    DevTitle.TextColor3 = CurrentTheme.TextPrimary
-    DevTitle.TextSize = 16
-    DevTitle.Font = Enum.Font.GothamBold
-    DevTitle.TextXAlignment = Enum.TextXAlignment.Left
-    DevTitle.Parent = DevCard
-
-    local DevList = Instance.new("Frame")
-    DevList.Name = "DevList"
-    DevList.Size = UDim2.new(1, -30, 0, #DeveloperInfo * 58)
-    DevList.Position = UDim2.new(0, 15, 0, 42)
-    DevList.BackgroundTransparency = 1
-    DevList.Parent = DevCard
-
-    local DevLayout = Instance.new("UIListLayout")
-    DevLayout.Padding = UDim.new(0, 8)
-    DevLayout.Parent = DevList
-
-    for _, dev in ipairs(DeveloperInfo) do
-        local DevEntry = Instance.new("Frame")
-        DevEntry.Name = dev.Name
-        DevEntry.Size = UDim2.new(1, 0, 0, 50)
-        DevEntry.BackgroundColor3 = CurrentTheme.Surface
-        DevEntry.BackgroundTransparency = 0.45
-        DevEntry.BorderSizePixel = 0
-        DevEntry.Parent = DevList
-
-        local EntryCorner = Instance.new("UICorner")
-        EntryCorner.CornerRadius = UDim.new(0, 9)
-        EntryCorner.Parent = DevEntry
-
-        local DevIcon = Instance.new("ImageLabel")
-        DevIcon.Name = "Icon"
-        DevIcon.Size = UDim2.new(0, 36, 0, 36)
-        DevIcon.Position = UDim2.new(0, 8, 0.5, 0)
-        DevIcon.AnchorPoint = Vector2.new(0, 0.5)
-        DevIcon.BackgroundColor3 = dev.RankColor or CurrentTheme.Primary
-        DevIcon.BackgroundTransparency = 0.6
-        DevIcon.BorderSizePixel = 0
-        DevIcon.Image = "https://www.roblox.com/headshot-thumbnail/image?userId=" .. dev.UserId .. "&width=150&height=150&format=png"
-        DevIcon.Parent = DevEntry
-
-        local DevIconCorner = Instance.new("UICorner")
-        DevIconCorner.CornerRadius = UDim.new(1, 0)
-        DevIconCorner.Parent = DevIcon
-
-        local DevName = Instance.new("TextLabel")
-        DevName.Name = "Name"
-        DevName.Size = UDim2.new(1, -140, 0, 20)
-        DevName.Position = UDim2.new(0, 54, 0, 6)
-        DevName.BackgroundTransparency = 1
-        DevName.Text = dev.Name .. (dev.Verified and "  ✓" or "")
-        DevName.TextColor3 = dev.RankColor or CurrentTheme.TextPrimary
-        DevName.TextSize = 14
-        DevName.Font = Enum.Font.GothamBold
-        DevName.TextXAlignment = Enum.TextXAlignment.Left
-        DevName.TextTruncate = Enum.TextTruncate.AtEnd
-        DevName.Parent = DevEntry
-
-        local DevSub = Instance.new("TextLabel")
-        DevSub.Name = "Sub"
-        DevSub.Size = UDim2.new(1, -140, 0, 18)
-        DevSub.Position = UDim2.new(0, 54, 0, 26)
-        DevSub.BackgroundTransparency = 1
-        DevSub.Text = dev.Username .. "  •  " .. dev.Rank
-        DevSub.TextColor3 = CurrentTheme.TextSecondary
-        DevSub.TextSize = 11
-        DevSub.Font = Enum.Font.Gotham
-        DevSub.TextXAlignment = Enum.TextXAlignment.Left
-        DevSub.TextTruncate = Enum.TextTruncate.AtEnd
-        DevSub.Parent = DevEntry
-
-        if dev.Verified then
-            local Badge = Instance.new("Frame")
-            Badge.Size = UDim2.new(0, 70, 0, 24)
-            Badge.Position = UDim2.new(1, -78, 0.5, 0)
-            Badge.AnchorPoint = Vector2.new(0, 0.5)
-            Badge.BackgroundColor3 = dev.RankColor or CurrentTheme.Primary
-            Badge.BackgroundTransparency = 0.75
-            Badge.BorderSizePixel = 0
-            Badge.Parent = DevEntry
-
-            local BadgeCorner = Instance.new("UICorner")
-            BadgeCorner.CornerRadius = UDim.new(1, 0)
-            BadgeCorner.Parent = Badge
-
-            local BadgeText = Instance.new("TextLabel")
-            BadgeText.Size = UDim2.new(1, 0, 1, 0)
-            BadgeText.BackgroundTransparency = 1
-            BadgeText.Text = "موثّق"
-            BadgeText.TextColor3 = dev.RankColor or CurrentTheme.Primary
-            BadgeText.TextSize = 11
-            BadgeText.Font = Enum.Font.GothamBold
-            BadgeText.Parent = Badge
-        end
-    end
-
-    -- ------------------------------------------------------------
-    -- زر التشغيل/التعطيل الفخم (نمط آيفون) + إشعارات فخمة
-    -- ------------------------------------------------------------
+    -- بطاقة التشغيل/التعطيل - الآن تكتم/تفعّل إشعارات اللاعب فعلياً
     local PowerCard = Instance.new("Frame")
     PowerCard.Name = "PowerToggleCard"
     PowerCard.Size = UDim2.new(1, 0, 0, 74)
     PowerCard.BackgroundColor3 = CurrentTheme.Card
     PowerCard.BackgroundTransparency = 0.1
     PowerCard.BorderSizePixel = 0
-    PowerCard.LayoutOrder = 4
+    PowerCard.LayoutOrder = 3
     PowerCard.Parent = ProfilePage
 
     local PowerCorner = Instance.new("UICorner")
@@ -1234,7 +1686,6 @@ function UltimateHub:CreateWindow(scriptName, scriptVersion)
     PowerCorner.Parent = PowerCard
 
     CreateGradient(PowerCard, 45, CurrentTheme.Success, CurrentTheme.Info)
-    CreateInnerGlow(PowerCard, CurrentTheme.Success, 0.2)
 
     local PowerStroke = Instance.new("UIStroke")
     PowerStroke.Color = CurrentTheme.Success
@@ -1243,11 +1694,10 @@ function UltimateHub:CreateWindow(scriptName, scriptVersion)
     PowerStroke.Parent = PowerCard
 
     local PowerLabel = Instance.new("TextLabel")
-    PowerLabel.Name = "Label"
     PowerLabel.Size = UDim2.new(1, -120, 0, 24)
     PowerLabel.Position = UDim2.new(0, 18, 0, 15)
     PowerLabel.BackgroundTransparency = 1
-    PowerLabel.Text = "⚡ تشغيل / تعطيل السكربت"
+    PowerLabel.Text = "⚡ تفعيل / تعطيل إشعارات اللاعب"
     PowerLabel.TextColor3 = CurrentTheme.TextPrimary
     PowerLabel.TextSize = 15
     PowerLabel.Font = Enum.Font.GothamBold
@@ -1255,20 +1705,17 @@ function UltimateHub:CreateWindow(scriptName, scriptVersion)
     PowerLabel.Parent = PowerCard
 
     local PowerStatus = Instance.new("TextLabel")
-    PowerStatus.Name = "Status"
     PowerStatus.Size = UDim2.new(1, -120, 0, 20)
     PowerStatus.Position = UDim2.new(0, 18, 0, 40)
     PowerStatus.BackgroundTransparency = 1
-    PowerStatus.Text = "✅ مفعّل حالياً"
+    PowerStatus.Text = "✅ الإشعارات مفعّلة حالياً"
     PowerStatus.TextColor3 = CurrentTheme.Success
     PowerStatus.TextSize = 12
     PowerStatus.Font = Enum.Font.Gotham
     PowerStatus.TextXAlignment = Enum.TextXAlignment.Left
     PowerStatus.Parent = PowerCard
 
-    -- زر التبديل بشكل آيفون
     local ToggleButton = Instance.new("TextButton")
-    ToggleButton.Name = "ToggleButton"
     ToggleButton.Size = UDim2.new(0, 66, 0, 34)
     ToggleButton.Position = UDim2.new(1, -84, 0.5, 0)
     ToggleButton.AnchorPoint = Vector2.new(0, 0.5)
@@ -1289,7 +1736,6 @@ function UltimateHub:CreateWindow(scriptName, scriptVersion)
     ToggleStroke.Parent = ToggleButton
 
     local ToggleCircle = Instance.new("Frame")
-    ToggleCircle.Name = "Circle"
     ToggleCircle.Size = UDim2.new(0, 28, 0, 28)
     ToggleCircle.Position = UDim2.new(0, 35, 0.5, 0)
     ToggleCircle.AnchorPoint = Vector2.new(0, 0.5)
@@ -1301,234 +1747,201 @@ function UltimateHub:CreateWindow(scriptName, scriptVersion)
     CircleCorner.CornerRadius = UDim.new(1, 0)
     CircleCorner.Parent = ToggleCircle
 
-    local CircleShadow = Instance.new("ImageLabel")
-    CircleShadow.Name = "Shadow"
-    CircleShadow.Size = UDim2.new(1, 8, 1, 8)
-    CircleShadow.Position = UDim2.new(0.5, 0, 0.5, 0)
-    CircleShadow.AnchorPoint = Vector2.new(0.5, 0.5)
-    CircleShadow.BackgroundTransparency = 1
-    CircleShadow.Image = "rbxassetid://8992230677"
-    CircleShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
-    CircleShadow.ImageTransparency = 0.65
-    CircleShadow.ScaleType = Enum.ScaleType.Slice
-    CircleShadow.SliceCenter = Rect.new(99, 99, 99, 99)
-    CircleShadow.ZIndex = 0
-    CircleShadow.Parent = ToggleCircle
-
     ToggleButton.MouseButton1Click:Connect(function()
         Hub.IsEnabled = not Hub.IsEnabled
+        NotificationsMuted = not Hub.IsEnabled -- التبديل الفعلي لكتم/تفعيل إشعارات الهَب
 
         if Hub.IsEnabled then
             PlaySound(SoundEffects.Toggle, 0.5, 1.15)
-
-            TweenService:Create(ToggleButton, TweenInfo.new(0.28, Enum.EasingStyle.Quad), {
-                BackgroundColor3 = CurrentTheme.Success
-            }):Play()
+            TweenService:Create(ToggleButton, TweenInfo.new(0.28, Enum.EasingStyle.Quad), {BackgroundColor3 = CurrentTheme.Success}):Play()
             TweenService:Create(ToggleStroke, TweenInfo.new(0.28), {Color = CurrentTheme.Success}):Play()
-            TweenService:Create(ToggleCircle, TweenInfo.new(0.32, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
-                Position = UDim2.new(0, 35, 0.5, 0)
-            }):Play()
+            TweenService:Create(ToggleCircle, TweenInfo.new(0.32, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {Position = UDim2.new(0, 35, 0.5, 0)}):Play()
 
-            PowerStatus.Text = "✅ مفعّل حالياً"
+            PowerStatus.Text = "✅ الإشعارات مفعّلة حالياً"
             PowerStatus.TextColor3 = CurrentTheme.Success
 
-            UltimateHub:ShowNotification("⚡ تم التفعيل", "السكربت الآن نشط ويعمل بكامل طاقته", Icons.Power, "success", 3)
+            -- forceShow = true لضمان ظهور تأكيد إعادة التفعيل حتى لو كانت مكتومة قبل قليل
+            UltimateHub:ShowNotification("⚡ تم تفعيل الإشعارات", "ستظهر لك إشعارات الهَب من جديد", Icons.Power, "success", 3, true)
         else
             PlaySound(SoundEffects.Toggle, 0.5, 0.85)
-
-            TweenService:Create(ToggleButton, TweenInfo.new(0.28, Enum.EasingStyle.Quad), {
-                BackgroundColor3 = CurrentTheme.Error
-            }):Play()
+            TweenService:Create(ToggleButton, TweenInfo.new(0.28, Enum.EasingStyle.Quad), {BackgroundColor3 = CurrentTheme.Error}):Play()
             TweenService:Create(ToggleStroke, TweenInfo.new(0.28), {Color = CurrentTheme.Error}):Play()
-            TweenService:Create(ToggleCircle, TweenInfo.new(0.32, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
-                Position = UDim2.new(0, 3, 0.5, 0)
-            }):Play()
+            TweenService:Create(ToggleCircle, TweenInfo.new(0.32, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {Position = UDim2.new(0, 3, 0.5, 0)}):Play()
 
-            PowerStatus.Text = "⛔ معطّل حالياً"
+            PowerStatus.Text = "⛔ الإشعارات معطّلة حالياً"
             PowerStatus.TextColor3 = CurrentTheme.Error
 
-            UltimateHub:ShowNotification("⛔ تم التعطيل", "السكربت الآن متوقف مؤقتاً", Icons.Close, "warning", 3)
+            -- إشعار تأكيد التعطيل يظهر مرة واحدة فقط (forceShow) ثم تُكتم كل الإشعارات التالية
+            UltimateHub:ShowNotification("⛔ تم كتم الإشعارات", "لن تظهر إشعارات الهَب حتى تُعيد تفعيلها", Icons.Close, "warning", 3, true)
         end
-
-        -- نبضة بسيطة للدائرة
-        TweenService:Create(ToggleCircle, TweenInfo.new(0.12), {Size = UDim2.new(0, 32, 0, 32)}):Play()
-        task.wait(0.12)
-        TweenService:Create(ToggleCircle, TweenInfo.new(0.12), {Size = UDim2.new(0, 28, 0, 28)}):Play()
     end)
 
-    ToggleButton.MouseEnter:Connect(function()
-        TweenService:Create(ToggleCircle, TweenInfo.new(0.15), {Size = UDim2.new(0, 30, 0, 30)}):Play()
+    -- بطاقة معلومات جاهزة للنسخ - 3 مربعات شفافة فقط (عنوان + وصف + زر نسخ)
+    local InfoBoxesCard = Instance.new("Frame")
+    InfoBoxesCard.Name = "InfoBoxesCard"
+    InfoBoxesCard.Size = UDim2.new(1, 0, 0, 36 + (#CopyInfoBoxes * 76))
+    InfoBoxesCard.BackgroundTransparency = 1
+    InfoBoxesCard.LayoutOrder = 4
+    InfoBoxesCard.Parent = ProfilePage
+
+    local InfoBoxesTitle = Instance.new("TextLabel")
+    InfoBoxesTitle.Size = UDim2.new(1, 0, 0, 26)
+    InfoBoxesTitle.BackgroundTransparency = 1
+    InfoBoxesTitle.Text = "ℹ️ معلومات"
+    InfoBoxesTitle.TextColor3 = CurrentTheme.TextPrimary
+    InfoBoxesTitle.TextSize = 16
+    InfoBoxesTitle.Font = Enum.Font.GothamBold
+    InfoBoxesTitle.TextXAlignment = Enum.TextXAlignment.Left
+    InfoBoxesTitle.Parent = InfoBoxesCard
+
+    local InfoBoxesList = Instance.new("Frame")
+    InfoBoxesList.Size = UDim2.new(1, 0, 0, #CopyInfoBoxes * 76)
+    InfoBoxesList.Position = UDim2.new(0, 0, 0, 32)
+    InfoBoxesList.BackgroundTransparency = 1
+    InfoBoxesList.Parent = InfoBoxesCard
+
+    local InfoBoxesLayout = Instance.new("UIListLayout")
+    InfoBoxesLayout.Padding = UDim.new(0, 8)
+    InfoBoxesLayout.Parent = InfoBoxesList
+
+    for i, entry in ipairs(CopyInfoBoxes) do
+        local Box = Instance.new("Frame")
+        Box.Name = "InfoBox" .. i
+        Box.Size = UDim2.new(1, 0, 0, 68)
+        Box.BackgroundColor3 = CurrentTheme.Surface
+        Box.BackgroundTransparency = 0.85 -- شفاف كما طُلب
+        Box.BorderSizePixel = 0
+        Box.LayoutOrder = i
+        Box.Parent = InfoBoxesList
+
+        local BoxCorner = Instance.new("UICorner")
+        BoxCorner.CornerRadius = UDim.new(0, 10)
+        BoxCorner.Parent = Box
+
+        local BoxStroke = Instance.new("UIStroke")
+        BoxStroke.Color = CurrentTheme.Primary
+        BoxStroke.Thickness = 1
+        BoxStroke.Transparency = 0.7
+        BoxStroke.Parent = Box
+
+        local BoxTitle = Instance.new("TextLabel")
+        BoxTitle.Size = UDim2.new(1, -100, 0, 22)
+        BoxTitle.Position = UDim2.new(0, 14, 0, 8)
+        BoxTitle.BackgroundTransparency = 1
+        BoxTitle.Text = entry.Title
+        BoxTitle.TextColor3 = CurrentTheme.TextPrimary
+        BoxTitle.TextSize = 14
+        BoxTitle.Font = Enum.Font.GothamBold
+        BoxTitle.TextXAlignment = Enum.TextXAlignment.Left
+        BoxTitle.TextTruncate = Enum.TextTruncate.AtEnd
+        BoxTitle.Parent = Box
+
+        local BoxDesc = Instance.new("TextLabel")
+        BoxDesc.Size = UDim2.new(1, -100, 0, 34)
+        BoxDesc.Position = UDim2.new(0, 14, 0, 30)
+        BoxDesc.BackgroundTransparency = 1
+        BoxDesc.Text = entry.Description
+        BoxDesc.TextColor3 = CurrentTheme.TextSecondary
+        BoxDesc.TextSize = 11
+        BoxDesc.Font = Enum.Font.Gotham
+        BoxDesc.TextXAlignment = Enum.TextXAlignment.Left
+        BoxDesc.TextYAlignment = Enum.TextYAlignment.Top
+        BoxDesc.TextWrapped = true
+        BoxDesc.Parent = Box
+
+        local BoxCopyBtn = Instance.new("TextButton")
+        BoxCopyBtn.Size = UDim2.new(0, 74, 0, 30)
+        BoxCopyBtn.Position = UDim2.new(1, -84, 0.5, 0)
+        BoxCopyBtn.AnchorPoint = Vector2.new(0, 0.5)
+        BoxCopyBtn.BackgroundColor3 = CurrentTheme.Primary
+        BoxCopyBtn.BackgroundTransparency = 0.15
+        BoxCopyBtn.BorderSizePixel = 0
+        BoxCopyBtn.Text = "📋 نسخ"
+        BoxCopyBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+        BoxCopyBtn.TextSize = 12
+        BoxCopyBtn.Font = Enum.Font.GothamBold
+        BoxCopyBtn.AutoButtonColor = false
+        BoxCopyBtn.Parent = Box
+
+        local BoxCopyCorner = Instance.new("UICorner")
+        BoxCopyCorner.CornerRadius = UDim.new(0, 8)
+        BoxCopyCorner.Parent = BoxCopyBtn
+
+        BoxCopyBtn.MouseButton1Click:Connect(function()
+            PlaySound(SoundEffects.Click, 0.4)
+            CopyToClipboard(Hub, entry.Title .. ": " .. entry.Description)
+        end)
+    end
+
+    -- ------------------------------------------------------------
+    -- التنقل: فتح/إغلاق صفحة إعدادات اللاعب
+    -- ------------------------------------------------------------
+    local function OpenProfile()
+        Hub.CurrentPage = "profile"
+        ProfilePage.Visible = true
+        ProfilePage.Position = UDim2.new(1, 0, 0, 0)
+
+        TweenService:Create(Sidebar, TweenInfo.new(0.35, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {
+            Position = UDim2.new(-1, 0, 0, 0)
+        }):Play()
+        TweenService:Create(ContentPane, TweenInfo.new(0.35, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {
+            Position = UDim2.new(1, 0, 0, 0)
+        }):Play()
+
+        local slideIn = TweenService:Create(ProfilePage, TweenInfo.new(0.4, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {
+            Position = UDim2.new(0, 0, 0, 0)
+        })
+        slideIn:Play()
+
+        PlaySound(SoundEffects.Whoosh, 0.3)
+    end
+
+    local function CloseProfile()
+        Hub.CurrentPage = "main"
+
+        TweenService:Create(ProfilePage, TweenInfo.new(0.35, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {
+            Position = UDim2.new(1, 0, 0, 0)
+        }):Play()
+
+        Sidebar.Position = UDim2.new(0, 10, 0, 0)
+        ContentPane.Position = UDim2.new(0, SIDEBAR_WIDTH + 20, 0, 0)
+
+        task.wait(0.38)
+        ProfilePage.Visible = false
+    end
+
+    ProfileBackButton.MouseButton1Click:Connect(function()
+        PlaySound(SoundEffects.Click, 0.3)
+        CloseProfile()
     end)
-    ToggleButton.MouseLeave:Connect(function()
-        TweenService:Create(ToggleCircle, TweenInfo.new(0.15), {Size = UDim2.new(0, 28, 0, 28)}):Play()
+
+    TitleAvatarButton.MouseButton1Click:Connect(function()
+        PlaySound(SoundEffects.Click, 0.35)
+        OpenProfile()
+    end)
+
+    SettingsButton.MouseButton1Click:Connect(function()
+        PlaySound(SoundEffects.Click, 0.35)
+        OpenProfile()
     end)
 
     -- ------------------------------------------------------------
-    -- الصفحة الرئيسية (قائمة الخرائط)
+    -- بطاقة مجلد بالقائمة الجانبية
     -- ------------------------------------------------------------
-    local MainPage = Instance.new("ScrollingFrame")
-    MainPage.Name = "MainPage"
-    MainPage.Size = UDim2.new(1, -40, 1, -90)
-    MainPage.Position = UDim2.new(0, 20, 0, 70)
-    MainPage.BackgroundTransparency = 1
-    MainPage.BorderSizePixel = 0
-    MainPage.ScrollBarThickness = 5
-    MainPage.ScrollBarImageColor3 = CurrentTheme.Primary
-    MainPage.CanvasSize = UDim2.new(0, 0, 0, 0)
-    MainPage.AutomaticCanvasSize = Enum.AutomaticSize.Y
-    MainPage.Parent = MainFrame
-
-    local MainLayout = Instance.new("UIListLayout")
-    MainLayout.Padding = UDim.new(0, 14)
-    MainLayout.Parent = MainPage
-
-    local SearchContainer = Instance.new("Frame")
-    SearchContainer.Name = "Search"
-    SearchContainer.Size = UDim2.new(1, 0, 0, 44)
-    SearchContainer.BackgroundColor3 = CurrentTheme.Card
-    SearchContainer.BackgroundTransparency = 0.25
-    SearchContainer.BorderSizePixel = 0
-    SearchContainer.LayoutOrder = 1
-    SearchContainer.Parent = MainPage
-
-    local SearchCorner = Instance.new("UICorner")
-    SearchCorner.CornerRadius = UDim.new(0, 10)
-    SearchCorner.Parent = SearchContainer
-
-    local SearchIcon = Instance.new("ImageLabel")
-    SearchIcon.Size = UDim2.new(0, 18, 0, 18)
-    SearchIcon.Position = UDim2.new(0, 14, 0.5, 0)
-    SearchIcon.AnchorPoint = Vector2.new(0, 0.5)
-    SearchIcon.BackgroundTransparency = 1
-    SearchIcon.Image = Icons.Search
-    SearchIcon.ImageColor3 = CurrentTheme.TextSecondary
-    SearchIcon.Parent = SearchContainer
-
-    local SearchBox = Instance.new("TextBox")
-    SearchBox.Name = "SearchBox"
-    SearchBox.Size = UDim2.new(1, -55, 1, 0)
-    SearchBox.Position = UDim2.new(0, 45, 0, 0)
-    SearchBox.BackgroundTransparency = 1
-    SearchBox.PlaceholderText = "ابحث عن خريطة..."
-    SearchBox.PlaceholderColor3 = CurrentTheme.TextSecondary
-    SearchBox.Text = ""
-    SearchBox.TextColor3 = CurrentTheme.TextPrimary
-    SearchBox.TextSize = 14
-    SearchBox.Font = Enum.Font.Gotham
-    SearchBox.TextXAlignment = Enum.TextXAlignment.Left
-    SearchBox.ClearTextOnFocus = false
-    SearchBox.Parent = SearchContainer
-
-    local SectionTitle = Instance.new("TextLabel")
-    SectionTitle.Size = UDim2.new(1, 0, 0, 22)
-    SectionTitle.BackgroundTransparency = 1
-    SectionTitle.Text = "🗺️ الخرائط المتاحة"
-    SectionTitle.TextColor3 = CurrentTheme.TextPrimary
-    SectionTitle.TextSize = 15
-    SectionTitle.Font = Enum.Font.GothamBold
-    SectionTitle.TextXAlignment = Enum.TextXAlignment.Left
-    SectionTitle.LayoutOrder = 2
-    SectionTitle.Parent = MainPage
-
-    local MapsScroll = Instance.new("Frame")
-    MapsScroll.Name = "MapsScroll"
-    MapsScroll.Size = UDim2.new(1, 0, 0, 0)
-    MapsScroll.AutomaticSize = Enum.AutomaticSize.Y
-    MapsScroll.BackgroundTransparency = 1
-    MapsScroll.BorderSizePixel = 0
-    MapsScroll.LayoutOrder = 3
-    MapsScroll.Parent = MainPage
-
-    local MapsLayout = Instance.new("UIListLayout")
-    MapsLayout.Padding = UDim.new(0, 10)
-    MapsLayout.Parent = MapsScroll
-
-    -- ------------------------------------------------------------
-    -- صفحة المجلد (سكربتات الخريطة)
-    -- ------------------------------------------------------------
-    local FolderPage = Instance.new("ScrollingFrame")
-    FolderPage.Name = "FolderPage"
-    FolderPage.Size = UDim2.new(1, -40, 1, -90)
-    FolderPage.Position = UDim2.new(1, 0, 0, 70)
-    FolderPage.BackgroundTransparency = 1
-    FolderPage.BorderSizePixel = 0
-    FolderPage.ScrollBarThickness = 5
-    FolderPage.ScrollBarImageColor3 = CurrentTheme.Primary
-    FolderPage.Visible = false
-    FolderPage.CanvasSize = UDim2.new(0, 0, 0, 0)
-    FolderPage.AutomaticCanvasSize = Enum.AutomaticSize.Y
-    FolderPage.Parent = MainFrame
-
-    local FolderPadding = Instance.new("UIPadding")
-    FolderPadding.PaddingTop = UDim.new(0, 46)
-    FolderPadding.Parent = FolderPage
-
-    local FolderLayout = Instance.new("UIListLayout")
-    FolderLayout.Padding = UDim.new(0, 12)
-    FolderLayout.Parent = FolderPage
-
-    local BackButton = Instance.new("TextButton")
-    BackButton.Name = "BackButton"
-    BackButton.Size = UDim2.new(0, 90, 0, 34)
-    BackButton.Position = UDim2.new(0, 0, 0, 0)
-    BackButton.BackgroundColor3 = CurrentTheme.Card
-    BackButton.BackgroundTransparency = 0.2
-    BackButton.BorderSizePixel = 0
-    BackButton.Text = "→ رجوع"
-    BackButton.TextColor3 = CurrentTheme.TextPrimary
-    BackButton.TextSize = 13
-    BackButton.Font = Enum.Font.GothamBold
-    BackButton.ZIndex = 10
-    BackButton.Parent = FolderPage
-
-    local BackButtonCorner = Instance.new("UICorner")
-    BackButtonCorner.CornerRadius = UDim.new(0, 8)
-    BackButtonCorner.Parent = BackButton
-
-    local FolderTitle = Instance.new("TextLabel")
-    FolderTitle.Name = "FolderTitle"
-    FolderTitle.Size = UDim2.new(1, 0, 0, 28)
-    FolderTitle.BackgroundTransparency = 1
-    FolderTitle.Text = "المجلد"
-    FolderTitle.TextColor3 = CurrentTheme.TextPrimary
-    FolderTitle.TextSize = 18
-    FolderTitle.Font = Enum.Font.GothamBold
-    FolderTitle.TextXAlignment = Enum.TextXAlignment.Left
-    FolderTitle.LayoutOrder = 1
-    FolderTitle.Parent = FolderPage
-
-    local ScriptsContainer = Instance.new("Frame")
-    ScriptsContainer.Name = "ScriptsContainer"
-    ScriptsContainer.Size = UDim2.new(1, 0, 0, 0)
-    ScriptsContainer.AutomaticSize = Enum.AutomaticSize.Y
-    ScriptsContainer.BackgroundTransparency = 1
-    ScriptsContainer.LayoutOrder = 2
-    ScriptsContainer.Parent = FolderPage
-
-    local ScriptsLayout = Instance.new("UIListLayout")
-    ScriptsLayout.Padding = UDim.new(0, 10)
-    ScriptsLayout.Parent = ScriptsContainer
-
-    -- ------------------------------------------------------------
-    -- دالة إنشاء بطاقة خريطة
-    -- ------------------------------------------------------------
-    local function CreateMapCard(parent, imagePath, mapName, scriptCount, onClick)
+    local function CreateFolderCard(image, name, scriptCount, onClick)
         local Card = Instance.new("TextButton")
-        Card.Name = mapName
-        Card.Size = UDim2.new(1, 0, 0, 88)
-        Card.BackgroundColor3 = CurrentTheme.Card
+        Card.Name = name
+        Card.Size = UDim2.new(1, 0, 0, 60)
+        Card.BackgroundColor3 = CurrentTheme.Surface
         Card.BackgroundTransparency = 0.2
         Card.BorderSizePixel = 0
-        Card.AutoButtonColor = false
         Card.Text = ""
-        Card.Parent = parent
+        Card.AutoButtonColor = false
+        Card.Parent = FoldersScroll
 
         local CardCorner = Instance.new("UICorner")
-        CardCorner.CornerRadius = UDim.new(0, 12)
+        CardCorner.CornerRadius = UDim.new(0, 10)
         CardCorner.Parent = Card
-
-        CreateGradient(Card, 45)
-        CreateInnerGlow(Card, CurrentTheme.Primary, 0.15)
 
         local CardStroke = Instance.new("UIStroke")
         CardStroke.Color = CurrentTheme.Primary
@@ -1536,63 +1949,47 @@ function UltimateHub:CreateWindow(scriptName, scriptVersion)
         CardStroke.Transparency = 0.6
         CardStroke.Parent = Card
 
-        local MapImage = Instance.new("ImageLabel")
-        MapImage.Name = "MapImage"
-        MapImage.Size = UDim2.new(0, 68, 0, 68)
-        MapImage.Position = UDim2.new(0, 10, 0.5, 0)
-        MapImage.AnchorPoint = Vector2.new(0, 0.5)
-        MapImage.BackgroundColor3 = CurrentTheme.Surface
-        MapImage.BorderSizePixel = 0
-        MapImage.Image = imagePath or ""
-        MapImage.ScaleType = Enum.ScaleType.Crop
-        MapImage.Parent = Card
+        local Icon = Instance.new("ImageLabel")
+        Icon.Size = UDim2.new(0, 40, 0, 40)
+        Icon.Position = UDim2.new(0, 8, 0.5, 0)
+        Icon.AnchorPoint = Vector2.new(0, 0.5)
+        Icon.BackgroundColor3 = CurrentTheme.Card
+        Icon.BorderSizePixel = 0
+        Icon.Image = image or ""
+        Icon.Parent = Card
 
-        local ImageCorner = Instance.new("UICorner")
-        ImageCorner.CornerRadius = UDim.new(0, 10)
-        ImageCorner.Parent = MapImage
+        local IconCorner = Instance.new("UICorner")
+        IconCorner.CornerRadius = UDim.new(0, 8)
+        IconCorner.Parent = Icon
 
         local NameLabel = Instance.new("TextLabel")
-        NameLabel.Size = UDim2.new(1, -160, 0, 24)
-        NameLabel.Position = UDim2.new(0, 90, 0, 18)
+        NameLabel.Size = UDim2.new(1, -60, 0, 20)
+        NameLabel.Position = UDim2.new(0, 56, 0, 8)
         NameLabel.BackgroundTransparency = 1
-        NameLabel.Text = mapName
+        NameLabel.Text = name
         NameLabel.TextColor3 = CurrentTheme.TextPrimary
-        NameLabel.TextSize = 15
+        NameLabel.TextSize = 13
         NameLabel.Font = Enum.Font.GothamBold
         NameLabel.TextXAlignment = Enum.TextXAlignment.Left
         NameLabel.TextTruncate = Enum.TextTruncate.AtEnd
         NameLabel.Parent = Card
 
         local CountLabel = Instance.new("TextLabel")
-        CountLabel.Size = UDim2.new(1, -160, 0, 18)
-        CountLabel.Position = UDim2.new(0, 90, 0, 46)
+        CountLabel.Size = UDim2.new(1, -60, 0, 16)
+        CountLabel.Position = UDim2.new(0, 56, 0, 30)
         CountLabel.BackgroundTransparency = 1
-        CountLabel.Text = string.format("📜 %d سكربت متاح", scriptCount or 0)
+        CountLabel.Text = string.format("📜 %d سكربت", scriptCount or 0)
         CountLabel.TextColor3 = CurrentTheme.TextSecondary
-        CountLabel.TextSize = 12
+        CountLabel.TextSize = 11
         CountLabel.Font = Enum.Font.Gotham
         CountLabel.TextXAlignment = Enum.TextXAlignment.Left
         CountLabel.Parent = Card
 
-        local Arrow = Instance.new("TextLabel")
-        Arrow.Size = UDim2.new(0, 26, 0, 26)
-        Arrow.Position = UDim2.new(1, -38, 0.5, 0)
-        Arrow.AnchorPoint = Vector2.new(0, 0.5)
-        Arrow.BackgroundTransparency = 1
-        Arrow.Text = "←"
-        Arrow.TextColor3 = CurrentTheme.Primary
-        Arrow.TextSize = 18
-        Arrow.Font = Enum.Font.GothamBold
-        Arrow.Parent = Card
-
         Card.MouseEnter:Connect(function()
             TweenService:Create(Card, TweenInfo.new(0.18), {BackgroundTransparency = 0.05}):Play()
-            TweenService:Create(CardStroke, TweenInfo.new(0.18), {Thickness = 2, Transparency = 0.3}):Play()
         end)
-
         Card.MouseLeave:Connect(function()
             TweenService:Create(Card, TweenInfo.new(0.18), {BackgroundTransparency = 0.2}):Play()
-            TweenService:Create(CardStroke, TweenInfo.new(0.18), {Thickness = 1.5, Transparency = 0.6}):Play()
         end)
 
         Card.MouseButton1Click:Connect(function()
@@ -1604,7 +2001,7 @@ function UltimateHub:CreateWindow(scriptName, scriptVersion)
     end
 
     -- ------------------------------------------------------------
-    -- دالة إنشاء زر سكربت (تسجيل تفعيل حقيقي عند الضغط "تشغيل")
+    -- بطاقة سكربت داخل مجلد
     -- ------------------------------------------------------------
     local function CreateScriptButton(parent, scriptName, scriptDescription, onExecute)
         local Button = Instance.new("Frame")
@@ -1646,7 +2043,6 @@ function UltimateHub:CreateWindow(scriptName, scriptVersion)
         Description.Parent = Button
 
         local ExecuteBtn = Instance.new("TextButton")
-        ExecuteBtn.Name = "Execute"
         ExecuteBtn.Size = UDim2.new(0, 76, 0, 30)
         ExecuteBtn.Position = UDim2.new(1, -88, 0.5, 0)
         ExecuteBtn.AnchorPoint = Vector2.new(0, 0.5)
@@ -1680,16 +2076,9 @@ function UltimateHub:CreateWindow(scriptName, scriptVersion)
 
             ExecuteBtn.Text = "✓ تم"
 
-            -- ★ تسجيل حقيقي في نظام العد: يزيد رقم "إجمالي التفعيلات"
             RegisterUser(LocalPlayer.UserId, LocalPlayer.Name, LocalPlayer.DisplayName)
 
-            UltimateHub:ShowNotification(
-                "✅ تم تفعيل السكربت",
-                "تم تشغيل: " .. scriptName,
-                Icons.Check,
-                "success",
-                3
-            )
+            UltimateHub:ShowNotification("✅ تم تفعيل السكربت", "تم تشغيل: " .. scriptName, Icons.Check, "success", 3)
 
             if onExecute then onExecute() end
 
@@ -1703,15 +2092,16 @@ function UltimateHub:CreateWindow(scriptName, scriptVersion)
     end
 
     -- ------------------------------------------------------------
-    -- التنقل بين الصفحات
+    -- التنقل: اختيار مجلد من القائمة الجانبية يعرض سكربتاته يميناً
     -- ------------------------------------------------------------
-    local function SwitchToFolder(mapData)
+    local function SelectFolder(mapData)
         Hub.CurrentPage = "folder"
         Hub.CurrentMap = mapData
 
+        ShowFolderView()
         FolderTitle.Text = "📁 " .. mapData.name
 
-        for _, child in ipairs(ScriptsContainer:GetChildren()) do
+        for _, child in ipairs(ScriptsScroll:GetChildren()) do
             if child:IsA("Frame") then
                 child:Destroy()
             end
@@ -1719,113 +2109,34 @@ function UltimateHub:CreateWindow(scriptName, scriptVersion)
 
         if mapData.scripts then
             for _, scr in ipairs(mapData.scripts) do
-                CreateScriptButton(ScriptsContainer, scr.name, scr.description, scr.execute)
+                CreateScriptButton(ScriptsScroll, scr.name, scr.description, scr.execute)
             end
         end
-
-        MainPage.Visible = true
-        FolderPage.Visible = true
-        FolderPage.Position = UDim2.new(1, 0, 0, 70)
-
-        TweenService:Create(MainPage, TweenInfo.new(0.4, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {
-            Position = UDim2.new(-1, 0, 0, 70)
-        }):Play()
-
-        local slideIn = TweenService:Create(FolderPage, TweenInfo.new(0.4, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {
-            Position = UDim2.new(0, 20, 0, 70)
-        })
-        slideIn:Play()
-        slideIn.Completed:Wait()
-        MainPage.Visible = false
     end
-
-    local function SwitchToMain()
-        Hub.CurrentPage = "main"
-
-        MainPage.Visible = true
-        MainPage.Position = UDim2.new(-1, 0, 0, 70)
-
-        if FolderPage.Visible then
-            TweenService:Create(FolderPage, TweenInfo.new(0.4, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {
-                Position = UDim2.new(1, 0, 0, 70)
-            }):Play()
-        end
-
-        if ProfilePage.Visible then
-            TweenService:Create(ProfilePage, TweenInfo.new(0.4, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {
-                Position = UDim2.new(1, 0, 0, 70)
-            }):Play()
-        end
-
-        local slideIn = TweenService:Create(MainPage, TweenInfo.new(0.4, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {
-            Position = UDim2.new(0, 20, 0, 70)
-        })
-        slideIn:Play()
-        slideIn.Completed:Wait()
-        FolderPage.Visible = false
-        ProfilePage.Visible = false
-    end
-
-    local function SwitchToProfile()
-        Hub.CurrentPage = "profile"
-
-        MainPage.Visible = true
-        ProfilePage.Visible = true
-        FolderPage.Visible = false
-        ProfilePage.Position = UDim2.new(1, 0, 0, 70)
-
-        TweenService:Create(MainPage, TweenInfo.new(0.4, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {
-            Position = UDim2.new(-1, 0, 0, 70)
-        }):Play()
-
-        local slideIn = TweenService:Create(ProfilePage, TweenInfo.new(0.4, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {
-            Position = UDim2.new(0, 0, 0, 70)
-        })
-        slideIn:Play()
-        slideIn.Completed:Wait()
-        MainPage.Visible = false
-
-        PlaySound(SoundEffects.Whoosh, 0.3)
-    end
-
-    BackButton.MouseButton1Click:Connect(function()
-        PlaySound(SoundEffects.Click, 0.3)
-        SwitchToMain()
-    end)
-    ProfileBackButton.MouseButton1Click:Connect(function()
-        PlaySound(SoundEffects.Click, 0.3)
-        SwitchToMain()
-    end)
-
-    TitleAvatarButton.MouseButton1Click:Connect(function()
-        PlaySound(SoundEffects.Click, 0.35)
-        SwitchToProfile()
-    end)
 
     -- ------------------------------------------------------------
-    -- إضافة خريطة
+    -- إضافة مجلد/خريطة (تظهر كبطاقة بالقائمة الجانبية)
     -- ------------------------------------------------------------
     function Hub:AddMap(mapData)
         table.insert(Hub.Maps, mapData)
 
-        local card = CreateMapCard(
-            MapsScroll,
+        local card = CreateFolderCard(
             mapData.image,
             mapData.name,
             mapData.scriptCount or (mapData.scripts and #mapData.scripts) or 0,
             function()
-                SwitchToFolder(mapData)
+                SelectFolder(mapData)
             end
         )
         card.Name = mapData.name
     end
 
     -- ------------------------------------------------------------
-    -- نظام البحث
+    -- نظام بحث المجلدات المحلية
     -- ------------------------------------------------------------
     SearchBox:GetPropertyChangedSignal("Text"):Connect(function()
         local searchText = SearchBox.Text:lower()
-        for _, card in ipairs(MapsScroll:GetChildren()) do
+        for _, card in ipairs(FoldersScroll:GetChildren()) do
             if card:IsA("TextButton") then
                 card.Visible = (searchText == "" or card.Name:lower():find(searchText, 1, true) ~= nil)
             end
@@ -1844,14 +2155,9 @@ function UltimateHub:CreateWindow(scriptName, scriptVersion)
         TweenService:Create(TitleBar, tweenInfo, {BackgroundColor3 = theme.Surface, BackgroundTransparency = theme.Transparency}):Play()
         TweenService:Create(TitleFix, tweenInfo, {BackgroundColor3 = theme.Surface, BackgroundTransparency = theme.Transparency}):Play()
         TweenService:Create(MainStroke, tweenInfo, {Color = theme.Primary}):Play()
+        TweenService:Create(Sidebar, tweenInfo, {BackgroundColor3 = theme.Card}):Play()
 
-        UltimateHub:ShowNotification(
-            "🎨 تم تغيير الثيم",
-            "الثيم الحالي: " .. theme.Name,
-            Icons.Theme,
-            "info",
-            3
-        )
+        UltimateHub:ShowNotification("🎨 تم تغيير الثيم", "الثيم الحالي: " .. theme.Name, Icons.Theme, "info", 3)
     end
 
     ThemeButton.MouseButton1Click:Connect(function()
@@ -1869,7 +2175,7 @@ function UltimateHub:CreateWindow(scriptName, scriptVersion)
     end)
 
     -- ------------------------------------------------------------
-    -- التكبير/التصغير (مع تبديل الأيقونة)
+    -- التكبير/التصغير
     -- ------------------------------------------------------------
     local function ResizeWindow()
         local screenSize = workspace.CurrentCamera.ViewportSize
@@ -1920,8 +2226,6 @@ function UltimateHub:CreateWindow(scriptName, scriptVersion)
                 Size = UDim2.new(0, targetWidth, 0, targetHeight)
             }):Play()
 
-            TweenService:Create(PlayerAvatar, TweenInfo.new(0.5), {Rotation = 180}):Play()
-
             PlaySound(SoundEffects.Whoosh, 0.4)
 
             UltimateHub:ShowNotification("🎮 مرحباً بك!", "تم فتح " .. scriptName, Icons.Star, "success", 2.5)
@@ -1934,7 +2238,6 @@ function UltimateHub:CreateWindow(scriptName, scriptVersion)
                 MainFrame.Visible = false
             end)
 
-            TweenService:Create(PlayerAvatar, TweenInfo.new(0.5), {Rotation = 0}):Play()
             PlaySound(SoundEffects.Whoosh, 0.3, 0.85)
         end
     end
